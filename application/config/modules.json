@@ -1,0 +1,5 @@
+{
+  "components": ["html-text","html-field","address-view","carousel","file-lister","link","modal","pdf-view","popover"],
+  "structures":["tabs-block","collapse-block","generic-box"],
+  "plugins":[]
+}

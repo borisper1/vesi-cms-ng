@@ -1,0 +1,53 @@
+body{
+    padding-top: 80px;
+}
+.exm{
+    margin-top: 8px;
+}
+.footer {
+    width: 100%;
+    background-color: #f5f5f5;
+}
+.footer >.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-top: 15px;
+}
+.page-header{
+    margin-top:20px;
+    padding-bottom: 0;
+    margin-bottom:10px;
+}
+.table>tbody>tr>td{
+    vertical-align:middle;
+}
+.fa-stack {
+    height: 1em;
+    line-height: 0;
+    width: 1em;
+}
+.file-list{
+    font-size: 16px;
+}
+.sec-menu-a{
+    font-size: 16px;
+    font-weight: bold;
+}
+.sec-menu{
+    font-size: 16px;
+}
+.carousel{
+    margin-left: 6%;
+    margin-right: 6%;
+}
+.navbar-brand{
+    position:relative; top:-15px;
+}
+.nav>li>a{
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+.tab-pane{
+    padding: 8px;
+}

@@ -1,0 +1,19 @@
+{
+  "system":["users"],
+  "plugin":["circolari"],
+  "plugin_menu":{
+    "in_content":[
+      {
+        "title":"Nuova circolare",
+        "icon":"fa-plus",
+        "href":"admin/circolari/new"
+      },
+      {
+        "title":"Gestisci circolari",
+        "icon":"fa-files-o",
+        "href":"admin/circolari"
+      }
+    ],
+    "standalone": []
+  }
+}
