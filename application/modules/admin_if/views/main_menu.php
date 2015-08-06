@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 ?><div class="page-header"><h1><i class="fa fa-th-list"></i> Menu principale</h1></div>
-<div class="btn-group" id="users-actions">
+<div class="btn-group" id="menu-actions">
     <div class="btn-group" role="group">
         <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-plus"></i> Nuova voce principale <span class="caret"></span>
@@ -15,6 +15,9 @@
     <button type="button" class="btn btn-default" id="refresh-menu"><i class="fa fa-refresh"></i> Aggiorna</button>
 </div>
 <br><br>
+<div class="alert alert-danger hidden" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile salvare il menu:</b><br><span id="error-msg"></span></div>
+<div class="alert alert-success hidden" id="success-alert"><i class="fa fa-check"></i> Menu salvato con successo, <b>Aggiornare la pagina</b> per ricaricare le informazioni sullo stato pagine</div>
+<div class="alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Salvataggio del menu...</div>
 <ul class="sortable sortable-main" id="events-cage">
     <?php foreach($main_menu as $menu): ?>
         <li>
@@ -35,8 +38,15 @@
                                 <li>
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <h3 class="panel-title child-voices" data-type="standard">
+                                            <h3 class="panel-title child-voices">
                                                 <i class="fa fa-sort"></i> <span class="f-title"><?=$item['title'] ?></span> <span class="label label-default f-page"><?=$item['page'] ?></span>
+                                                <?php if($item['status']): ?>
+                                                    <?php if($item['status']['redirect']): ?>
+                                                        <i class="fa fa-exchange tooltipped" data-toggle="tooltip" title="Reindirizzamento del contenitore: <i><?=$item['status']['redirect'] ?></i>"></i>
+                                                    <?php endif; ?>
+                                                <?php else: ?>
+                                                    <i class="fa fa-exclamation-triangle tooltipped" data-toggle="tooltip" title="Pagina inesistente"></i>
+                                                <?php endif; ?>
                                                 <a class='remove-child lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-remove'></i></a>
                                                 <a class='edit-child lmb pull-right tooltipped' data-toggle='tooltip' title='Modifica'><i class='fa fa-edit'></i></a>
                                             </h3>
@@ -50,8 +60,15 @@
             <?php else: ?>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title paren-voices" data-type="link">
+                        <h3 class="panel-title parent-voices" data-type="link">
                             <span class="f-title"><?=$menu['title'] ?></span> <span class="label label-default"><span class="f-container"><?=$menu['container']?></span> <i class="fa fa-ellipsis-v"></i> <span class="f-page"><?=$menu['page'] ?></span></span>
+                            <?php if($menu['status']): ?>
+                                <?php if($menu['status']['redirect']): ?>
+                                    <i class="fa fa-exchange tooltipped" data-toggle="tooltip" title="Reindirizzamento del contenitore: <i><?=$menu['status']['redirect'] ?></i>"></i>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <i class="fa fa-exclamation-triangle tooltipped" data-toggle="tooltip" title="Pagina inesistente"></i>
+                            <?php endif; ?>
                             <a class='remove-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-remove'></i></a>
                             <a class='edit-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Modifica'><i class='fa fa-edit'></i></a>
                         </h3>
@@ -65,7 +82,7 @@
 <div id="child-template" class="hidden">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title child-voices" data-type="standard">
+            <h3 class="panel-title child-voices">
                 <i class="fa fa-sort"></i> <span class="f-title"></span> <span class="label label-default f-page"></span>
                 <a class='remove-child lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-remove'></i></a>
                 <a class='edit-child lmb pull-right tooltipped' data-toggle='tooltip' title='Modifica'><i class='fa fa-edit'></i></a>
@@ -94,7 +111,7 @@
 <div id="parent-link-template" class="hidden">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title paren-voices" data-type="link">
+            <h3 class="panel-title parent-voices" data-type="link">
                 <span class="f-title"></span> <span class="label label-default"><span class="f-container"></span> <i class="fa fa-ellipsis-v"></i> <span class="f-page"></span></span>
                 <a class='remove-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-remove'></i></a>
                 <a class='edit-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Modifica'><i class='fa fa-edit'></i></a>
@@ -108,6 +125,8 @@
         <option value="<?=$container ?>">
     <?php endforeach; ?>
 </datalist>
+
+<datalist id="cscope-pages"></datalist>
 
 <div class='modal fade' id='parent-delete-modal' tabindex='-1' role='dialog' aria-labelledby='pardel-modal-label' aria-hidden='true'>
     <div class='modal-dialog'>

@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 ?><div class="page-header"><h1><i class="fa fa-users"></i> Account utente</h1></div>
 <button type="button" class="btn btn-success" id="new-user"><span class="fa fa-plus"></span> Nuovo</button>
 <div class="btn-group hidden" id="users-actions">

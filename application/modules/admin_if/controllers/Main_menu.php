@@ -4,13 +4,41 @@ class Main_menu extends MX_Controller
 {
     function index()
     {
-        //Display users list
+        //Display menu editing GUI
         $this->load->model('menu_handler');
         $this->load->model('page_handler');
         $id = $this->menu_handler->get_main_menu_id();
         $view_data = $this->menu_handler->get_menu_edit_array($id);
         $view_data['containers']=$this->page_handler->get_containers_list();
         $this->load->view('main_menu', $view_data);
+    }
+
+    function get_pages()
+    {
+        $this->load->model('page_handler');
+        $pages = $this->page_handler->get_pages_in_container($this->input->post('container'));
+        //Upload data in CSV fromat, js generates the DOM <option> elements
+        if($pages){
+            echo implode(',', $pages);
+        }
+        else
+        {
+            echo "failed - 500";
+        }
+    }
+
+    function save(){
+        $json = $this->input->post('json');
+        $this->load->model('menu_handler');
+        $result = $this->menu_handler->save($this->menu_handler->get_main_menu_id(), $json);
+        if($result)
+        {
+            echo 'success';
+        }
+        else
+        {
+            echo 'failed - 500';
+        }
     }
 
 }

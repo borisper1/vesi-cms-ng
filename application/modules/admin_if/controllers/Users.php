@@ -43,11 +43,11 @@ class Users extends MX_Controller
         );
         if($result)
         {
-            echo "success";
+            echo 'success';
         }
         else
         {
-            echo "failed - 500";
+            echo 'failed - 500';
         }
     }
 
@@ -57,11 +57,11 @@ class Users extends MX_Controller
         $result = $this->user_handler->delete_users($users);
         if($result)
         {
-            echo "success";
+            echo 'success';
         }
         else
         {
-            echo "failed - 500";
+            echo 'failed - 500';
         }
     }
 
@@ -71,11 +71,11 @@ class Users extends MX_Controller
         $result = $this->user_handler->enable_users($users);
         if($result)
         {
-            echo "success";
+            echo 'success';
         }
         else
         {
-            echo "failed - 500";
+            echo 'failed - 500';
         }
     }
 
@@ -85,11 +85,11 @@ class Users extends MX_Controller
         $result = $this->user_handler->disable_users($users);
         if($result)
         {
-            echo "success";
+            echo 'success';
         }
         else
         {
-            echo "failed - 500";
+            echo 'failed - 500';
         }
     }
 }

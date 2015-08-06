@@ -49,6 +49,7 @@ class Menu_handler extends CI_Model
         return array('main_menu' => $menu, 'class' => $class);
     }
 
+    //WARNING: This function is dependent on model page_handler [function get_page_status()]
     public function get_menu_edit_array($id){
         $query=$this->db->get_where('menus',array('id'=> $id));
         if ($query->num_rows() > 0)
@@ -59,6 +60,7 @@ class Menu_handler extends CI_Model
         {
             return false;
         }
+        $this->load->model('page_handler');
         $structure=json_decode($row->content);
         $submenus=$structure->items;
         $menu=[];
@@ -76,6 +78,7 @@ class Menu_handler extends CI_Model
                     $items_a=[];
                     $items_a['title']=$item->title;
                     $items_a['page']=$item->page;
+                    $items_a['status']=$this->page_handler->get_page_status($submenu->container, $item->page);
                     array_push($submenu_a['items'],$items_a);
                 }
             }
@@ -84,6 +87,7 @@ class Menu_handler extends CI_Model
                 $submenu_a['title']=$submenu->title;
                 $submenu_a['container']=$submenu->container;
                 $submenu_a['page']=$submenu->page;
+                $submenu_a['status']=$this->page_handler->get_page_status($submenu->container, $submenu->page);
             }
             array_push($menu,$submenu_a);
         }
@@ -101,5 +105,59 @@ class Menu_handler extends CI_Model
         {
             return false;
         }
+    }
+
+    function save($id, $json, $container = null, $title = null){
+        $query=$this->db->get_where('menus',array('id'=> $id));
+        if ($query->num_rows() > 0)
+        {
+            $row = $query->row();
+        }
+        else
+        {
+            return false;
+        }
+        $data=array(
+            'title' => $title,
+            'container' => $container,
+            'content' => $json
+        );
+        $this->db->where('id', $id);
+        return $this->db->update('menus', $data);
+    }
+
+    public function get_menu_list()
+    {
+        $this->db->where('class !=', 'main');
+        $query = $this->db->get('menus');
+        $menulist=[];
+        foreach ($query->result() as $row)
+        {
+            $menu=[];
+            $menu['id']=$row->id;
+            $menu['title']=$row->title;
+            $menu['container']=$row->container;
+            $menulist[]=$menu;
+        }
+        return $menulist;
+    }
+
+    public function get_menu_data($id)
+    {
+        $query=$this->db->get_where('menus',array('id'=> $id));
+        if ($query->num_rows() > 0)
+        {
+            $row = $query->row();
+        }
+        else
+        {
+            return false;
+        }
+        $data=array(
+            'title' => $row->title,
+            'container' => $row->container,
+            'class' => $row->class
+        );
+        return $data;
     }
 }

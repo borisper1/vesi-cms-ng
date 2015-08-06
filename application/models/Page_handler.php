@@ -72,4 +72,40 @@ class Page_handler extends CI_Model
             return false;
         }
     }
+
+    public function get_pages_in_container($container)
+    {
+        $this->db->select('name');
+        $this->db->distinct();
+        $query=$this->db->get_where('pages', array('container' =>  $container));
+        $pages=[];
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                array_push($pages,$row->name);
+            }
+            return $pages;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function get_page_status($container, $page)
+    {
+        $query=$this->db->get_where('pages', array('container' =>  $container, 'name' => $page));
+        if ($query->num_rows() > 0)
+        {
+            $row = $query->row();
+            $response=[];
+            $response['redirect'] = $row->container_redirect=='' ? false : $row->container_redirect;
+            return $response;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

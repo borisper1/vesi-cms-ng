@@ -21,7 +21,8 @@ class Page_render extends MX_Controller
             $page='home';
         }
         $base_data=[];
-
+        $GLOBALS['p_container']=$container;
+        $GLOBALS['p_name']=$page;
         $this->load->model('menu_handler');
         //Load the main menu (evaluate whether to make this a HMVC module)
         $id=$this->menu_handler->get_main_menu_id();
@@ -73,7 +74,8 @@ class Page_render extends MX_Controller
 
         $this->load->model('menu_handler');
         //Load the main menu (evaluate whether to make this a HMVC module)
-        $menu_data = $this->menu_handler->get_main_menu_array('','');
+        $id=$this->menu_handler->get_main_menu_id();
+        $menu_data = $this->menu_handler->get_menu_array($id,'','');
         $menu_data['home_active'] = false;
         $base_data['menu']=$this->load->view('frontend/main_menu',$menu_data,true);
 

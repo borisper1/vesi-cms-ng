@@ -33,6 +33,14 @@ class Components extends MX_Controller
         }
     }
 
+    function render_sec_menu($id)
+    {
+        $this->load->model('menu_handler');
+        //Load the main menu (evaluate whether to make this a HMVC module)
+        $menu_data = $this->menu_handler->get_menu_array($id,$GLOBALS['p_container'],$GLOBALS['p_name']);
+        return $this->load->view('frontend/sec_menu',$menu_data,true);
+    }
+
     function render_section($structure)
     {
         $html="";
@@ -41,7 +49,13 @@ class Components extends MX_Controller
             if($element->type==='content')
             {
                 $html.=$this->render_component($element->id);
-            }else{
+            }
+            elseif($element->type==='menu')
+            {
+                $html.=$this->render_sec_menu($element->id);
+            }
+            else
+            {
                 if(in_array($element->type,$this->installed_structures))
                 {
                     $structure_data=[];
