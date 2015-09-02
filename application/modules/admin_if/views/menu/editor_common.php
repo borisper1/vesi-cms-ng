@@ -1,25 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?><div class="page-header"><h1><i class="fa fa-th-list"></i> Menu principale</h1></div>
-<div class="btn-group" id="menu-actions">
-    <div class="btn-group" role="group">
-        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-plus"></i> Nuova voce principale <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a href="#" id="new-parent-dropdown">Menu a tendina</a></li>
-            <li><a href="#" id="new-parent-link">Link semplice</a></li>
-        </ul>
-    </div>
-    <button type="button" class="btn btn-default" id="save-menu"><i class="fa fa-save"></i> Salva</button>
-    <button type="button" class="btn btn-default" id="edit-code"><i class="fa fa-code"></i> Modifica codice</button>
-    <button type="button" class="btn btn-default" id="refresh-menu"><i class="fa fa-refresh"></i> Aggiorna</button>
-</div>
-<br><br>
-<div class="alert alert-danger hidden" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile salvare il menu:</b><br><span id="error-msg"></span></div>
-<div class="alert alert-success hidden" id="success-alert"><i class="fa fa-check"></i> Menu salvato con successo, <b>Aggiornare la pagina</b> per ricaricare le informazioni sullo stato pagine</div>
-<div class="alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Salvataggio del menu...</div>
-<ul class="sortable sortable-main" id="events-cage">
-    <?php foreach($main_menu as $menu): ?>
+?><ul class="sortable sortable-main" id="events-cage">
+    <?php foreach($menu_structure as $menu): ?>
         <li>
             <?php if($menu['type']==='dropdown'): ?>
                 <div class="panel panel-primary">
@@ -122,37 +103,37 @@
 
 <datalist id="containers-list">
     <?php foreach($containers as $container): ?>
-        <option value="<?=$container ?>">
-    <?php endforeach; ?>
+    <option value="<?=$container ?>">
+        <?php endforeach; ?>
 </datalist>
 
 <datalist id="cscope-pages"></datalist>
 
-<div class='modal fade' id='parent-delete-modal' tabindex='-1' role='dialog' aria-labelledby='pardel-modal-label' aria-hidden='true'>
-    <div class='modal-dialog'>
-        <div class='modal-content'>
-            <div class='modal-header'>
-                <h4 class='modal-title' id='pardel-modal-label'>Eliminazione voce principale</h4>
+<div class="modal fade" id="parent-delete-modal" tabindex="-1" role="dialog" aria-labelledby="pardel-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="pardel-modal-label"><i class="fa fa-lg fa-trash"></i> Eliminazione voce principale</h4>
             </div>
-            <div class='modal-body'>
+            <div class="modal-body">
                 Eliminando una voce prinicpale verranno eliminate anche tutte le voci secondarie. Eliminare questa voce?
             </div>
-            <div class='modal-footer'>
-                <button type='button' class='btn btn-default' data-dismiss='modal'>Annulla</button>
-                <button type='button' class='btn btn-danger' id='pardel-modal-confirm' data-dismiss='modal'>Elimina voce prinicipale</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-danger" id="pardel-modal-confirm" data-dismiss="modal"><i class="fa fa-trash"></i> Elimina voce prinicipale</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class='modal fade' id='child-modal' tabindex='-1' role='dialog' aria-labelledby='child-modal-label' aria-hidden='true'>
-    <div class='modal-dialog'>
-        <div class='modal-content'>
-            <div class='modal-header'>
-                <h4 class='modal-title' id='child-modal-label'></h4>
+<div class="modal fade" id="child-modal" tabindex="-1" role="dialog" aria-labelledby="child-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="child-modal-label"></h4>
             </div>
 
-            <div class='modal-body'>
+            <div class="modal-body">
                 <div class="form-group">
                     <label for="i-child-name">Inserire il nome per la voce di menu</label>
                     <input type="text" class="form-control" id="i-child-name" placeholder="Nome">
@@ -163,22 +144,22 @@
                 </div>
             </div>
 
-            <div class='modal-footer'>
-                <button type='button' class='btn btn-default' data-dismiss='modal'>Annulla</button>
-                <button type='button' class='btn btn-success' id='child-modal-confirm' data-dismiss='modal'></button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-success" id="child-modal-confirm" data-dismiss="modal"></button>
             </div>
         </div>
     </div>
 </div>
 
-<div class='modal fade' id='dropdown-modal' tabindex='-1' role='dialog' aria-labelledby='dropdown-modal-label' aria-hidden='true'>
-    <div class='modal-dialog'>
-        <div class='modal-content'>
-            <div class='modal-header'>
-                <h4 class='modal-title' id='dropdown-modal-label'></h4>
+<div class="modal fade" id="dropdown-modal" tabindex="-1" role="dialog" aria-labelledby="dropdown-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="dropdown-modal-label"></h4>
             </div>
 
-            <div class='modal-body'>
+            <div class="modal-body">
                 <div class="form-group">
                     <label for="i-parent-dropdown-name">Inserire il nome per il menu a tendina</label>
                     <input type="text" class="form-control" id="i-parent-dropdown-name" placeholder="Nome">
@@ -189,22 +170,22 @@
                 </div>
             </div>
 
-            <div class='modal-footer'>
-                <button type='button' class='btn btn-default' data-dismiss='modal'>Annulla</button>
-                <button type='button' class='btn btn-success' id='dropdown-modal-confirm' data-dismiss='modal'></button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-success" id="dropdown-modal-confirm" data-dismiss="modal"></button>
             </div>
         </div>
     </div>
 </div>
 
-<div class='modal fade' id='link-modal' tabindex='-1' role='dialog' aria-labelledby='link-modal-label' aria-hidden='true'>
-    <div class='modal-dialog'>
-        <div class='modal-content'>
-            <div class='modal-header'>
-                <h4 class='modal-title' id='link-modal-label'></h4>
+<div class="modal fade" id="link-modal" tabindex="-1" role="dialog" aria-labelledby="link-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="link-modal-label"></h4>
             </div>
 
-            <div class='modal-body'>
+            <div class="modal-body">
                 <div class="form-group">
                     <label for="i-parent-link-name">Inserire il nome per il link</label>
                     <input type="text" class="form-control" id="i-parent-link-name" placeholder="Nome">
@@ -219,11 +200,10 @@
                 </div>
             </div>
 
-            <div class='modal-footer'>
-                <button type='button' class='btn btn-default' data-dismiss='modal'>Annulla</button>
-                <button type='button' class='btn btn-success' id='link-modal-confirm' data-dismiss='modal'></button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-success" id="link-modal-confirm" data-dismiss="modal"></button>
             </div>
         </div>
     </div>
 </div>
-

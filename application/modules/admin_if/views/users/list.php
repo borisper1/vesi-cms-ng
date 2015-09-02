@@ -4,7 +4,7 @@
 <div class="btn-group hidden" id="users-actions">
     <button type="button" class="btn btn-default" id="enable-users"><span class="fa fa-check"></span> Attiva</button>
     <button type="button" class="btn btn-default" id="disable-users"><span class="fa fa-ban"></span> Revoca</button>
-    <button type="button" class="btn btn-danger" id="delete-users"><span class="fa fa-remove"></span> Elimina</button>
+    <button type="button" class="btn btn-danger" id="delete-users"><span class="fa fa-trash"></span> Elimina</button>
 </div>
 <br><br>
 <table class="table table-hover">

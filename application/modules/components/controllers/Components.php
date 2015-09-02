@@ -38,6 +38,7 @@ class Components extends MX_Controller
         $this->load->model('menu_handler');
         //Load the main menu (evaluate whether to make this a HMVC module)
         $menu_data = $this->menu_handler->get_menu_array($id,$GLOBALS['p_container'],$GLOBALS['p_name']);
+        $menu_data = array_merge($menu_data, $this->menu_handler->get_menu_data($id));
         return $this->load->view('frontend/sec_menu',$menu_data,true);
     }
 

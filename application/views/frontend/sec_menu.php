@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><div class="structure_sec-menu" role="navigation">
+    <?php if($display_title): ?>
+        <h3><?=$title ?></h3>
+    <?php endif; ?>
     <ul class="nav nav-pills nav-stacked">
         <?php foreach($main_menu as $menu): ?>
             <?php if($menu['type']==='dropdown'): ?>

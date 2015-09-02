@@ -9,9 +9,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         <title><?php echo $title ?></title>
 
-        <link href="<?=$urls['admin_bootstrap.css']?>" rel="stylesheet">
-        <link href="<?=$urls['bootstrap-switch.css']?>" rel="stylesheet">
-        <link href="<?=$urls['fontawesome']?>" rel="stylesheet">
+        <link href="<?=base_url('assets/third_party/bootstrap/css/bootstrap.min.css')?>" rel="stylesheet">
+        <link href="<?=base_url('assets/third_party/bootstrap-switch/bootstrap-switch.min.css')?>" rel="stylesheet">
+        <link href="<?=base_url('assets/third_party/fontawesome/css/font-awesome.min.css')?>" rel="stylesheet">
+        <link href="<?=base_url('assets/third_party/bootstrap-select/css/bootstrap-select.min.css')?>" rel="stylesheet">
         <link href="<?=base_url('assets/administration/main.css')?>" rel="stylesheet">
 
         <?php foreach($urls['aux_css_loader'] as $aux_url): ?>
@@ -29,9 +30,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         <script src="<?=$urls['jquery']?>"></script>
         <script>window.jQuery || document.write('<script src="<?=$urls['jquery_local']?>">\x3C/script>')</script>
-        <script src="<?=$urls['jquery-ui.js']?>"></script>
-        <script src="<?=$urls['bootstrap.js']?>"></script>
-        <script src="<?=$urls['bootstrap-switch.js']?>"></script>
+        <script src="<?=base_url('assets/third_party/jquery-ui/jquery-ui.min.js')?>"></script>
+        <script src="<?=base_url('assets/third_party/bootstrap/js/bootstrap.min.js')?>"></script>
+        <script src="<?=base_url('assets/third_party/bootstrap-switch/bootstrap-switch.min.js')?>"></script>
+        <script src="<?=base_url('assets/third_party/bootstrap-select/js/bootstrap-select.min.js')?>"></script>
+        <script src="<?=base_url('assets/third_party/bootstrap-select/js/i18n/defaults-it_IT.min.js')?>"></script>
         <script src="<?=base_url('assets/administration/main.js')?>"></script>
         <?php foreach($urls['aux_js_loader'] as $aux_url): ?>
             <script src="<?=$aux_url?>"></script>

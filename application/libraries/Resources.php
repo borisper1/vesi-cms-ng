@@ -2,7 +2,7 @@
 
 class Resources
 {
-    protected $CI;
+    protected $CI, $add_js_cache=[];
     public $use_cdn=[], $urls=[], $fallback_urls=[], $legacy_support;
 
     public function __construct()
@@ -22,29 +22,20 @@ class Resources
         //Compute fallback URLs to be used when needed (and loading detection is available (eg. only js files).
         $this->fallback_urls['jquery']=base_url($this->legacy_support ? $this->CI->config->item('jquery1.x_path') : $this->CI->config->item('jquery2.x_path'));
         $this->fallback_urls['bootstrap.js']=base_url($this->CI->config->item('bootstrap.js_path'));
-        //Additional Components with no CDN support
-        $this->urls['html5shiv']=base_url($this->CI->config->item('html5shiv_path'));
-        $this->urls['respond.js']=base_url($this->CI->config->item('respond.js_path'));
-        $this->urls['frontend_bootstrap.css']=base_url($this->CI->config->item('frontend_bootstrap_css_path'));
-        $this->urls['bootstrap.css']=base_url($this->CI->config->item('bootstrap_css_path'));
-        $this->urls['bootstrap_menu_hover']=base_url($this->CI->config->item('bootstrap_menu_hover_path'));
     }
 
     public function get_administration_urls()
     {
         $urls=[];
-        $urls['jquery-ui.css']=base_url($this->CI->config->item('jqueryui_css_path'));
-        $urls['admin_bootstrap.css']=base_url($this->CI->config->item('bootstrap_css_path'));
-        $urls['fontawesome']=base_url($this->CI->config->item('fontawesome_path'));
         $urls['jquery']=$this->CI->db_config->get('resources','jquery2.x_cdnurl');
         $urls['jquery_local']=base_url($this->CI->config->item('jquery2.x_path'));
-        $urls['jquery-ui.js']=base_url($this->CI->config->item('jqueryui_path'));
-        $urls['bootstrap.js']=base_url($this->CI->config->item('bootstrap.js_path'));
-        $urls['bootstrap-switch.js']= base_url($this->CI->config->item('bootstrap_switch.js_path'));
-        $urls['bootstrap-switch.css']= base_url($this->CI->config->item('bootstrap_switch.css_path'));
-        $urls['aux_js_loader']=[];
+        $urls['aux_js_loader']=$this->add_js_cache;
         $urls['aux_css_loader']=[];
         return $urls;
     }
 
+    public function load_aux_js_file($path)
+    {
+        $this->add_js_cache[]=base_url($path);
+    }
 }

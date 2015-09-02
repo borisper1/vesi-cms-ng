@@ -14,6 +14,10 @@ class Page_handler extends CI_Model
             return false;
         }
         $page = new stdClass();
+        $page->id = $id;
+        $page->container = $row->container;
+        $page->page_name = $row->name;
+
         $page->title = $row->title;
         $descriptor=json_decode($row->code);
         $page->layout=$descriptor->layout;
@@ -22,7 +26,6 @@ class Page_handler extends CI_Model
         {
             $page->sidebar_elements = $descriptor->sidebar_elements;
         }
-        $page->container_class= $this->db_config->get('style','use_fluid_containers') ? 'container-fluid' : 'container';
         return $page;
     }
 
@@ -76,7 +79,6 @@ class Page_handler extends CI_Model
     public function get_pages_in_container($container)
     {
         $this->db->select('name');
-        $this->db->distinct();
         $query=$this->db->get_where('pages', array('container' =>  $container));
         $pages=[];
         if ($query->num_rows() > 0)

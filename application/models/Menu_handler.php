@@ -91,7 +91,7 @@ class Menu_handler extends CI_Model
             }
             array_push($menu,$submenu_a);
         }
-        return array('main_menu' => $menu);
+        return $menu;
     }
 
     function get_main_menu_id(){
@@ -107,23 +107,24 @@ class Menu_handler extends CI_Model
         }
     }
 
-    function save($id, $json, $container = null, $title = null){
+    function save($id, $json, $title = null, $display_title = null){
+        $data=array(
+            'title' => $title,
+            'content' => $json,
+            'display_title' => $display_title
+        );
         $query=$this->db->get_where('menus',array('id'=> $id));
         if ($query->num_rows() > 0)
         {
-            $row = $query->row();
+            $this->db->where('id', $id);
+            return $this->db->update('menus', $data);
         }
         else
         {
-            return false;
+            $data['class']='secondary';
+            $data['id']=$id;
+            return $this->db->insert('menus', $data);
         }
-        $data=array(
-            'title' => $title,
-            'container' => $container,
-            'content' => $json
-        );
-        $this->db->where('id', $id);
-        return $this->db->update('menus', $data);
     }
 
     public function get_menu_list()
@@ -136,7 +137,7 @@ class Menu_handler extends CI_Model
             $menu=[];
             $menu['id']=$row->id;
             $menu['title']=$row->title;
-            $menu['container']=$row->container;
+            $menu['display_title']=$row->display_title;
             $menulist[]=$menu;
         }
         return $menulist;
@@ -154,10 +155,24 @@ class Menu_handler extends CI_Model
             return false;
         }
         $data=array(
+            'id' => $id,
             'title' => $row->title,
-            'container' => $row->container,
-            'class' => $row->class
+            'class' => $row->class,
+            'display_title' => $row->display_title
         );
         return $data;
+    }
+
+    public function delete($id)
+    {
+        $query=$this->db->get_where('menus',array('id'=> $id, 'class' => 'secondary'));
+        if ($query->num_rows() > 0)
+        {
+            return $this->db->delete('menus', array('id' => $id));
+        }
+        else
+        {
+            return false;
+        }
     }
 }

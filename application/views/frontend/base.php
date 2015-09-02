@@ -9,14 +9,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         <title><?php echo $title ?></title>
 
-        <link href="<?=$urls['frontend_bootstrap.css']?>" rel="stylesheet">
+        <link href="<?=base_url('assets/third_party/bootstrap/css/bootstrap-custom.min.css')?>" rel="stylesheet">
         <link href="<?=$urls['fontawesome']?>" rel="stylesheet">
         <link href="<?=base_url('assets/frontend-main.css')?>" rel="stylesheet">
 
         <?php if($legacy_support): ?>
             <!--[if lt IE 9]>
-            <script src="<?=$urls['html5shiv']?>"></script>
-            <script src="<?=$urls['respond.js']?>"></script>
+            <script src="<?=base_url('assets/third_party/legacy-support/html5shiv.min.js')?>"></script>
+            <script src="<?=base_url('assets/third_party/legacy-support/respond.min.js')?>"></script>
             <![endif]-->
         <?php endif; ?>
     </head>
@@ -34,7 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <script>(typeof $().emulateTransitionEnd == 'function') || document.write('<script src="<?=$fallback_urls['bootstrap.js']?>">\x3C/script>')</script>
         <?php endif; ?>
         <?php if($hover_menus): ?>
-            <script src="<?=$urls['bootstrap_menu_hover']?>"></script>
+            <script src="<?=base_url('assets/third_party/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js')?>"></script>
         <?php endif; ?>
         <script src="<?=base_url('assets/frontend-main.js')?>"></script>
     </body>

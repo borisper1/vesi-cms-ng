@@ -19,9 +19,10 @@ $(document).ready(function() {
         }
     });
 
+    $('.selectpicker').selectpicker();
 });
 
-$(function() {
+$(document).ready(function() {
     $("body").tooltip({
         html: true,
         selector: ".tooltipped"

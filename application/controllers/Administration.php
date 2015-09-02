@@ -25,19 +25,17 @@ class Administration extends MX_Controller
     {
         $this->redirect_if_no_login();
         $this->load->model('user_handler');
-        $menu_data=[];
         $menu_data['user_fname']=$this->user_handler->get_admin_full_name();
-        $base_data=[];
         $base_data['menu']= $this->load->view('administration/main_menu',$menu_data , TRUE);
 
         $base_data['content'] = Modules::run('admin_if/'.$interface.'/'.$method,$arguments);
 
         $base_data['system_dom'] = $this->load->view('administration/system_reauth',null , TRUE);
 
-        $base_data['title']='Dashboard - Vesi-CMS'; //TODO: Aggiornare il titolo in base all'interfaccia utilizzata
+        $base_data['title']='Amministrazione - Vesi-CMS';
         $base_data['urls']=$this->resources->get_administration_urls();
         //Load js file (same name as interface):
-        $base_data['urls']['aux_js_loader'][0]=base_url('assets/administration/interfaces/'.$interface.'.js');
+        $base_data['urls']['aux_js_loader'][]=base_url('assets/administration/interfaces/'.$interface.'.js');
         $this->load->view('administration/base', $base_data);
     }
 

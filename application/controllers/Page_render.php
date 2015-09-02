@@ -60,7 +60,7 @@ class Page_render extends MX_Controller
         $page_view=str_replace('-','_',$page_data->layout);
         $data=[];
         $data['title']=$page_data->title;
-        $data['container_class']=$page_data->container_class;
+        $data['container_class']=$this->db_config->get('style','use_fluid_containers') ? 'container-fluid' : 'container';
         $data['content']=Modules::run('components/render_section',$page_data->elements);
         if(isset($page_data->sidebar_elements))
         {
