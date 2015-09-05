@@ -7,6 +7,8 @@ $(document).ready(function() {
         $('#edit-attributes-modal').modal();
     }
 
+    $('#menu-display-title').bootstrapSwitch();
+
     var CurrentId;
 
     $('#new-menu').click(function(){

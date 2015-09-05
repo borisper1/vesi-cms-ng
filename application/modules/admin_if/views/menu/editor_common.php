@@ -109,7 +109,7 @@
 
 <datalist id="cscope-pages"></datalist>
 
-<div class="modal fade" id="parent-delete-modal" tabindex="-1" role="dialog" aria-labelledby="pardel-modal-label" aria-hidden="true">
+<div class="modal fade" id="parent-delete-modal" tabindex="-1" role="dialog" aria-labelledby="pardel-modal-label" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -126,7 +126,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="child-modal" tabindex="-1" role="dialog" aria-labelledby="child-modal-label" aria-hidden="true">
+<div class="modal fade" id="child-modal" tabindex="-1" role="dialog" aria-labelledby="child-modal-label" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -152,7 +152,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="dropdown-modal" tabindex="-1" role="dialog" aria-labelledby="dropdown-modal-label" aria-hidden="true">
+<div class="modal fade" id="dropdown-modal" tabindex="-1" role="dialog" aria-labelledby="dropdown-modal-label" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -178,7 +178,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="link-modal" tabindex="-1" role="dialog" aria-labelledby="link-modal-label" aria-hidden="true">
+<div class="modal fade" id="link-modal" tabindex="-1" role="dialog" aria-labelledby="link-modal-label" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

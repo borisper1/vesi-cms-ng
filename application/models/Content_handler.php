@@ -30,4 +30,33 @@ class Content_handler extends CI_Model
         }
         return $data;
     }
+
+    function are_orphans($id)
+    {
+        //WARNING: Can't use FULLTEXT functionality, need compatibility with Inno DB on MySQL 5.5 (change when 5.6+ becomes available on server)
+        //This is compatibility code that does a single id at a time, add enhanced code when performance optimizations are added
+        $output=[];
+        foreach($id as $this_id)
+        {
+            //May produce out of sync error (will indicate it is an orphan even if it has just been added in the page via js (must use js checking for this)
+            $this->db->like('code', $this_id);
+            $query = $this->db->get('pages');
+            if($query->num_rows() <= 1)
+            {
+                $this->db->select('id');
+                $query = $this->db->get_where('contents',array('id'=>$this_id));
+                if($query->num_rows() > 0)
+                {
+                    $output[]=$this_id;
+                }
+            }
+        }
+        return $output;
+    }
+
+    function delete_contents($id_array)
+    {
+        $this->db->where_in('id', $id_array);
+        return $this->db->delete('contents');
+    }
 }

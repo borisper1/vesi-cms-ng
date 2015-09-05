@@ -2,6 +2,10 @@
     //TODO: remove hack for in-folder execution
     window.vbcknd={};
     window.vbcknd.base_url = location.protocol+'//'+location.host+'/vesi-cms-ng/';
+
+    window.vbcknd.auto_name_format = function(title){
+        return title.replace(/[^A-Za-z0-9 ]+/,'').replace(/\s+/g,'-').toLowerCase().substr(0,40);
+    }
 }();
 
 

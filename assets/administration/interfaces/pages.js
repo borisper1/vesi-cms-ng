@@ -64,7 +64,7 @@ $(document).ready(function() {
 
     $('#generate-page-name').click(function(){
         var title = $('#i-page-title').val();
-        //TODO: Add name processing from migrate-ng
+        $('#i-page-name').val(window.vbcknd.auto_name_format(title));
     });
 
     $('#i-page-name').on('input',function(){
@@ -114,7 +114,95 @@ $(document).ready(function() {
         $('#view-modal-title').html('<i class="fa fa-plus"></i> Nuova scheda/pannello');
         $('#view-modal-confirm').html('<i class="fa fa-bolt"></i> Crea scheda/pannello');
         $('#view-modal').modal();
+    }).on('click','.remove-content',function(){
+        CurrentItem=$(this).closest('.content-symbol');
+        var id = CurrentItem.find('.f-id').text();
+        $("#unlink-modal-wait").removeClass('hidden');
+        $("#unlink-modal-show, #unlink-modal-toolbar").addClass('hidden');
+        $('#unlink-modal').modal();
+        $.post(window.vbcknd.base_url+'ajax/admin/contents/check_orphans','id_string='+id, DrawUnlinkSingleContent);
+    }).on('click','.remove-view, .remove-block',function(){
+        CurrentItem=$(this).closest('.structure-view, .structure-block');
+        //Quickly compute all linked contents
+        var array=[];
+        CurrentItem.find('.content-symbol').find('.f-id').each(function(){
+            array.push($(this).text())
+        });
+        //Request orphans for these elements
+        $("#structure-deletion-modal").modal();
+        $("#structure-deletion-modal-wait").removeClass('hidden');
+        $("#structure-deletion-modal-show, #structure-deletion-modal-toolbar, #structure-deletion-modal-orphans").addClass('hidden');
+        $.post(window.vbcknd.base_url+'ajax/admin/contents/check_orphans','id_string='+array.join(), DrawStructureRemoval);
+    }).on('click','.edit-view',function(){
+        CurrentItem=$(this).closest('.structure-view');
+        CurrentMode='edit';
+        $('#i-view-id').val(CurrentItem.find(".f-view-id:first").text());
+        $('#i-view-title').val(CurrentItem.find(".f-view-title:first").text());
+        $('#view-modal-title').html('<i class="fa fa-pencil"></i> Modifica scheda/pannello');
+        $('#view-modal-confirm').html('<i class="fa fa-bolt"></i> Modifica scheda/pannello');
+        $('#view-modal').modal();
     });
+
+
+    function DrawStructureRemoval(data){
+        $("#structure-deletion-modal-wait").addClass('hidden');
+        $("#structure-deletion-modal-show, #structure-deletion-modal-toolbar").removeClass('hidden');
+        if(data!=='false'){
+            $("#structure-deletion-modal-orphans").removeClass('hidden');
+            $('#structure-deletion-modal-orphan-content').empty();
+            var array = data.split(',');
+            $.each(array, function(i, id){
+                var object = $(".f-id:contains('"+id+"')").closest(".content-symbol");
+                var type = object.find(".f-type").text();
+                var preview = object.find(".f-preview").text();
+                var html = '<tr><td><input type="checkbox" class="orphans-selector" value="'+id+'"> '+id+'</td><td><span class="label label-info">'+type+'</span></td><td>'+preview+'</td></tr>';
+                $('#structure-deletion-modal-orphan-content').append(html);
+            })
+        }
+    }
+
+    $("#structure-deletion-modal-confirm").click(function(){
+        CurrentItem.remove();
+        var object = $(".orphans-selector:checked");
+        if(object.length>0){
+            var id_array=[];
+            object.each(function(){
+                id_array.push($(this).val());
+            });
+            $('.content-alert').addClass('hidden');
+            $.post(window.vbcknd.base_url+'ajax/admin/contents/delete_multiple','id_string='+id_array.join(','), DeleteContents);
+            $('#content-deletion-spinner').removeClass('hidden');
+        }
+    });
+
+    function DrawUnlinkSingleContent(data){
+        if(data==='false'){
+            $('#unlink-modal').modal('hidden');
+            CurrentItem.remove();
+        }else{
+            $("#unlink-modal-wait").addClass('hidden');
+            $("#unlink-modal-show, #unlink-modal-toolbar").removeClass('hidden');
+        }
+    }
+
+    $('#unlink-modal-confirm').click(function(){
+        var id = CurrentItem.find('.f-id').text();
+        CurrentItem.remove();
+        if($('#unlink-modal-delete-select').prop('checked')){
+            $('.content-alert').addClass('hidden');
+            $.post(window.vbcknd.base_url+'ajax/admin/contents/delete_multiple','id_string='+id, DeleteContents);
+            $('#content-deletion-spinner').removeClass('hidden');
+        }
+    });
+
+    function DeleteContents(data){
+        $('.content-alert').addClass('hidden');
+        if(data==='success'){
+            $('#content-deletion-success').removeClass('hidden');
+        }else{
+            $('#content-deletion-error').removeClass('hidden');
+        }
+    }
 
     function AddNewBlock(data){
         if(data!=='failed'){
@@ -122,7 +210,7 @@ $(document).ready(function() {
         }
     }
 
-    $('#view-modal-confirm').click(function(){9
+    $('#view-modal-confirm').click(function(){
         var id = $('#i-view-id');
         var title = $('#i-view-title');
         ClearAllValidationErrors();
@@ -133,8 +221,14 @@ $(document).ready(function() {
         if(CurrentMode==='new'){
             $.post(window.vbcknd.base_url+'ajax/admin/pages/get_view_template', 'title='+encodeURIComponent(title.val())+'&id='+id.val(), AddNewView);
         }else{
-
+            CurrentItem.find(".f-view-id:first").text(id.val());
+            CurrentItem.find(".f-view-title:first").text(title.val());
         }
+    });
+
+    $('#generate-view-id').click(function(){
+        var title = $('#i-view-title').val();
+        $('#i-view-id').val(window.vbcknd.auto_name_format(title));
     });
 
     function AddNewView(data){

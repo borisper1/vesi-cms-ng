@@ -98,7 +98,6 @@ class Pages extends MX_Controller
         {
             echo 'failed';
         }
-
     }
 
     function get_block_template(){
@@ -114,4 +113,8 @@ class Pages extends MX_Controller
         }
     }
 
+    private function auto_name_format($title)
+    {
+
+    }
 }

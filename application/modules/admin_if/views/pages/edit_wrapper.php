@@ -21,13 +21,23 @@
 <div class="alert alert-success hidden" id="success-alert"><i class="fa fa-check"></i> Pagina salvata con successo, <b>Premere su <i>Aggiorna</i></b> per ricaricare le informazioni sullo stato contenuti</div>
 <div class="alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Salvataggio della pagina...</div>
 
+<div class="alert alert-danger alert-dismissable hidden content-alert" id="content-deletion-error">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+    <i class="fa fa-exclamation-circle"></i> <b>Impossibile eliminare i contenuti:</b><br> I contenuti sono stati dissociati, ma non è stato possible eliminare alcuni contenuti. Questi contenuti sono adesso orfani.
+</div>
+<div class="alert alert-success alert-dismissable hidden content-alert" id="content-deletion-success">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+    <i class="fa fa-check"></i> Contenuti eliminati con successo
+</div>
+<div class="alert alert-info hidden content-alert" id="content-deletion-spinner"><i class="fa fa-refresh fa-spin"></i> Eliminazione dei contenuti selezionati...</div>
+
 <datalist id="containers-list">
     <?php foreach($containers as $container): ?>
     <option value="<?=$container ?>">
         <?php endforeach; ?>
 </datalist>
 
-<div class="modal fade" id="edit-attributes-modal">
+<div class="modal fade" id="edit-attributes-modal" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -74,7 +84,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="view-modal">
+<div class="modal fade" id="view-modal" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -100,6 +110,74 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
                 <button type="button" class="btn btn-success" id="view-modal-confirm"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="unlink-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="view-modal-title">Dissocia elemento</h4>
+            </div>
+            <div class="modal-body">
+                <div id="unlink-modal-wait">
+                    <p>Caricamento informazioni albero contenuti. Attendere...</p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped active" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div id="unlink-modal-show" class="hidden">
+                    <p>Dissociando questo contenuto esso rimarrà orfano (non è associato a nessun'altra pagina).</p>
+                    <p>Selezionare la casella di controllo qui sotto per eliminare definitivamente questo contenuto</p>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="unlink-modal-delete-select"> Elimina definitivamente questo contenuto
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer hidden" id="unlink-modal-toolbar">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-danger" id="unlink-modal-confirm" data-dismiss="modal"><i class="fa fa-unlink"></i> Dissocia contenuto</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="structure-deletion-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="view-modal-title">Elimina elemento struttura</h4>
+            </div>
+            <div class="modal-body">
+                <div id="structure-deletion-modal-wait">
+                    <p>Caricamento informazioni albero contenuti/strutture. Attendere...</p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped active" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div id="structure-deletion-modal-show" class="hidden">
+                    <p>Questo elemento struttura verrà eliminato definitivamente, inoltre tutti i contenuti della struttura verranno dissociati
+                    <br>Eliminare questa struttura?</p>
+                </div>
+                <div id="structure-deletion-modal-orphans" class="hidden">
+                    <p>Eliminando questa struttura i seguenti contenuti rimarranno orfani (non sono associati a nessun'altra pagina). Selezionare i contenuti da eliminare definitivamente.</p>
+                    <table class="table">
+                        <thead><tr>
+                            <th>Id</th>
+                            <th>Tipo</th>
+                            <th>Contenuto</th>
+                        </tr></thead>
+                        <tbody id="structure-deletion-modal-orphan-content"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer hidden" id="structure-deletion-modal-toolbar">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-danger" id="structure-deletion-modal-confirm" data-dismiss="modal"><i class="fa fa-trash"></i> Elimina struttura</button>
             </div>
         </div>
     </div>

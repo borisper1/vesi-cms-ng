@@ -24,7 +24,7 @@
 <br>
 <span id="is-new" class="hidden"><?=$is_new ? 'true' : 'false' ?></span>
 
-<div class="modal fade" id="edit-attributes-modal">
+<div class="modal fade" id="edit-attributes-modal" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -36,9 +36,9 @@
                     <label for="i-menu-title">Inserire il titolo del menu</label>
                     <input type="text" class="form-control" id="i-menu-title" placeholder="Titolo">
                 </div>
-                <div class="checkbox">
+                <div class="checkbox toggle">
                     <label>
-                        <input type="checkbox" id="menu-display-title" <?=$display_title >= 1 ? 'checked' : '' ?>> Mostra il titolo
+                        <input type="checkbox" id="menu-display-title" <?=$display_title >= 1 ? 'checked' : '' ?>> &nbsp;Mostra il titolo
                     </label>
                 </div>
             </div>
