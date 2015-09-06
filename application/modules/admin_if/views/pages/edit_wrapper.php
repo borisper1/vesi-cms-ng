@@ -119,7 +119,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="view-modal-title">Dissocia elemento</h4>
+                <h4 class="modal-title" id="view-modal-title"><i class="fa fa-unlink"></i> Dissocia elemento</h4>
             </div>
             <div class="modal-body">
                 <div id="unlink-modal-wait">
@@ -150,7 +150,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="view-modal-title">Elimina elemento struttura</h4>
+                <h4 class="modal-title" id="view-modal-title"><i class="fa fa-trash"></i> Elimina elemento struttura</h4>
             </div>
             <div class="modal-body">
                 <div id="structure-deletion-modal-wait">
@@ -178,6 +178,23 @@
             <div class="modal-footer hidden" id="structure-deletion-modal-toolbar">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
                 <button type="button" class="btn btn-danger" id="structure-deletion-modal-confirm" data-dismiss="modal"><i class="fa fa-trash"></i> Elimina struttura</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="link-content-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="view-modal-title"><i class="fa fa-link"></i> Associa contenuto esistente</h4>
+            </div>
+            <div class="modal-body">
+                <!--- Content selector text w/ datalist-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-danger" id="unlink-modal-confirm" data-dismiss="modal"><i class="fa fa-link"></i> Associa contenuto</button>
             </div>
         </div>
     </div>
