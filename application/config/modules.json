@@ -1,5 +1,7 @@
 {
   "components": ["html-text","html-field","address-view","carousel","file-lister","link","modal","pdf-view","popover"],
   "structures":["tabs-block","collapse-block","generic-box"],
+  "blocks_editor":["tabs-block","collapse-block"],
+  "single_view_editor":["generic-box"],
   "plugins":[]
 }

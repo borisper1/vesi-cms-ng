@@ -3,16 +3,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pages extends MX_Controller
 {
+    protected $modules;
 
     function index()
     {
-        //Display users list
         $this->load->model('page_handler');
         $this->load->view('pages/list_wrapper');
     }
 
     function edit($id)
     {
+        $this->load->model('page_handler');
+        $this->load->model('content_handler');
+        //Load installed modules / editor directives file
+        $this->modules=json_decode(file_get_contents(APPPATH."config/modules.json"));
         if($id=='new')
         {
 
@@ -20,7 +24,6 @@ class Pages extends MX_Controller
         }
         else
         {
-            $this->load->model('page_handler');
             $object = $this->page_handler->get_page_obj($id);
             $arrayObject = new ArrayObject($object);
             $data_array = $arrayObject->getArrayCopy();
@@ -34,6 +37,7 @@ class Pages extends MX_Controller
             }
             $data_array['is_new']=false;
         }
+        $data_array['contents_list']=$this->content_handler->get_contents_list();
         $data_array['containers']=$this->page_handler->get_containers_list();
         $this->load->view('pages/edit_wrapper', $data_array);
     }
@@ -43,17 +47,25 @@ class Pages extends MX_Controller
         $rendered_html="";
         foreach($elements as $element)
         {
-            switch($element->type)
+            if($element->type==='content')
             {
-                case "content":
-                    $rendered_html.= $this->draw_content($element->id);
-                    break;
-                case "tabs-block":
-                case "collapse-block":
-                    $block_array['type']=$element->type;
-                    $block_array['views_rendered'] = $this->draw_views($element->views);
-                    $rendered_html.= $this->load->view('pages/structure_block', $block_array, true);
-                    break;
+                $rendered_html.= $this->draw_content($element->id);
+            }
+            elseif(in_array($element->type, $this->modules->blocks_editor))
+            {
+                $block_array['type']=$element->type;
+                $block_array['views_rendered'] = $this->draw_views($element->views);
+                $rendered_html.= $this->load->view('pages/structure_block', $block_array, true);
+            }
+            elseif(in_array($element->type, $this->modules->single_view_editor))
+            {
+                //SINGLE VIEW COMPONENTS
+                $view_array['type']=$element->type;
+                $view_array['class']=$element->class;
+                $view_array['title']=$element->views[0]->title;
+                $view_array['id']=$element->views[0]->id;
+                $view_array['items_rendered']=$this->generate_tree($element->views[0]->elements);
+                $rendered_html.= $this->load->view('pages/structure_single_view', $view_array, true);
             }
         }
         return $rendered_html;
@@ -100,6 +112,22 @@ class Pages extends MX_Controller
         }
     }
 
+    function get_single_view_template(){
+        $view_array['title'] = $this->input->post('title');
+        $view_array ['id'] = $this->input->post('id');
+        $view_array['type']=$this->input->post('type');
+        $view_array['class']=$this->input->post('class');
+        $view_array['items_rendered']='';
+        if(preg_match('/^[a-z0-9-]+$/', $view_array['id']))
+        {
+            $this->load->view('pages/structure_single_view', $view_array);
+        }
+        else
+        {
+            echo 'failed';
+        }
+    }
+
     function get_block_template(){
         $block_array['type']=$this->input->post('type');
         $block_array['views_rendered'] = '';
@@ -113,8 +141,22 @@ class Pages extends MX_Controller
         }
     }
 
-    private function auto_name_format($title)
+    function save()
     {
-
+        $id = $this->input->post('id');
+        $title = $this->input->post('title');
+        $name = $this->input->post('name');
+        $container = $this->input->post('container');
+        $json = $this->input->post('json');
+        $this->load->model('page_handler');
+        $result = $this->page_handler->save($id, $name, $container, $title, $json);
+        if($result)
+        {
+            echo 'success';
+        }
+        else
+        {
+            echo 'failed - 500';
+        }
     }
 }

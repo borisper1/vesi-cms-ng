@@ -6,9 +6,7 @@ class Contents extends MX_Controller
 
     function index()
     {
-        //Display users list
-        $this->load->model('page_handler');
-        $this->load->view('pages/list_wrapper');
+
     }
 
     function check_orphans()

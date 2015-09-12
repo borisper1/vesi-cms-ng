@@ -59,4 +59,32 @@ class Content_handler extends CI_Model
         $this->db->where_in('id', $id_array);
         return $this->db->delete('contents');
     }
+
+    function get_contents_list()
+    {;
+        $query = $this->db->get('contents');
+        $contents=[];
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $content['id'] = $row->id;
+                $content['type'] = $row->type;
+                if($row->type !=='html-field')
+                {
+                    $content['preview']=$row->displayname!='' ? $row->displayname : substr(strip_tags($row->content), 0, 50).'&hellip;';
+                }
+                else
+                {
+                    $content['preview']=substr(htmlspecialchars($row->content), 0, 50).'...';
+                }
+                array_push($contents, $content);
+            }
+            return $contents;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

@@ -18,23 +18,37 @@
 <br>
 
 <div class="alert alert-danger hidden" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile salvare la pagina:</b><br><span id="error-msg"></span></div>
-<div class="alert alert-success hidden" id="success-alert"><i class="fa fa-check"></i> Pagina salvata con successo, <b>Premere su <i>Aggiorna</i></b> per ricaricare le informazioni sullo stato contenuti</div>
+<div class="alert alert-success alert-dismissable  hidden" id="success-alert">
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+    <i class="fa fa-check"></i> Pagina salvata con successo, <b>Premere su <i>Aggiorna</i></b> per ricaricare le informazioni sullo stato contenuti
+</div>
 <div class="alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Salvataggio della pagina...</div>
 
 <div class="alert alert-danger alert-dismissable hidden content-alert" id="content-deletion-error">
-    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-exclamation-circle"></i> <b>Impossibile eliminare i contenuti:</b><br> I contenuti sono stati dissociati, ma non è stato possible eliminare alcuni contenuti. Questi contenuti sono adesso orfani.
 </div>
 <div class="alert alert-success alert-dismissable hidden content-alert" id="content-deletion-success">
-    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-check"></i> Contenuti eliminati con successo
 </div>
 <div class="alert alert-info hidden content-alert" id="content-deletion-spinner"><i class="fa fa-refresh fa-spin"></i> Eliminazione dei contenuti selezionati...</div>
+<div class="alert alert-info hidden content-alert" id="content-linking-spinner"><i class="fa fa-refresh fa-spin"></i> Aggiunta del contenuto in corso...</div>
+<div class="alert alert-danger alert-dismissable hidden content-alert" id="content-linking-error">
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+    <i class="fa fa-exclamation-circle"></i> <b>Impossibile aggiungere il contenuto:</b><br> Il server non risponde alla richiesta.
+</div>
 
 <datalist id="containers-list">
     <?php foreach($containers as $container): ?>
-    <option value="<?=$container ?>">
-        <?php endforeach; ?>
+        <option value="<?=$container ?>"></option>
+    <?php endforeach; ?>
+</datalist>
+
+<datalist id="contents-list">
+    <?php foreach($contents_list as $content_element): ?>
+        <option value="<?=$content_element['id'] ?>"><?=$content_element['preview'] ?> [<?=$content_element['type'] ?>] [<?=$content_element['id'] ?>]</option>
+    <?php endforeach; ?>
 </datalist>
 
 <div class="modal fade" id="edit-attributes-modal" data-backdrop="static">
@@ -105,6 +119,17 @@
                         </span>
                     </div>
                     <span class="help-block">Può contenere solo lettere minuscole (non accentate), numeri e trattini <kbd>-</kbd></span>
+                </div>
+                <div id="view-modal-class-selector-ui" class="hidden form-group">
+                    <label class="control-label" for="i-sview-class">Scegliere la classe da applicare al modulo</label>
+                    <select class="selectpicker form-control" id="i-sview-class">
+                        <option value="panel-primary">[panel-primary] Elemento in primo piano (colore primario)</option>
+                        <option value="panel-default">[panel-default] Elemento in secondo piano</option>
+                        <option value="panel-info">[panel-info] Stile informazione (azzurro)</option>
+                        <option value="panel-success">[panel-success] Stile successo (verde)</option>
+                        <option value="panel-warning">[panel-warning] Stile avviso (arancio)</option>
+                        <option value="panel-danger">[panel-primary] Stile pericolo (rosso)</option>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -190,11 +215,14 @@
                 <h4 class="modal-title" id="view-modal-title"><i class="fa fa-link"></i> Associa contenuto esistente</h4>
             </div>
             <div class="modal-body">
-                <!--- Content selector text w/ datalist-->
+                <div class="form-group">
+                    <label class="control-label" for="i-link-content-id">Inserire l'id del contenuto da associare</label>
+                    <input type="text" class="form-control" id="i-link-content-id" placeholder="Id" list="contents-list">
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
-                <button type="button" class="btn btn-danger" id="unlink-modal-confirm" data-dismiss="modal"><i class="fa fa-link"></i> Associa contenuto</button>
+                <button type="button" class="btn btn-success" id="link-content-modal-confirm" data-dismiss="modal"><i class="fa fa-link"></i> Associa contenuto</button>
             </div>
         </div>
     </div>
@@ -214,7 +242,7 @@
                     <li><a href="#" class="link-standard-content"><i class="fa fa-fw fa-link"></i> Contenuto esistente</a></li>
                     <li><a href="#" class="new-standard-content"><i class="fa fa-fw fa-plus"></i> Nuovo contenuto</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#" class="link-sec-plugin"><i class="fa fa-fw fa-plug"></i> Plugin</a></li>
+                    <li><a href="#" class="link-plugin"><i class="fa fa-fw fa-plug"></i> Plug-in</a></li>
                 </ul>
             </div>
             <div class="btn-group">
@@ -223,12 +251,13 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="#" class="new-tabs-block"><i class="fa fa-fw fa-clone"></i> Vista a schede multiple</a></li>
-                    <li><a href="#" class="new-collapse-block"><i class="fa fa-fw fa-bars"></i> Vista a pannelli multipl</a></li>
+                    <li><a href="#" class="new-collapse-block"><i class="fa fa-fw fa-bars"></i> Vista a pannelli multipli</a></li>
+                    <li><a href="#" class="new-generic-box"><i class="fa fa-fw fa-square-o"></i> Pannello singolo</a></li>
                 </ul>
             </div>
         </div>
         <br><br>
-        <ul class="sortable sortable-main">
+        <ul class="sortable" id="sortable-main-content">
             <?=$main_content ?>
         </ul>
     </div>
@@ -256,12 +285,13 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li><a href="#" class="new-tabs-block"><i class="fa fa-fw fa-clone"></i> Vista a schede multiple</a></li>
-                        <li><a href="#" class="new-collapse-block"><i class="fa fa-fw fa-bars"></i> Vista a pannelli multipl</a></li>
+                        <li><a href="#" class="new-collapse-block"><i class="fa fa-fw fa-bars"></i> Vista a pannelli multipli</a></li>
+                        <li><a href="#" class="new-generic-box"><i class="fa fa-fw fa-square-o"></i> Pannello singolo</a></li>
                     </ul>
                 </div>
             </div>
             <br><br>
-            <ul class="sortable sortable-main">
+            <ul class="sortable" id="sortable-sidebar">
                 <?=$sidebar_content ?>
             </ul>
         </div>

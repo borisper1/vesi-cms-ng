@@ -110,4 +110,26 @@ class Page_handler extends CI_Model
             return false;
         }
     }
+
+    public function save($id, $name, $container, $title, $json)
+    {
+        $data=array(
+            'name' => $name,
+            'container' => $container,
+            'title' => $title,
+            'code' => $json,
+        );
+        $query=$this->db->get_where('pages',array('id'=> $id));
+        if ($query->num_rows() > 0)
+        {
+            $this->db->where('id', $id);
+            return $this->db->update('pages', $data);
+        }
+        else
+        {
+            $data['id']=$id;
+            return $this->db->insert('pages', $data);
+        }
+    }
+
 }

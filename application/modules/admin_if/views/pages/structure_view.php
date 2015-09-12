@@ -16,7 +16,8 @@
                     <a class='lmb tooltipped' data-toggle='dropdown' title='Nuovo'><i class='fa fa-plus'></i></a>
                     <ul class="dropdown-menu">
                         <li><a href="#" class="new-tabs-block"><i class="fa fa-fw fa-clone"></i> Vista a schede multiple</a></li>
-                        <li><a href="#" class="new-collapse-block"><i class="fa fa-fw fa-bars"></i> Vista a pannelli multipl</a></li>
+                        <li><a href="#" class="new-collapse-block"><i class="fa fa-fw fa-bars"></i> Vista a pannelli multipli</a></li>
+                        <li><a href="#" class="new-generic-box"><i class="fa fa-fw fa-square-o"></i> Pannello singolo</a></li>
                     </ul>
                 </div>
                 <a class='remove-view lmb pull-right tooltipped' title='Elimina'><i class='fa fa-remove'></i></a>

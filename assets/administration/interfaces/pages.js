@@ -6,9 +6,11 @@ $(document).ready(function() {
         $('#edit-attributes-modal').modal();
     }
 
-    $(".sortable-main").sortable().disableSelection();
-    $(".sortable-views").sortable().disableSelection();
-    $(".sortable-items").sortable().disableSelection();
+    $(".sortable").sortable().disableSelection();
+
+    $('.close').click(function(){
+        $(this).closest('.alert-dismissable').addClass('hidden');
+    })
 
     $('#refresh').click(function(){
         if(is_new_unsaved) {
@@ -101,6 +103,69 @@ $(document).ready(function() {
         }
     }
 
+    //PAGE SAVING CODE -------------------------------------------------------------------------------------------------
+
+    $('#save-page').click(function(){
+        var id = $('#f-id').text();
+        var name = $('#f-page-name').text();
+        var container = $('#f-container').text();
+        var title = $('#f-title').text();
+        var json_object ={};
+        json_object.type = 'page';
+        json_object.layout = $('#f-page-layout').text();
+        json_object.elements = RunTree($('#sortable-main-content > li > div'));
+        if(json_object.layout.indexOf('sidebar')===0) {
+            json_object.sidebar_elements = RunTree($('#sortable-sidebar > li > div'));
+        }
+        var json = JSON.stringify(json_object, null, '\t');
+        $('.alert').addClass('hidden');
+        $('#spinner').removeClass('hidden');
+        $.post(window.vbcknd.base_url+'ajax/admin/pages/save','id='+id+'&name='+name+'&container='+container+'&json='+encodeURIComponent(json)+'&title='+encodeURIComponent(title),SaveEditDone);
+    });
+
+    function SaveEditDone(data){
+        $('.alert').addClass('hidden');
+        if(data=="success"){
+            is_new_unsaved=false;
+            $('#success-alert').removeClass('hidden');
+            $('#events-cage').find('.fa-clock-o').remove();
+        }else{
+            $('#error-msg').html("Si è verificato un errore durante il salvataggio della pagina. (Il token CSRF potrebbe essere scaduto" +
+                " se la protezione CSRF è abilitata) - "+data.replace(/(<([^>]+)>)/ig,""));
+            $('#error-alert').removeClass('hidden');
+        }
+    }
+
+    function RunTree(object){
+        var elements = [];
+        object.each(function(){
+            var instance = $(this);
+            if(instance.hasClass('content-symbol')){
+                var content = {};
+                content.type = 'content';
+                content.id = instance.find('.f-id').text();
+                elements.push(content);
+            }else if(instance.hasClass('structure-block')){
+                var block = {};
+                block.type = instance.data('type');
+                if(instance.hasClass('structure-sview-block')){
+                    block.class = instance.find('.f-view-class:first').text();
+                }
+                block.views = [];
+                instance.find('.sortable-views:first > li > div, .structure-single-view:first').each(function(){
+                    var view = {};
+                    view.title = $(this).find('.f-view-title:first').text();
+                    view.id = $(this).find('.f-view-id:first').text();
+                    view.elements = RunTree($(this).find('.sortable-items:first > li > div'));
+                    block.views.push(view);
+                });
+                elements.push(block);
+            }
+        });
+
+        return elements;
+    }
+
     //BEGIN INTERACTIVE EDITOR CODE (centered on #events-cage) ---------------------------------------------------------
     $('#events-cage').on('click','.new-tabs-block',function(){
         CurrentItem=$(this);
@@ -108,9 +173,23 @@ $(document).ready(function() {
     }).on('click','.new-collapse-block',function(){
         CurrentItem=$(this);
         $.post(window.vbcknd.base_url+'ajax/admin/pages/get_block_template','type=collapse-block',AddNewBlock);
+    }).on('click','.new-generic-box',function(){
+        CurrentItem=$(this);
+        CurrentMode='new-generic-box';
+        ClearAllValidationErrors();
+        $('#i-view-id').val('');
+        $('#i-view-title').val('');
+        $('#view-modal-class-selector-ui').removeClass('hidden');
+        $('#view-modal-title').html('<i class="fa fa-plus"></i> Nuovo pannello singolo');
+        $('#view-modal-confirm').html('<i class="fa fa-bolt"></i> Crea pannello singolo');
+        $('#view-modal').modal();
     }).on('click','.new-view',function(){
         CurrentItem=$(this);
         CurrentMode='new';
+        ClearAllValidationErrors();
+        $('#i-view-id').val('');
+        $('#i-view-title').val('');
+        $('#view-modal-class-selector-ui').addClass('hidden');
         $('#view-modal-title').html('<i class="fa fa-plus"></i> Nuova scheda/pannello');
         $('#view-modal-confirm').html('<i class="fa fa-bolt"></i> Crea scheda/pannello');
         $('#view-modal').modal();
@@ -135,14 +214,47 @@ $(document).ready(function() {
         $.post(window.vbcknd.base_url+'ajax/admin/contents/check_orphans','id_string='+array.join(), DrawStructureRemoval);
     }).on('click','.edit-view',function(){
         CurrentItem=$(this).closest('.structure-view');
-        CurrentMode='edit';
+        if(CurrentItem.hasClass('structure-single-view')){
+            CurrentMode='edit-generic-box';
+            $('#view-modal-class-selector-ui').removeClass('hidden');
+            $('#i-sview-class').val(CurrentItem.find(".f-view-class:first").text());
+        }else{
+            CurrentMode='edit';
+            $('#view-modal-class-selector-ui').addClass('hidden');
+        }
+        ClearAllValidationErrors();
         $('#i-view-id').val(CurrentItem.find(".f-view-id:first").text());
         $('#i-view-title').val(CurrentItem.find(".f-view-title:first").text());
         $('#view-modal-title').html('<i class="fa fa-pencil"></i> Modifica scheda/pannello');
         $('#view-modal-confirm').html('<i class="fa fa-bolt"></i> Modifica scheda/pannello');
         $('#view-modal').modal();
+    }).on('click','.link-standard-content',function(){
+        CurrentItem=$(this).closest('.editor-parent-element');
+        $('#link-content-modal').modal();
+    }).on('click','.link-plugin',function(){
+        alert("Il supporto ai plug-in non è ancora stato ultimato - Plug-ins are not currently supported")
     });
 
+    $('#link-content-modal-confirm').click(function(){
+        var id = $('#i-link-content-id').val();
+        if(id!=''){
+            $('.content-alert').addClass('hidden');
+            $('#content-linking-spinner').removeClass('hidden');
+            $.post(window.vbcknd.base_url+'ajax/admin/pages/get_content_symbol','id='+id, LinkExistingContent);
+        }else{
+            alert('Non è stato inserito un id valido');
+        }
+    });
+
+    function LinkExistingContent(data){
+        if(data!=''){
+            $('.content-alert').addClass('hidden');
+            CurrentItem.find('.sortable').first().append(data);
+        }else{
+            $('.content-alert').addClass('hidden');
+            $('#content-linking-error').removeClass('hidden');
+        }
+    }
 
     function DrawStructureRemoval(data){
         $("#structure-deletion-modal-wait").addClass('hidden');
@@ -220,6 +332,13 @@ $(document).ready(function() {
         $('#view-modal').modal('hide');
         if(CurrentMode==='new'){
             $.post(window.vbcknd.base_url+'ajax/admin/pages/get_view_template', 'title='+encodeURIComponent(title.val())+'&id='+id.val(), AddNewView);
+        }else if(CurrentMode==='new-generic-box'){
+            var sclass = $('#i-sview-class');
+            $.post(window.vbcknd.base_url+'ajax/admin/pages/get_single_view_template','type=generic-box&title='+encodeURIComponent(title.val())+'&id='+id.val()+'&class='+sclass.val(),AddNewBlock);
+        }else if(CurrentMode==='edit-generic-box'){
+            CurrentItem.find(".f-view-class:first").text($('#i-sview-class').val());
+            CurrentItem.find(".f-view-id:first").text(id.val());
+            CurrentItem.find(".f-view-title:first").text(title.val());
         }else{
             CurrentItem.find(".f-view-id:first").text(id.val());
             CurrentItem.find(".f-view-title:first").text(title.val());
