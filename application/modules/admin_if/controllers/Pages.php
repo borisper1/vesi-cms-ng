@@ -19,7 +19,13 @@ class Pages extends MX_Controller
         $this->modules=json_decode(file_get_contents(APPPATH."config/modules.json"));
         if($id=='new')
         {
-
+            $data_array['id']=uniqid();
+            $data_array['title']='';
+            $data_array['page_name']='';
+            $data_array['container']='';
+            $data_array['layout']='';
+            $data_array['has_sidebar']=false;
+            $data_array['main_content']='';
             $data_array['is_new']=true;
         }
         else

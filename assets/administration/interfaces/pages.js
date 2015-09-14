@@ -10,7 +10,7 @@ $(document).ready(function() {
 
     $('.close').click(function(){
         $(this).closest('.alert-dismissable').addClass('hidden');
-    })
+    });
 
     $('#refresh').click(function(){
         if(is_new_unsaved) {
@@ -36,12 +36,11 @@ $(document).ready(function() {
     });
 
     $('#edit-attributes-confirm').click(function(){
-        var has_error = false;
         var name =$('#i-page-name');
         var container = $('#i-page-container');
         var title = $('#i-page-title');
         ClearAllValidationErrors();
-        if(!(SystemSyntaxCheck(name) && SystemSyntaxCheck(container) && IsEmptyCheck(title) )){
+        if((SystemSyntaxCheck(name) + SystemSyntaxCheck(container) + IsEmptyCheck(title))>0){
             return;
         }
         $('#edit-attributes-modal').modal('hide');
@@ -81,6 +80,7 @@ $(document).ready(function() {
         $('#sidebar-deletion-warning').toggleClass('hidden', !(current_layout.indexOf("sidebar")===0 && $(this).val().indexOf("sidebar")===-1));
     });
 
+    //TODO: Integrate the following fnctions in window.vbcknd (Modal Validation API)
     function ClearAllValidationErrors(){
         $('.has-error').removeClass('has-error');
     }
@@ -88,18 +88,18 @@ $(document).ready(function() {
     function SystemSyntaxCheck(object){
         if(!object.val().match(/^[a-z0-9-]+$/) || object.val()===''){
             object.closest('.form-group').addClass('has-error');
-            return false;
+            return 1;
         }else{
-            return true;
+            return 0;
         }
     }
 
     function IsEmptyCheck(object){
         if(object.val()===''){
             object.closest('.form-group').addClass('has-error');
-            return false;
+            return 1;
         }else{
-            return true;
+            return 0;
         }
     }
 
@@ -326,7 +326,7 @@ $(document).ready(function() {
         var id = $('#i-view-id');
         var title = $('#i-view-title');
         ClearAllValidationErrors();
-        if(!(SystemSyntaxCheck(id) && IsEmptyCheck(title) )){
+        if((SystemSyntaxCheck(id) + IsEmptyCheck(title))>0){
             return;
         }
         $('#view-modal').modal('hide');

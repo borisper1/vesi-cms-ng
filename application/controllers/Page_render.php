@@ -10,7 +10,9 @@ class Page_render extends MX_Controller
      */
     public function index()
     {
-        $this->view('home','home');
+
+        $page_info=explode('::',$this->db_config->get('general','home_page'));
+        $this->view($page_info[0],$page_info[1]);
     }
 
     public function view($container,$page)
