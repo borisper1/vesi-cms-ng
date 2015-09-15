@@ -35,6 +35,15 @@ h3.inline{
     cursor: pointer;
     color: inherit;
 }
+
+.lmbnc{
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
 .sortable{
     list-style-type: none;
     margin: 0;

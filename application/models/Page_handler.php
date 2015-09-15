@@ -132,4 +132,45 @@ class Page_handler extends CI_Model
         }
     }
 
+    function get_pages_container_list($container)
+    {
+        $query=$this->db->get_where('pages', array('container' =>  $container));
+        $pages=[];
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
+                $data_array['id'] = $row->id;
+                $data_array['name'] = $row->name;
+                $data_array['container_redirect'] = $row->container_redirect;
+                if($row->container_redirect!='')
+                {
+                    $query2=$this->db->get_where('pages', array('container' => $row->container_redirect, 'name' => $row->name));
+                    if ($query2->num_rows() > 0)
+                    {
+                        $data_array['title'] = $query2->row()->title;
+                    }
+                    else
+                    {
+                        $data_array['title'] = '<span class="text-danger"><i fa class="fa fa-exclamation-triangle"></i> Destinazione inesistente</span>';
+                    }
+                }
+                else
+                {
+                    $data_array['title'] = $row->title;
+                    $json_code = json_decode($row->code);
+                    $data_array['layout'] = $json_code->layout;
+                }
+                $data_array['tags'] = $row->tags;
+                $data_array['home'] = ($row->container.'::'.$row->name)===$this->db_config->get('general','home_page');
+                array_push($pages,$data_array);
+            }
+            return $pages;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }

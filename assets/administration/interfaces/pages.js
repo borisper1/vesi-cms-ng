@@ -6,6 +6,26 @@ $(document).ready(function() {
         $('#edit-attributes-modal').modal();
     }
 
+    //FUNCTIONS FOR THE LIST VIEW MODE ---------------------------------------------------------------------------------
+
+    $('#ajax-cage').on('click','.panel-actuator',function(){
+        var object = $(this).closest('.container-block').find('table:first');
+        if(object.hasClass('hidden')){
+            $(this).find('.fa-chevron-right').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+        }else{
+            $(this).find('.fa-chevron-down').removeClass('fa-chevron-down').addClass('fa-chevron-right');
+        }
+        object.toggleClass('hidden');
+    });
+
+    $('#show-all').click(function(){
+        $('.container-block').find('table:first').removeClass('hidden');
+    });
+
+    $('#hide-all').click(function(){
+        $('.container-block').find('table:first').addClass('hidden');
+    });
+
     $(".sortable").sortable().disableSelection();
 
     $('.close').click(function(){
@@ -24,6 +44,8 @@ $(document).ready(function() {
     $('#close-edit').click(function(){
         window.location.href = window.vbcknd.base_url + 'admin/pages';
     });
+
+    //FUNCTIONS FOR GENERIC PAGE EDITING -------------------------------------------------------------------------------
 
     $('#edit-attributes').click(function(){
         $('#i-page-title').val($('#f-title').text());

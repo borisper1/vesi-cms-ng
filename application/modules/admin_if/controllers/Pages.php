@@ -7,8 +7,8 @@ class Pages extends MX_Controller
 
     function index()
     {
-        $this->load->model('page_handler');
-        $this->load->view('pages/list_wrapper');
+        $data['rendered_elements']=$this->render_interactive_list();
+        $this->load->view('pages/list_wrapper', $data);
     }
 
     function edit($id)
@@ -164,5 +164,19 @@ class Pages extends MX_Controller
         {
             echo 'failed - 500';
         }
+    }
+
+    //Functions for the list view (ajax-able)
+
+    protected function render_interactive_list(){
+        $this->load->model('page_handler');
+        $containers = $this->page_handler->get_containers_list();
+        $rendered_html='';
+        foreach($containers as $container)
+        {
+            $pages = $this->page_handler->get_pages_container_list($container);
+            $rendered_html.=$this->load->view('pages/list_block', array('pages' => $pages, 'container' => $container), true);
+        }
+        return $rendered_html;
     }
 }
