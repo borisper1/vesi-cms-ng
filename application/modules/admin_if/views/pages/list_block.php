@@ -32,9 +32,11 @@
                         <td><?=$page['layout'] ?></td>
                     <?php endif; ?>
                     <td>
-                        <?php foreach(explode(',', $page['tags']) as $tag): ?>
-                            <span class="label label-info"><?=$tag ?></span>
-                        <?php endforeach; ?>
+                        <span class="tag-container">
+                            <?php foreach(explode(',', $page['tags']) as $tag): ?>
+                                <span class="label label-info page-tag"><?=$tag ?></span>
+                            <?php endforeach; ?>
+                        </span>
                         <a class='edit-tags lmbnc pull-right tooltipped' title='Modifica tags'><i class='fa fa-tags'></i></a>
                     </td>
                 </tr>

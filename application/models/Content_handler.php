@@ -33,8 +33,6 @@ class Content_handler extends CI_Model
 
     function are_orphans($id)
     {
-        //WARNING: Can't use FULLTEXT functionality, need compatibility with Inno DB on MySQL 5.5 (change when 5.6+ becomes available on server)
-        //This is compatibility code that does a single id at a time, add enhanced code when performance optimizations are added
         $output=[];
         foreach($id as $this_id)
         {

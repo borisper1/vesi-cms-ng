@@ -8,7 +8,7 @@ $(document).ready(function() {
 
     //FUNCTIONS FOR THE LIST VIEW MODE ---------------------------------------------------------------------------------
 
-    $('#ajax-cage').on('click','.panel-actuator',function(){
+    $('#ajax-cage').on('click','.panel-actuator', function(){
         var object = $(this).closest('.container-block').find('table:first');
         if(object.hasClass('hidden')){
             $(this).find('.fa-chevron-right').removeClass('fa-chevron-right').addClass('fa-chevron-down');
@@ -16,14 +16,94 @@ $(document).ready(function() {
             $(this).find('.fa-chevron-down').removeClass('fa-chevron-down').addClass('fa-chevron-right');
         }
         object.toggleClass('hidden');
+    }).on('click', '.remove-page', function(){
+        CurrentItem = $(this).closest('tr');
+        $('#page-deletion-modal-wait').removeClass('hidden');
+        $('#page-deletion-modal-show, #page-deletion-modal-orphans, #page-delete-modal-toolbar').addClass('hidden');
+        $('#page-delete-modal').modal();
+        $.post(window.vbcknd.base_url+'ajax/admin/pages/check_orphans','id='+CurrentItem.data('id'), DrawPageRemoval);
+    }).on('click', '.edit-tags', function(){
+        CurrentItem = $(this).closest('tr');
+        var tags =[];
+        CurrentItem.find('.page-tag').each(function(){
+            tags.push($(this).text());
+        });
+        $('#i-tags-value').val(tags.join(','));
+        $('#tags-edit-modal').modal();
+    }).on('click', '.set-home', function(){
+        CurrentItem = $(this).closest('tr');
+        $.post(window.vbcknd.base_url+'ajax/admin/pages/set_home','id='+CurrentItem.data('id'), UpdatePageHome);
     });
 
+    function UpdatePageHome(data){
+        if(data=='success'){
+            alert('Pagina inziale impostata correttamente. La pagina verrà aggiornata quando si preme su OK');
+            window.location.reload(true);
+        }else{
+            alert('Impossibile impostare la pagina inziale - errore sconosciuto');
+        }
+    }
+
+    $('#tags-edit-modal-confirm').click(function(){
+        $.post(window.vbcknd.base_url+'ajax/admin/pages/set_tags','id='+CurrentItem.data('id')+'&tags='+$('#i-tags-value').val(), UpdatePageTags);
+    });
+
+    function UpdatePageTags(data){
+        if(data==="success"){
+            var tags = $('#i-tags-value').val().split(',');
+            var object = CurrentItem.find('.tag-container');
+            object.empty();
+            $.each(tags, function(){
+                object.append('<span class="label label-info page-tag">'+this+'</span> ');
+            });
+        }else{
+            alert("Impossibile modificare i tag della pagina. Il server ha negato la richiesta");
+        }
+    }
+
+    function DrawPageRemoval(data){
+        $("#page-deletion-modal-wait").addClass('hidden');
+        $("#page-deletion-modal-show, #page-delete-modal-toolbar").removeClass('hidden');
+        if(data!=='false'){
+            $("#page-deletion-modal-orphans").removeClass('hidden');
+            $('#page-deletion-modal-orphan-content').empty().html(data);
+        }
+    }
+
+    $('#page-delete-modal-confirm').click(function(){
+        var object = $(".orphans-selector:checked");
+        if(object.length>0){
+            var id_array=[];
+            object.each(function(){
+                id_array.push($(this).val());
+            });
+            $('.content-alert').addClass('hidden');
+            $.post(window.vbcknd.base_url+'ajax/admin/contents/delete_multiple','id_string='+id_array.join(','), DeleteContents);
+            $('#content-deletion-spinner').removeClass('hidden');
+        }
+        $.post(window.vbcknd.base_url+'ajax/admin/pages/delete','id='+CurrentItem.data('id'), DeletePage);
+    });
+
+    function DeletePage(data){
+        if(data=="success"){
+            CurrentItem.remove();
+        }else{
+            $('#error-msg').html("Si è verificato un errore durante l'eliminazione della pagina. (Il token CSRF potrebbe essere scaduto" +
+                " se la protezione CSRF è abilitata) - "+data.replace(/(<([^>]+)>)/ig,""));
+            $('#deletion-error-alert').removeClass('hidden');
+        }
+    }
+
     $('#show-all').click(function(){
-        $('.container-block').find('table:first').removeClass('hidden');
+        var block = $('.container-block');
+        block.find('table:first').removeClass('hidden');
+        block.find('.fa-chevron-right').removeClass('fa-chevron-right').addClass('fa-chevron-down');
     });
 
     $('#hide-all').click(function(){
-        $('.container-block').find('table:first').addClass('hidden');
+        var block = $('.container-block');
+        block.find('table:first').addClass('hidden');
+        block.find('.fa-chevron-down').removeClass('fa-chevron-down').addClass('fa-chevron-right');
     });
 
     $(".sortable").sortable().disableSelection();
@@ -311,10 +391,10 @@ $(document).ready(function() {
 
     function DrawUnlinkSingleContent(data){
         if(data==='false'){
-            $('#unlink-modal').modal('hidden');
+            $('#unlink-modal').modal('hide');
             CurrentItem.remove();
         }else{
-            $("#unlink-modal-wait").addClass('hidden');
+            $("#unlink-modal-wait").addClass('hide');
             $("#unlink-modal-show, #unlink-modal-toolbar").removeClass('hidden');
         }
     }

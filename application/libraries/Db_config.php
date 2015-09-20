@@ -36,8 +36,8 @@ class Db_config
 
     public function save()
     {
-        $sql_u="UPDATE configuration SET value = ? WHERE section = ? AND key = ?";
-        $sql_i="INSERT INTO configuration (section,key,value) VALUES (?,?,?)";
+        $sql_u="UPDATE configuration SET value = ? WHERE (section = ? AND `key` = ?);";
+        $sql_i="INSERT INTO configuration (section,key,value) VALUES (?,?,?);";
         foreach($this->config as $section => $options)
         {
             $save = array_diff($options,$this->cache[$section]);

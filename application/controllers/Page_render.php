@@ -39,7 +39,6 @@ class Page_render extends MX_Controller
         if($page_id===false)
         {
             redirect('page_render/display_404', 'auto', 404);
-            //show_404();
         }
 
         $page_data = $this->page_handler->get_page_obj($page_id);

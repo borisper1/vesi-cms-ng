@@ -1,0 +1,2 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+?><tr><td><input type="checkbox" class="orphans-selector" value="<?=$id ?>"> <?=$id ?></td><td><span class="label label-info"><?=$type ?></span></td><td><?=$preview ?></td></tr>

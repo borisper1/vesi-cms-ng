@@ -7,7 +7,9 @@ class Pages extends MX_Controller
 
     function index()
     {
+        $this->load->model('content_handler');
         $data['rendered_elements']=$this->render_interactive_list();
+        $data['contents_list']=$this->content_handler->get_contents_list();
         $this->load->view('pages/list_wrapper', $data);
     }
 
@@ -178,5 +180,48 @@ class Pages extends MX_Controller
             $rendered_html.=$this->load->view('pages/list_block', array('pages' => $pages, 'container' => $container), true);
         }
         return $rendered_html;
+    }
+
+    function check_orphans()
+    {
+        $id = $this->input->post('id');
+        $this->load->model('content_handler');
+        $this->load->model('page_handler');
+        $id_array = $this->page_handler->get_page_contents($id);
+        $output = $this->content_handler->are_orphans($id_array);
+        if (array_filter($output))
+        {
+            foreach($output as $out_id)
+            {
+                $content_array=$this->content_handler->get_symbol_array($out_id);
+                $this->load->view('content/orphans_select', $content_array);
+            }
+        }
+        else
+        {
+            echo 'false';
+        }
+    }
+
+    function delete()
+    {
+        $id = $this->input->post('id');
+        $this->load->model('page_handler');
+        echo $this->page_handler->delete($id) ? 'success' : 'failed';
+    }
+
+    function set_tags()
+    {
+        $id = $this->input->post('id');
+        $tag_string = $this->input->post('tags');
+        $this->load->model('page_handler');
+        echo $this->page_handler->set_tags($id, $tag_string) ? 'success' : 'failed';
+    }
+
+    function set_home()
+    {
+        $id = $this->input->post('id');
+        $this->load->model('page_handler');
+        echo $this->page_handler->set_home($id) ? 'success' : 'failed';
     }
 }

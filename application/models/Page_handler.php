@@ -3,6 +3,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Page_handler extends CI_Model
 {
+    protected $installed_structures=[];
+
+    function __construct()
+    {
+        parent::__construct();
+        $modules=json_decode(file_get_contents(APPPATH."config/modules.json"));
+        $this->installed_structures = $modules->structures;
+    }
+
     public function get_page_obj($id){
         $query=$this->db->get_where('pages',array('id'=> $id));
         if ($query->num_rows() > 0)
@@ -166,6 +175,70 @@ class Page_handler extends CI_Model
                 array_push($pages,$data_array);
             }
             return $pages;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    function get_page_contents($id)
+    {
+        $query = $this->db->get_where('pages', array('id' => $id));
+        if ($query->num_rows() > 0)
+        {
+            $row = $query->row();
+            $structure = json_decode($row->code);
+            $ids = $this->get_section_ids($structure->elements);
+            return $ids;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    protected function get_section_ids($structure)
+    {
+        $ids = [];
+        foreach ($structure as $element) {
+            if ($element->type === 'content') {
+                array_push($ids, $element->id);
+            }
+            else
+            {
+                if (in_array($element->type, $this->installed_structures)) {
+                    foreach ($element->views as $view) {
+                        $ids = array_merge($ids, $this->get_section_ids($view->elements));
+                    }
+                }
+            }
+        }
+        return $ids;
+    }
+
+    function delete($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('pages');
+    }
+
+    function set_tags($id, $tag_string)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('pages', array('tags' => $tag_string));
+    }
+
+    function set_home($id)
+    {
+        $this->db->select('name, container');
+        $query = $this->db->get_where('pages', array('id' => $id));
+        if ($query->num_rows() > 0)
+        {
+            $row = $query->row();
+            $this->db_config->set('general', 'home_page', $row->container.'::'.$row->name);
+            $this->db_config->save();
+            return true;
         }
         else
         {
