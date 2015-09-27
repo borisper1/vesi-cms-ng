@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?><div class="panel panel-primary container-block" id="panel-<?=$container ?>">
+?><div class="panel panel-primary container-block" id="panel-<?=$container ?>" data-container="<?=$container ?>">
     <div class="panel-heading">
         <h3 class="panel-title"><a class="lmb panel-actuator"><i class="fa fa-chevron-right"></i></a> <?=$container ?></h3>
     </div>
@@ -18,7 +18,7 @@
                             <a class='remove-redirect lmbnc pull-right tooltipped' title='Elimina'><i class='fa fa-remove'></i></a>
                             <a class='edit-redirect lmbnc pull-right tooltipped' title='Modifica reindirizzamento'><i class='fa fa-edit'></i></a>
                         </td>
-                        <td><span class="label label-default tooltipped" title="Id: <?=$page['id'] ?> "><?= $page['name'] ?></span> <i class="fa fa-exchange"></i> <span class="label label-info"><?=$page['container_redirect'] ?> <i class="fa fa-ellipsis-v"></i> <?=$page['name'] ?></span></td>
+                        <td><span class="label label-default tooltipped" title="Id: <?=$page['id'] ?>"><?= $page['name'] ?></span> <i class="fa fa-exchange"></i> <span class="label label-info"><span class="f-target"><?=$page['container_redirect'] ?></span> <i class="fa fa-ellipsis-v"></i> <span class="f-name"><?=$page['name'] ?></span></span></td>
                         <td>Reindirizzamento</td>
                     <?php else: ?>
                         <td>
@@ -28,7 +28,7 @@
                                 <a class='set-home lmbnc pull-right tooltipped' title='Imposta come pagina iniziale'><i class='fa fa-home'></i></a>
                             <?php endif; ?>
                         </td>
-                        <td><span class="label label-default"><?= $page['name'] ?></span></td>
+                        <td><span class="label label-default tooltipped" title="Id: <?=$page['id'] ?>"><?= $page['name'] ?></span></td>
                         <td><?=$page['layout'] ?></td>
                     <?php endif; ?>
                     <td>

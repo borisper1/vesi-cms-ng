@@ -97,13 +97,24 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="control-label" for="i-tags-value">Inserire i tag separandoli con una virgola <kbd>,</kbd></label>
-                    <input type="text" class="form-control" id="i-tags-value" placeholder="Tags">
+                    <label class="control-label" for="i-redirect-page">Inserire il nome del contenitore del reindirizzamento</label>
+                    <input type="text" class="form-control" id="i-redirect-container" placeholder="Contenitore reindirizzamento" list="containers-list">
+                    <span class="help-block">Può contenere solo lettere minuscole (non accentate), numeri e trattini <kbd>-</kbd></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="i-redirect-page">Inserire il nome del contenitore di destinazione</label>
+                    <input type="text" class="form-control" id="i-redirect-target" placeholder="Contenitore destinazione" list="containers-list">
+                    <span class="help-block">Può contenere solo lettere minuscole (non accentate), numeri e trattini <kbd>-</kbd></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="i-redirect-page">Inserire il nome di sistema della pagina da collegare</label>
+                    <input type="text" class="form-control" id="i-redirect-page" placeholder="Nome pagina">
+                    <span class="help-block">Può contenere solo lettere minuscole (non accentate), numeri e trattini <kbd>-</kbd></span>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
-                <button type="button" class="btn btn-success" id="tags-edit-modal-confirm" data-dismiss="modal"><i class="fa fa-tag"></i> Modifica tags</button>
+                <button type="button" class="btn btn-success" id="redirect-modal-confirm"></button>
             </div>
         </div>
     </div>

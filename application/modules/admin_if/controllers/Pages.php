@@ -9,7 +9,7 @@ class Pages extends MX_Controller
     {
         $this->load->model('content_handler');
         $data['rendered_elements']=$this->render_interactive_list();
-        $data['contents_list']=$this->content_handler->get_contents_list();
+        $data['containers']=$this->page_handler->get_containers_list();
         $this->load->view('pages/list_wrapper', $data);
     }
 
@@ -223,5 +223,24 @@ class Pages extends MX_Controller
         $id = $this->input->post('id');
         $this->load->model('page_handler');
         echo $this->page_handler->set_home($id) ? 'success' : 'failed';
+    }
+
+    function new_redirect()
+    {
+        $container = $this->input->post('container');
+        $target = $this->input->post('target');
+        $page = $this->input->post('page');
+        $this->load->model('page_handler');
+        echo $this->page_handler->new_redirect($container,$target,$page) ? 'success' : 'failed';
+    }
+
+    function edit_redirect()
+    {
+        $id = $this->input->post('id');
+        $container = $this->input->post('container');
+        $target = $this->input->post('target');
+        $page = $this->input->post('page');
+        $this->load->model('page_handler');
+        echo $this->page_handler->edit_redirect($id,$container,$target,$page) ? 'success' : 'failed';
     }
 }

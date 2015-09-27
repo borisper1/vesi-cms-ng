@@ -33,7 +33,57 @@ $(document).ready(function() {
     }).on('click', '.set-home', function(){
         CurrentItem = $(this).closest('tr');
         $.post(window.vbcknd.base_url+'ajax/admin/pages/set_home','id='+CurrentItem.data('id'), UpdatePageHome);
+    }).on('click', '.edit-redirect', function(){
+        $('#redirect-modal-title').html('<i class="fa fa-exchange"></i> Modifica reindirizzamento contenitore');
+        $('#redirect-modal-confirm').html('<i class="fa fa-plus"></i> Modifica reindirizzamento');
+        CurrentItem = $(this).closest('.page-element');
+        $('#i-redirect-container').val(CurrentItem.closest('.container-block').data('container'));
+        $('#i-redirect-page').val(CurrentItem.find('.f-name').text());
+        $('#i-redirect-target').val(CurrentItem.find('.f-target').text());
+        CurrentMode='edit';
+        ClearAllValidationErrors();
+        $('#redirect-modal').modal();
     });
+
+    $('#new-redirect').click(function(){
+        $('#redirect-modal-title').html('<i class="fa fa-exchange"></i> Nuovo reindirizzamento contenitore');
+        $('#redirect-modal-confirm').html('<i class="fa fa-plus"></i> Crea reindirizzamento');
+        $('#i-redirect-container, #i-redirect-page, #i-redirect-target').val('');
+        CurrentMode='new';
+        ClearAllValidationErrors();
+        $('#redirect-modal').modal();
+    });
+
+    $('#new-page').click(function(){
+       window.location.href = window.vbcknd.base_url + 'admin/pages/edit/new';
+    });
+
+    $('#redirect-modal-confirm').click(function(){
+        var page =$('#i-redirect-page');
+        var container = $('#i-redirect-container');
+        var target = $('#i-redirect-target');
+        ClearAllValidationErrors();
+        if((SystemSyntaxCheck(page) + SystemSyntaxCheck(container) + SystemSyntaxCheck(target))>0){
+            return;
+        }
+        if(CurrentMode==='new'){
+            $.post(window.vbcknd.base_url+'ajax/admin/pages/new_redirect','container='+container.val()+'&target='+target.val()+'&page='+page.val(), RedirectComplete)
+            $('#redirect-modal').modal('hide');
+        }else{
+            var id = CurrentItem.data('id');
+            $.post(window.vbcknd.base_url+'ajax/admin/pages/edit_redirect','id='+id+'&container='+container.val()+'&target='+target.val()+'&page='+page.val(), RedirectComplete)
+            $('#redirect-modal').modal('hide');
+        }
+    });
+
+    function RedirectComplete(data){
+        if(data=='success'){
+            alert('Rendirizzamento creato/modificato correttamente. La pagina verrà aggiornata quando si preme su OK');
+            window.location.reload(true);
+        }else{
+            alert('Impossibile creare/modificare il reindirizzamento - errore sconosciuto');
+        }
+    }
 
     function UpdatePageHome(data){
         if(data=='success'){

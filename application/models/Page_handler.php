@@ -246,4 +246,25 @@ class Page_handler extends CI_Model
         }
     }
 
+    function new_redirect($container,$target,$page)
+    {
+        $data = array(
+            'id' => uniqid(),
+            'container' => $container,
+            'name' => $page,
+            'container_redirect' => $target
+        );
+        return $this->db->insert('pages', $data);
+    }
+
+    function edit_redirect($id,$container,$target,$page)
+    {
+        $data = array(
+            'container' => $container,
+            'name' => $page,
+            'container_redirect' => $target
+        );
+        $this->db->where('id', $id);
+        return $this->db->update('pages', $data);
+    }
 }
