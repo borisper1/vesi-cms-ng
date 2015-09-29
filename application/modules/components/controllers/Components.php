@@ -90,4 +90,14 @@ class Components extends MX_Controller
             return false;
         }
     }
+
+    function load_editor($id)
+    {
+        $type = $this->get_content_type($id);
+        $model_cname=str_replace('-','_',$type).'_model';
+        $this->load->model($model_cname);
+        $data = $this->$model_cname->get_edit_data($id);
+        $this->load->view(str_replace('-','_',$type).'_editor', $data);
+    }
+
 }

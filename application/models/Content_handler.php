@@ -59,7 +59,7 @@ class Content_handler extends CI_Model
     }
 
     function get_contents_list()
-    {;
+    {
         $query = $this->db->get('contents');
         $contents=[];
         if ($query->num_rows() > 0)
@@ -79,6 +79,30 @@ class Content_handler extends CI_Model
                 array_push($contents, $content);
             }
             return $contents;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    function get_content_data($id)
+    {
+        $query = $this->db->get_where('contents', array('id' => $id));
+        if ($query->num_rows() > 0)
+        {
+            $row = $query->row();
+            $content['id'] = $row->id;
+            $content['type'] = $row->type;
+            if($row->type !=='html-field')
+            {
+                $content['preview']=$row->displayname!='' ? $row->displayname : substr(strip_tags($row->content), 0, 25).'&hellip;';
+            }
+            else
+            {
+                $content['preview']=substr(htmlspecialchars($row->content), 0, 25).'...';
+            }
+            return $content;
         }
         else
         {

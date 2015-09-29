@@ -9,6 +9,15 @@ class Contents extends MX_Controller
 
     }
 
+    function edit($id)
+    {
+        $this->load->model('content_handler');
+        $data = $this->content_handler->get_content_data($id);
+        $data['is_new']=false;
+        $this->load->view('content/editor_wrapper',$data);
+        echo Modules::run('components/load_editor',$id);
+    }
+
     function check_orphans()
     {
         $id_array = explode(',', $this->input->post('id_string'));
