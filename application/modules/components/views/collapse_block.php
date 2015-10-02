@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <?php $a_id=uniqid(); ?>
     <div class="panel-group" id="<?=$a_id?>" role="tablist" aria-multiselectable="true">
 
-        <?php $in = true;?>
+        <?php $in = false;?>
         <?php foreach($structure_data as $view_data): ?>
 
             <div class="panel panel-default">

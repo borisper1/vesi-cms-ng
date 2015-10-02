@@ -35,4 +35,10 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
+
+	config.entities = false; //disabled all entities to prevent ' form being converted to HTML entities, UTF8 support.
+	config.entities_latin = false; //required if entities enabled to pass internal HTML validation
+	config.justifyClasses = [ 'text-left', 'text-center', 'text-right', 'text-justify' ];
+	//config.allowedContent = true; //Disables all content filtering, not recommended only emergency fix
+	config.extraPlugins = 'fontawesome';
 };

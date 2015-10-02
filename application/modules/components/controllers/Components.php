@@ -94,9 +94,12 @@ class Components extends MX_Controller
     function load_editor($id)
     {
         $type = $this->get_content_type($id);
-        $model_cname=str_replace('-','_',$type).'_model';
+        $module_cname=str_replace('-','_',$type);
+        $model_cname=$module_cname.'_model';
         $this->load->model($model_cname);
         $data = $this->$model_cname->get_edit_data($id);
+        //Load the js actions file for the editor
+        $this->resources->load_aux_js_file('assets/administration/editors/'.$module_cname.'.js');
         $this->load->view(str_replace('-','_',$type).'_editor', $data);
     }
 

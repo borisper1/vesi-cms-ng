@@ -42,7 +42,7 @@ class Page_render extends MX_Controller
         }
 
         $page_data = $this->page_handler->get_page_obj($page_id);
-        $base_data['title']=strip_tags($page_data->title);
+        $base_data['title']=strip_tags($page_data->title).' | '.$this->db_config->get('general','website_name');
         $base_data['content']=$this->display_layout($page_data);
 
         //Load basic system data
@@ -60,7 +60,8 @@ class Page_render extends MX_Controller
     {
         $page_view=str_replace('-','_',$page_data->layout);
         $data=[];
-        $data['title']=$page_data->title;
+        $hide_title = ($page_data->container.'::'.$page_data->page_name==$this->db_config->get('general','home_page') and $this->db_config->get('general','display_home_page_title')==0);
+        $data['title']=$hide_title ? '' : $page_data->title;
         $data['container_class']=$this->db_config->get('style','use_fluid_containers') ? 'container-fluid' : 'container';
         $data['content']=Modules::run('components/render_section',$page_data->elements);
         if(isset($page_data->sidebar_elements))
