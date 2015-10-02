@@ -34,11 +34,30 @@ CKEDITOR.editorConfig = function( config ) {
 	config.format_tags = 'p;h1;h2;h3;h4;h5;h6;pre;address';
 
 	// Simplify the dialog windows.
-	config.removeDialogTabs = 'image:advanced;link:advanced';
+	config.removeDialogTabs = 'image:advanced;link:advanced;';
 
 	config.entities = false; //disabled all entities to prevent ' form being converted to HTML entities, UTF8 support.
 	config.entities_latin = false; //required if entities enabled to pass internal HTML validation
 	config.justifyClasses = [ 'text-left', 'text-center', 'text-right', 'text-justify' ];
 	//config.allowedContent = true; //Disables all content filtering, not recommended only emergency fix
-	config.extraPlugins = 'fontawesome';
+	config.extraPlugins = 'fontawesome,confighelper';
+
+    config.removeDialogFields='table:info:txtBorder;table:info:txtCellSpace;table:info:txtCellPad;table:info:txtHeight;table:info:txtCaption;table:info:txtSummary;table:advanced:advLangDir;table:info:cmbAlign;'+
+        'tableProperties:info:txtBorder;tableProperties:info:txtCellSpace;tableProperties:info:txtCellPad;tableProperties:info:txtHeight;tableProperties:info:txtCaption;tableProperties:info:txtSummary;tableProperties:advanced:advLangDir;tableProperties:info:cmbAlign;'+
+        'image:info:txtBorder;image:info:txtHSpace;image:info:txtVSpace;image:info:cmbAlign;'+
+        'cellProperties:info:bgColor;cellProperties:info:borderColor;cellProperties:info:wordWrap;cellProperties:info:hAlign;cellProperties:info:vAlign;cellProperties:info:width;cellProperties:info:height;cellProperties:info:widthType;';
+
+    config.dialogFieldsDefaultValues =
+    {
+        table:
+        {
+            info: {
+                txtWidth: ''
+            },
+            advanced: {
+                advCSSClasses: 'table'
+            }
+        }
+    };
+
 };
