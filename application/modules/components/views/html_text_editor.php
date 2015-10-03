@@ -38,4 +38,4 @@
 </div>
 <br><br>
 
-<textarea class="textarea-standard" id="gui-editor"><?=$content ?></textarea>
+<textarea class="textarea-standard" id="gui_editor"><?=$content ?></textarea>

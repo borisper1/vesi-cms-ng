@@ -8,5 +8,13 @@ $(document).ready(function() {
         window.vbcknd.base_url+'assets/third_party/ckeditor/contents.css'];
     //Allow empty span tags for Font Awesome icons!
     CKEDITOR.dtd.$removeEmpty['span'] = false;
-    CKEDITOR.replace('gui-editor',{height: '500px'});
+    CKEDITOR.replace('gui_editor',{height: '500px'});
+
+    $('#insert-2-columns').click(function(){
+        CKEDITOR.instances.gui_editor.insertHtml('<div class="row"><div class="col-md-6">Colonna 1</div><div class="col-md-6">Colonna 2</div></div>');
+    });
+
+    $('#insert-3-columns').click(function(){
+        CKEDITOR.instances.gui_editor.insertHtml('<div class="row"><div class="col-md-4">Colonna 1</div><div class="col-md-4">Colonna 2</div><div class="col-md-4">Colonna 3</div></div>');
+    });
 });
