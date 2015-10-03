@@ -39,4 +39,12 @@ class Contents extends MX_Controller
         $this->load->model('content_handler');
         echo $this->content_handler->delete_contents($id_array) ? 'success' : 'failed';
     }
+
+    function save()
+    {
+        //Identify the input type by matching reported and expected from modules.json
+        $reported_input_type = $this->input->post('input_type');
+    }
+
+
 }

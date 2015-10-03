@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pages extends MX_Controller
 {
-    protected $modules;
+    protected $blocks_editor =[], $single_view_editor = [];
 
     function index()
     {
@@ -18,7 +18,7 @@ class Pages extends MX_Controller
         $this->load->model('page_handler');
         $this->load->model('content_handler');
         //Load installed modules / editor directives file
-        $this->modules=json_decode(file_get_contents(APPPATH."config/modules.json"));
+        $this->load_json_descriptor();
         if($id=='new')
         {
             $data_array['id']=uniqid();
@@ -50,6 +50,22 @@ class Pages extends MX_Controller
         $this->load->view('pages/edit_wrapper', $data_array);
     }
 
+    private function load_json_descriptor()
+    {
+        $modules=json_decode(file_get_contents(APPPATH.'config/modules.json'));
+        foreach($modules->structures as $structure)
+        {
+            if($structure->editor=='blocks')
+            {
+                $this->blocks_editor[] = $structure->name;
+            }
+            elseif($structure->editor=='view')
+            {
+                $this->single_view_editor[] = $structure->name;
+            }
+        }
+    }
+
     private function generate_tree($elements)
     {
         $rendered_html="";
@@ -59,13 +75,13 @@ class Pages extends MX_Controller
             {
                 $rendered_html.= $this->draw_content($element->id);
             }
-            elseif(in_array($element->type, $this->modules->blocks_editor))
+            elseif(in_array($element->type, $this->blocks_editor))
             {
                 $block_array['type']=$element->type;
                 $block_array['views_rendered'] = $this->draw_views($element->views);
                 $rendered_html.= $this->load->view('pages/structure_block', $block_array, true);
             }
-            elseif(in_array($element->type, $this->modules->single_view_editor))
+            elseif(in_array($element->type, $this->single_view_editor))
             {
                 //SINGLE VIEW COMPONENTS
                 $view_array['type']=$element->type;

@@ -1,7 +1,20 @@
 {
-  "components": ["html-text","html-field","address-view","carousel","file-lister","link","modal","pdf-view","popover"],
-  "structures":["tabs-block","collapse-block","generic-box"],
-  "blocks_editor":["tabs-block","collapse-block"],
-  "single_view_editor":["generic-box"],
+  "components": [
+    {"name": "html-text", "save_type": "html", "has_options": false},
+    {"name": "html-field", "save_type": "html", "has_options": false},
+    {"name": "address-view", "save_type": "json", "has_options": false},
+    {"name": "carousel", "save_type": "path", "has_options": false},
+    {"name": "file-lister", "save_type": "path", "has_options": false},
+    {"name": "link", "save_type": "url", "has_options": true},
+    {"name": "modal", "save_type": "html", "has_options": true},
+    {"name": "pdf-view", "save_type": "url", "has_options": false},
+    {"name": "popover", "save_type": "html", "has_options": true}
+  ],
+
+  "structures":[
+    {"name": "tabs-block", "editor": "blocks"},
+    {"name": "collapse-block", "editor": "blocks"},
+    {"name": "generic-box", "editor": "view"}
+  ],
   "plugins":[]
 }

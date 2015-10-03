@@ -10,8 +10,14 @@ class Components extends MX_Controller
         parent::__construct();
         //TODO: implement error checking, maybe move to component_render model.
         $modules=json_decode(file_get_contents(APPPATH."config/modules.json"));
-        $this->installed_components = $modules->components;
-        $this->installed_structures = $modules->structures;
+        foreach($modules->components as $component)
+        {
+            $this->installed_components[] = $component->name;
+        }
+        foreach($modules->structures as $structure)
+        {
+            $this->installed_structures[] = $structure->name;
+        }
     }
 
     function render_component($id)
