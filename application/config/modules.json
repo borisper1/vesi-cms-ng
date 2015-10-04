@@ -1,14 +1,14 @@
 {
   "components": [
-    {"name": "html-text", "save_type": "html", "has_options": false},
-    {"name": "html-field", "save_type": "html", "has_options": false},
-    {"name": "address-view", "save_type": "json", "has_options": false},
-    {"name": "carousel", "save_type": "path", "has_options": false},
-    {"name": "file-lister", "save_type": "path", "has_options": false},
-    {"name": "link", "save_type": "url", "has_options": true},
-    {"name": "modal", "save_type": "html", "has_options": true},
-    {"name": "pdf-view", "save_type": "url", "has_options": false},
-    {"name": "popover", "save_type": "html", "has_options": true}
+    {"name": "html-text", "save_type": "html", "has_options": false, "has_displayname": false, "allow_iframe": true},
+    {"name": "html-field", "save_type": "html", "has_options": false, "has_displayname": false, "allow_iframe": true},
+    {"name": "address-view", "save_type": "json", "has_options": false, "has_displayname": false},
+    {"name": "carousel", "save_type": "path", "has_options": false, "has_displayname": false},
+    {"name": "file-lister", "save_type": "path", "has_options": false, "has_displayname": false},
+    {"name": "link", "save_type": "url", "has_options": true, "has_displayname": true},
+    {"name": "modal", "save_type": "html", "has_options": true, "has_displayname": true, "allow_iframe": false},
+    {"name": "pdf-view", "save_type": "url", "has_options": false, "has_displayname": false},
+    {"name": "popover", "save_type": "html", "has_options": true, "has_displayname": true, "allow_iframe": false}
   ],
 
   "structures":[

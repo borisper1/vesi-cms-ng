@@ -42,9 +42,59 @@ class Contents extends MX_Controller
 
     function save()
     {
-        //Identify the input type by matching reported and expected from modules.json
-        $reported_input_type = $this->input->post('input_type');
+        $id = $this->input->post('id');
+        $type = $this->input->post('type');
+        $data = $this->input->post('data');
+        $component_info = $this->get_component_info($type);
+        $this->load->library('validation');
+        $valid = false;
+        if ($component_info->save_type=='html')
+        {
+            $data = $this->validation->filter_html($data, $component_info->allow_iframe);
+            $valid = true;
+        }
+        elseif($component_info->save_type=='json')
+        {
+            $valid = $this->validation->check_json($data);
+        }
+        elseif($component_info->save_type=='path')
+        {
+            $valid = $this->validation->check_path($data);
+        }
+        elseif($component_info->save_type=='url')
+        {
+            $valid = $this->validation->check_url($data);
+        }
+        if(!$valid)
+        {
+            echo '500-1 - Main input is invalid';
+            return;
+        }
+        if($component_info->has_options)
+        {
+            $settings = $this->input->post('settings');
+            if(! $this->validation->check_json($settings))
+            {
+                echo '500-2 - Settings input is invalid';
+                return;
+            }
+        }
+        if($component_info->has_displayname)
+        {
+            $displayname = strip_tags('displayname');
+        }
+
     }
 
-
+    protected function get_component_info($type)
+    {
+        $output = false;
+        $modules=json_decode(file_get_contents(APPPATH.'config/modules.json'));
+        foreach($modules->components as $component){
+            if($component->name == $type){
+                $output = $component;
+            }
+        }
+        return $output;
+    }
 }
