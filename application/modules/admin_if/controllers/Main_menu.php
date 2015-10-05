@@ -30,7 +30,7 @@ class Main_menu extends MX_Controller
     }
 
     function save(){
-        $json = $this->input->post('json');
+        $json = rawurldecode($this->input->post('json'));
         $this->load->model('menu_handler');
         $result = $this->menu_handler->save($this->menu_handler->get_main_menu_id(), $json);
         if($result)

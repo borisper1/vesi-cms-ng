@@ -19,4 +19,37 @@ $(document).ready(function() {
         window.location.assign(window.vbcknd.base_url + 'admin/contents');
     });
 
+    window.vbcknd.content = {};
+    window.vbcknd.content.save = function(content, settings, displayname){
+        var data ={};
+        data.id = $('#f-id').text();
+        data.type = $('#f-type').text();
+        data.data = content;
+        if(settings != null) {
+            data.settings = settings;
+        }
+        if(displayname != null) {
+            data.displayname = displayname;
+        }
+        $('.alert').addClass('hidden');
+        $('#spinner').removeClass('hidden');
+        $.post(window.vbcknd.base_url+'ajax/admin/contents/save',data, SaveEditDone);
+    };
+
+    function SaveEditDone(data){
+        $('.alert').addClass('hidden');
+        if(data=="success"){
+            is_new_unsaved=false;
+            $('#success-alert').removeClass('hidden')
+        }else{
+            $('#error-msg').html("Si è verificato un errore durante il salvataggio della pagina. (Il token CSRF potrebbe essere scaduto" +
+                " se la protezione CSRF è abilitata) - "+data.replace(/(<([^>]+)>)/ig,""));
+            $('#error-alert').removeClass('hidden');
+        }
+    }
+
+    $('.close').click(function(){
+        $(this).closest('.alert-dismissable').addClass('hidden');
+    });
+
 });

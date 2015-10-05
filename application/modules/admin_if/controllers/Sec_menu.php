@@ -37,10 +37,9 @@ class Sec_menu extends MX_Controller
 
     function save()
     {
-        //TODO: Aggiungere call-back per il rimando alla pagina corretta dopo salvataggio menu nuovo, oppure inserire avviso e disabilitare aggiorna
-        $json = $this->input->post('json');
+        $json = rawurldecode($this->input->post('json'));
         $id = $this->input->post('id');
-        $title = $this->input->post('title');
+        $title = rawurldecode($this->input->post('title'));
         $display_title = $this->input->post('display_title');
         $this->load->model('menu_handler');
         $result = $this->menu_handler->save($id, $json, $title, $display_title);

@@ -19,13 +19,7 @@ $(document).ready(function() {
     });
 
     $('#save-content').click(function(){
-        var id = $('#f-id').text();
-        var type = $('#f-type').text();
         var data = encodeURIComponent(CKEDITOR.instances.gui_editor.getData());
-        $.post(window.vbcknd.base_url+'ajax/admin/contents/save','id='+id+'&type='+type+'&data='+data, SaveEditDone);
+        window.vbcknd.content.save(data, null, null);
     });
-
-    function SaveEditDone(data){
-        
-    }
 });

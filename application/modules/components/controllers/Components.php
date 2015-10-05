@@ -8,7 +8,6 @@ class Components extends MX_Controller
     function __construct()
     {
         parent::__construct();
-        //TODO: implement error checking, maybe move to component_render model.
         $modules=json_decode(file_get_contents(APPPATH."config/modules.json"));
         foreach($modules->components as $component)
         {
@@ -92,7 +91,7 @@ class Components extends MX_Controller
 
             return $row->type;
         } else {
-            //TODO: The id does not exist (ERR_COMPONENT_ID_NOT_FOUND)
+            //The id does not exist (ERR_COMPONENT_ID_NOT_FOUND)
             return false;
         }
     }

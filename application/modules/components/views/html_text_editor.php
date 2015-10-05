@@ -4,7 +4,6 @@
     <i class="fa fa-warning"></i> <strong>Attenzione!</strong> La pagina pubblicata potrebbe avere un aspetto diverso da quello visualizzato nell'editor.
 </div>
 
-<span id="code-mode" class="hidden">html</span>
 <span id="editor-name" class="hidden">html-text</span>
 
 <div class="btn-group" id="editor-actions">

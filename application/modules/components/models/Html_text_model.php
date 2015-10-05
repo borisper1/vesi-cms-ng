@@ -11,11 +11,7 @@ class Html_text_model extends CI_Model
             $row = $query->row();
 
             $data=[];
-            //TODO: Maybe add HTML filtering (It is done on input, but filtering also the output has better security, but makes things slower).
             $data['content']=$row->content;
-            //Temporary emergency relative URLs fixing, maybe put as option. This is not bulletproof implementation, it does not fix page-to page links!
-            $data['content']=str_replace('src="img/','src="'.base_url().'img/',$data['content']);
-            $data['content']=str_replace('href="files/','href="'.base_url().'files/',$data['content']);
             return $data;
         }
         else
@@ -28,18 +24,6 @@ class Html_text_model extends CI_Model
     {
         //This is not the correct place to do it, but will load js files required for the module here anyway
         $this->resources->load_aux_js_file('assets/third_party/ckeditor/ckeditor.js');
-        $query = $this->db->get_where('contents',array('id' => $id));
-        if ($query->num_rows() > 0)
-        {
-            $row = $query->row();
-
-            $data=[];
-            $data['content']=$row->content;
-            return $data;
-        }
-        else
-        {
-            return false;
-        }
+        return $this->get_render_data($id);
     }
 }

@@ -112,7 +112,7 @@ class Pages extends MX_Controller
     {
         $this->load->model('content_handler');
         $content_array=$this->content_handler->get_symbol_array($id);
-        return $this->load->view('content/content_symbol', $content_array, true);
+        return $this->load->view('pages/content_symbol', $content_array, true);
     }
 
     //AJAX accessible functions
@@ -168,10 +168,10 @@ class Pages extends MX_Controller
     function save()
     {
         $id = $this->input->post('id');
-        $title = $this->input->post('title');
+        $title = rawurldecode($this->input->post('title'));
         $name = $this->input->post('name');
         $container = $this->input->post('container');
-        $json = $this->input->post('json');
+        $json = rawurldecode($this->input->post('json'));
         $this->load->model('page_handler');
         $result = $this->page_handler->save($id, $name, $container, $title, $json);
         if($result)

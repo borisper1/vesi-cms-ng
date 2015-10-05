@@ -9,11 +9,10 @@ class Validation
             'safe' => 1,
             'abs_url' => 1,
             'base_url' => base_url(),
-            'tidy' => 1,
             'elements' => $allow_iframe ? '*+iframe' : null
         );
         include_once(APPPATH.'third_party/htmLawed/htmLawed.php');
-        return htmLawed($data, $htmLawed_settings);
+        return trim(htmLawed($data, $htmLawed_settings));
     }
 
     function check_json($code)
