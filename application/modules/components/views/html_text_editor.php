@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 ?><div class="alert alert-warning alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-    <i class="fa fa-warning"></i> <strong>Attenzione!</strong> La pagina pubblicata potrebbe avere un aspetto diverso da quello visualizzato nell"editor.
+    <i class="fa fa-warning"></i> <strong>Attenzione!</strong> La pagina pubblicata potrebbe avere un aspetto diverso da quello visualizzato nell'editor.
 </div>
 
 <span id="code-mode" class="hidden">html</span>

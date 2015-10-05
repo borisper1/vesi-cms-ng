@@ -17,4 +17,15 @@ $(document).ready(function() {
     $('#insert-3-columns').click(function(){
         CKEDITOR.instances.gui_editor.insertHtml('<div class="row"><div class="col-md-4">Colonna 1</div><div class="col-md-4">Colonna 2</div><div class="col-md-4">Colonna 3</div></div>');
     });
+
+    $('#save-content').click(function(){
+        var id = $('#f-id').text();
+        var type = $('#f-type').text();
+        var data = encodeURIComponent(CKEDITOR.instances.gui_editor.getData());
+        $.post(window.vbcknd.base_url+'ajax/admin/contents/save','id='+id+'&type='+type+'&data='+data, SaveEditDone);
+    });
+
+    function SaveEditDone(data){
+        
+    }
 });

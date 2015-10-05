@@ -109,4 +109,73 @@ class Content_handler extends CI_Model
             return false;
         }
     }
+
+    function get_component_info($type)
+    {
+        $output = false;
+        $modules=json_decode(file_get_contents(APPPATH.'config/modules.json'));
+        foreach($modules->components as $component){
+            if($component->name == $type){
+                $output = $component;
+            }
+        }
+        return $output;
+    }
+
+    function save($id, $type, $content, $settings, $displayname)
+    {
+        $component_info = $this->get_component_info($type);
+        $this->load->library('validation');
+        $valid = false;
+        if ($component_info->save_type=='html')
+        {
+            $content = $this->validation->filter_html($content, $component_info->allow_iframe);
+            $valid = true;
+        }
+        elseif($component_info->save_type=='json')
+        {
+            $valid = $this->validation->check_json($content);
+        }
+        elseif($component_info->save_type=='path')
+        {
+            $valid = $this->validation->check_path($content);
+        }
+        elseif($component_info->save_type=='url')
+        {
+            $valid = $this->validation->check_url($content);
+        }
+        if(!$valid)
+        {
+            return 2;
+        }
+        $data = array(
+            'type' => $type,
+            'content'=> $content
+        );
+        if($component_info->has_options)
+        {
+            if(! $this->validation->check_json($settings)) {
+                echo '500-2 - Settings input is invalid';
+                return 3;
+            }
+            $data['settings'] = $settings;
+
+        }
+        if($component_info->has_displayname)
+        {
+            $data['displayname'] = strip_tags($displayname);
+        }
+        //create a new content if the id does not exists
+        $query=$this->db->get_where('contents',array('id'=> $id));
+        if ($query->num_rows() > 0)
+        {
+            $this->db->where('id', $id);
+            return $this->db->update('contents', $data) ? 0 : 1;
+        }
+        else
+        {
+            $data['id'] = uniqid();
+            return $this->db->insert('contents', $data) ? 0 : 1;
+        }
+    }
 }
