@@ -7,7 +7,7 @@ $(document).ready(function() {
     editor.getSession().setMode('ace/mode/html');
     editor.getSession().setUseWrapMode(true); //maybe allow to be changed in settings/configuration (per user?)
 
-    $("#editcode").prop("disabled", true);
+    $("#edit-code").prop("disabled", true);
 
     $('#save-content').click(function(){
         var data = encodeURIComponent(editor.getValue());

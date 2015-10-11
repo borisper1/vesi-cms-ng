@@ -94,11 +94,11 @@ class Content_handler extends CI_Model
             $row = $query->row();
             $content['id'] = $row->id;
             $content['type'] = $row->type;
-            $content['preview'] = $row->displayname!='' ? $row->displayname : substr(strip_tags($row->content), 0, 25).'&hellip;';
+            $content['preview'] = $row->displayname!='' ? $row->displayname : substr(trim(strip_tags($row->content)), 0, 25).'&hellip;';
             $content['preview'] = trim($content['preview'])=='&hellip;' ? substr(htmlspecialchars($row->content), 0, 25).'&hellip;' : $content['preview'];
             return $content;
         }
-        else
+        else;
         {
             return false;
         }
