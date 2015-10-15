@@ -42,8 +42,8 @@ $(document).ready(function() {
             is_new_unsaved=false;
             $('#success-alert').removeClass('hidden')
         }else{
-            $('#error-msg').html("Si è verificato un errore durante il salvataggio della pagina. (Il token CSRF potrebbe essere scaduto" +
-                " se la protezione CSRF è abilitata) - "+data.replace(/(<([^>]+)>)/ig,""));
+            $('#error-msg').html("Si è verificato un errore durante il salvataggio della pagina. (I dati inseriti potrebbero essere non validi" +
+                "- "+data.replace(/(<([^>]+)>)/ig,""));
             $('#error-alert').removeClass('hidden');
         }
     }

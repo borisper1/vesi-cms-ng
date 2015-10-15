@@ -23,19 +23,19 @@ class Validation
 
     function check_path($path)
     {
-        return file_exists(BASEPATH.$path);
+        return file_exists(FCPATH.$path);
     }
 
     function check_url($url)
     {
-        if(strpos($url,'http://')===0 or strpos($url,'https://')===0)
+        if(strpos($url,'http://')===0 or strpos($url,'https://')===0 or strpos($url,'ftp://')===0)
         {
             $headers = @get_headers($url);
             return (strpos($headers[0],'404') === false);
         }
         else
         {
-            return file_exists(BASEPATH.$url);
+            return file_exists(FCPATH.$url);
         }
     }
 }

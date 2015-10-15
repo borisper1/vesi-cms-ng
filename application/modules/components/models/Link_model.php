@@ -20,4 +20,21 @@ class Link_model extends CI_Model
         $data['target']=$settings->target;
         return $data;
     }
+
+    function get_edit_data($id)
+    {
+        $query = $this->db->get_where('contents', array('id' => $id));
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+        } else {
+            return false;
+        }
+        $data=[];
+        $data['url']=$row->content;
+        $data['title']=htmlspecialchars($row->displayname);
+        $settings = json_decode($row->settings);
+        $data['class']=$settings->class;
+        $data['target']= isset($settings->target) ? $settings->target : '';
+        return $data;
+    }
 }
