@@ -59,7 +59,15 @@ class Contents extends MX_Controller
         }
         elseif($response>1)
         {
-            echo 'failed - 403: bad data format';
+            echo 'failed - 403: bad data format/value';
         }
     }
+
+    function load_editor_preview()
+    {
+        $type = $this->input->post('type');
+        $data = rawurldecode($this->input->post('data'));
+        echo Modules::run('components/load_editor_preview',$type, $data);
+    }
+
 }

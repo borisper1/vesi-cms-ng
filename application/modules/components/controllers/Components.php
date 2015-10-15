@@ -105,7 +105,23 @@ class Components extends MX_Controller
         $data = $this->$model_cname->get_edit_data($id);
         //Load the js actions file for the editor
         $this->resources->load_aux_js_file('assets/administration/editors/'.$module_cname.'.js');
-        $this->load->view(str_replace('-','_',$type).'_editor', $data);
+        $this->load->view($module_cname.'_editor', $data);
+    }
+
+    function load_editor_preview($type, $data)
+    {
+        $module_cname=str_replace('-','_',$type);
+        $model_cname=$module_cname.'_model';
+        $this->load->model($model_cname);
+        $data = $this->$model_cname->get_preview_data($data);
+        if($data)
+        {
+            $this->load->view($module_cname, $data);
+        }
+        else
+        {
+            echo "failed";
+        }
     }
 
 }

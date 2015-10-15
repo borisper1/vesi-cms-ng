@@ -5,7 +5,7 @@ defined("BASEPATH") OR exit("No direct script access allowed");
     <ol class="carousel-indicators">
         <?php $active = true; $i=0; ?>
         <?php foreach($files as $file): ?>
-            <li data-target="#<?=$id?>'" data-slide-to="<?=$i?>"<?= $active ? "class=\"active\"" : ""?>></li>
+            <li data-target="#<?=$id?>" data-slide-to="<?=$i?>"<?= $active ? "class=\"active\"" : ""?>></li>
             <?php $active = false; $i+=1; ?>
         <?php endforeach ?>
     </ol>

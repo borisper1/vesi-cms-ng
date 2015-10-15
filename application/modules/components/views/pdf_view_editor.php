@@ -1,6 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?>
-<h4><i class='fa fa-file-pdf-o fa-lg'></i> Percorso file PDF da integrare</h4>
+?><h4><i class='fa fa-file-pdf-o fa-lg'></i> Percorso file PDF da integrare</h4>
 <div class='well'>
     <div class='form-group'>
         <label for='pdf-path'>Inserire il percorso o l'URL del file da includere</label>

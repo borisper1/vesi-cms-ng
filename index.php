@@ -36,6 +36,9 @@
  * @filesource
  */
 
+//TEMPORARY DATE FIX: Integrate in php.ini or .htaccess file
+date_default_timezone_set('Europe/Rome');
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

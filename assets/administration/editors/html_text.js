@@ -11,11 +11,11 @@ $(document).ready(function() {
     CKEDITOR.replace('gui_editor',{height: '500px'});
 
     $('#insert-2-columns').click(function(){
-        CKEDITOR.instances.gui_editor.insertHtml('<div class="row"><div class="col-md-6">Colonna 1</div><div class="col-md-6">Colonna 2</div></div>');
+        CKEDITOR.instances.gui_editor.insertHtml('<div class="row"><div class="col-md-6"><p>Colonna 1</p></div><div class="col-md-6"><p>Colonna 2</p></div></div>');
     });
 
     $('#insert-3-columns').click(function(){
-        CKEDITOR.instances.gui_editor.insertHtml('<div class="row"><div class="col-md-4">Colonna 1</div><div class="col-md-4">Colonna 2</div><div class="col-md-4">Colonna 3</div></div>');
+        CKEDITOR.instances.gui_editor.insertHtml('<div class="row"><div class="col-md-4"><p>Colonna 1</p></div><div class="col-md-4"><p>Colonna 2</p></div><div class="col-md-4"><p>Colonna 3</p></div></div>');
     });
 
     $('#save-content').click(function(){
