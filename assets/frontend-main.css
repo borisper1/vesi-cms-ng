@@ -51,3 +51,7 @@ body{
 .tab-pane{
     padding: 8px;
 }
+
+.popover{
+    position:fixed;
+}

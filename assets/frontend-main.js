@@ -13,7 +13,7 @@ $(document).ready(function(e) {
     });
 
     //Generic popover and hover menu initialization js
-    $('.popover-standard').popover();
+    $('.popover-trigger').popover();
     if(jQuery.fn.dropdownHover){
         $('.dropdown-hover').dropdownHover();
     }
