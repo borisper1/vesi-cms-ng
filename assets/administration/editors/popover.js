@@ -28,11 +28,3 @@ $(document).ready(function() {
         window.vbcknd.content.save(data, encodeURIComponent(JSON.stringify(settings)), displayname);
     });
 });
-
-/*toolbarGroups: [
- {"name":"basicstyles","groups":["basicstyles"]},
- {"name":"links"},
- {"name":"paragraph","groups":["list","blocks"]},
- {"name":"document","groups":["mode"]},
- {"name":"styles","groups":["styles"]}
- ]*/
