@@ -17,6 +17,7 @@ class Pages extends MX_Controller
     {
         $this->load->model('page_handler');
         $this->load->model('content_handler');
+        $this->load->model('menu_handler');
         //Load installed modules / editor directives file
         $this->load_json_descriptor();
         if($id=='new')
@@ -45,6 +46,7 @@ class Pages extends MX_Controller
             }
             $data_array['is_new']=false;
         }
+        $data_array['menus_list']=$this->menu_handler->get_menu_list();
         $data_array['contents_list']=$this->content_handler->get_contents_list();
         $data_array['containers']=$this->page_handler->get_containers_list();
         $this->load->view('pages/edit_wrapper', $data_array);
@@ -91,6 +93,11 @@ class Pages extends MX_Controller
                 $view_array['items_rendered']=$this->generate_tree($element->views[0]->elements);
                 $rendered_html.= $this->load->view('pages/structure_single_view', $view_array, true);
             }
+            elseif($element->type==='menu')
+            {
+                //SINGLE VIEW COMPONENTS
+                $rendered_html.= $this->draw_menu($element->id);
+            }
         }
         return $rendered_html;
     }
@@ -115,11 +122,33 @@ class Pages extends MX_Controller
         return $this->load->view('pages/content_symbol', $content_array, true);
     }
 
+    private function draw_menu($id)
+    {
+        $this->load->model('menu_handler');
+        $menu_array=$this->menu_handler->get_menu_data($id);
+        if($menu_array!==false)
+        {
+            $menu_array['exists']=true;
+        }
+        else
+        {
+            $menu_array['exists']=false;
+            $menu_array['id']='';
+            $menu_array['title']='';
+        }
+        return $this->load->view('pages/menu_symbol', $menu_array, true);
+    }
+
     //AJAX accessible functions
 
     function get_content_symbol(){
         $id = $this->input->post('id');
         echo $this->draw_content($id);
+    }
+
+    function get_menu_symbol(){
+        $id = $this->input->post('id');
+        echo $this->draw_menu($id);
     }
 
     function get_view_template(){

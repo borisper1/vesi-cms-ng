@@ -312,6 +312,11 @@ $(document).ready(function() {
                     block.views.push(view);
                 });
                 elements.push(block);
+            }else if(instance.hasClass('menu-symbol')){
+                var menu = {};
+                menu.type = 'menu';
+                menu.id = instance.find('.f-id').text();
+                elements.push(menu);
             }
         });
 
@@ -345,6 +350,8 @@ $(document).ready(function() {
         $('#view-modal-title').html('<i class="fa fa-plus"></i> Nuova scheda/pannello');
         $('#view-modal-confirm').html('<i class="fa fa-bolt"></i> Crea scheda/pannello');
         $('#view-modal').modal();
+    }).on('click','.remove-menu',function(){
+        $(this).closest('.menu-symbol').remove();
     }).on('click','.remove-content',function(){
         CurrentItem=$(this).closest('.content-symbol');
         var id = CurrentItem.find('.f-id').text();
@@ -383,9 +390,13 @@ $(document).ready(function() {
     }).on('click','.link-standard-content',function(){
         CurrentItem=$(this).closest('.editor-parent-element');
         $('#link-content-modal').modal();
+    }).on('click','.link-sec-menu',function(){
+        CurrentItem=$(this).closest('.editor-parent-element');
+        $('#link-menu-modal').modal();
     }).on('click','.link-plugin',function(){
         alert("Il supporto ai plug-in non è ancora stato ultimato - Plug-ins are not currently supported")
     });
+
 
     $('#link-content-modal-confirm').click(function(){
         var id = $('#i-link-content-id').val();
@@ -393,6 +404,17 @@ $(document).ready(function() {
             $('.content-alert').addClass('hidden');
             $('#content-linking-spinner').removeClass('hidden');
             $.post(window.vbcknd.base_url+'ajax/admin/pages/get_content_symbol','id='+id, LinkExistingContent);
+        }else{
+            alert('Non è stato inserito un id valido');
+        }
+    });
+
+    $('#link-menu-modal-confirm').click(function(){
+        var id = $('#i-link-menu-id').val();
+        if(id!=''){
+            $('.content-alert').addClass('hidden');
+            $('#content-linking-spinner').removeClass('hidden');
+            $.post(window.vbcknd.base_url+'ajax/admin/pages/get_menu_symbol','id='+id, LinkExistingContent);
         }else{
             alert('Non è stato inserito un id valido');
         }

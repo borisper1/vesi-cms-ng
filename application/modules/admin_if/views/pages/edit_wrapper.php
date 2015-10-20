@@ -33,10 +33,10 @@
     <i class="fa fa-check"></i> Contenuti eliminati con successo
 </div>
 <div class="alert alert-info hidden content-alert" id="content-deletion-spinner"><i class="fa fa-refresh fa-spin"></i> Eliminazione dei contenuti selezionati...</div>
-<div class="alert alert-info hidden content-alert" id="content-linking-spinner"><i class="fa fa-refresh fa-spin"></i> Aggiunta del contenuto in corso...</div>
+<div class="alert alert-info hidden content-alert" id="content-linking-spinner"><i class="fa fa-refresh fa-spin"></i> Aggiunta del contenuto/menu/plug-in in corso...</div>
 <div class="alert alert-danger alert-dismissable hidden content-alert" id="content-linking-error">
     <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
-    <i class="fa fa-exclamation-circle"></i> <b>Impossibile aggiungere il contenuto:</b><br> Il server non risponde alla richiesta.
+    <i class="fa fa-exclamation-circle"></i> <b>Impossibile aggiungere il contenuto/menu/plug-in:</b><br> Il server non risponde alla richiesta.
 </div>
 
 <datalist id="containers-list">
@@ -48,6 +48,12 @@
 <datalist id="contents-list">
     <?php foreach($contents_list as $content_element): ?>
         <option value="<?=$content_element['id'] ?>"><?=$content_element['preview'] ?> [<?=$content_element['type'] ?>] [<?=$content_element['id'] ?>]</option>
+    <?php endforeach; ?>
+</datalist>
+
+<datalist id="menus-list">
+    <?php foreach($menus_list as $menu_element): ?>
+        <option value="<?=$menu_element['id'] ?>"><?=$menu_element['title'] ?> [<?=$menu_element['id'] ?>]</option>
     <?php endforeach; ?>
 </datalist>
 
@@ -128,7 +134,7 @@
                         <option value="panel-info">[panel-info] Stile informazione (azzurro)</option>
                         <option value="panel-success">[panel-success] Stile successo (verde)</option>
                         <option value="panel-warning">[panel-warning] Stile avviso (arancio)</option>
-                        <option value="panel-danger">[panel-primary] Stile pericolo (rosso)</option>
+                        <option value="panel-danger">[panel-danger] Stile pericolo (rosso)</option>
                     </select>
                 </div>
             </div>
@@ -228,6 +234,26 @@
     </div>
 </div>
 
+<div class="modal fade" id="link-menu-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="view-modal-title"><i class="fa fa-link"></i> Associa menu secondario</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label" for="i-link-menu-id">Inserire l'id del menu secondario associare</label>
+                    <input type="text" class="form-control" id="i-link-menu-id" placeholder="Id" list="menus-list">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-success" id="link-menu-modal-confirm" data-dismiss="modal"><i class="fa fa-link"></i> Associa menu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row" id="events-cage">
     <div class="col-lg-<?=$has_sidebar ? '6' : '12' ?> editor-parent-element">
         <h3 class="ui horizontal divider header">
@@ -274,7 +300,7 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li><a href="#" class="link-standard-content"><i class="fa fa-fw fa-link"></i> Contenuto esistente</a></li>
-                        <li><a href="#" class"new-standard-content"><i class="fa fa-fw fa-plus"></i> Nuovo contenuto</a></li>
+                        <li><a href="#" class="new-standard-content"><i class="fa fa-fw fa-plus"></i> Nuovo contenuto</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" class="link-sec-menu"><i class="fa fa-fw fa-list"></i> Menu secondario</a></li>
                     </ul>
