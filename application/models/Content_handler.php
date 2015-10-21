@@ -86,6 +86,28 @@ class Content_handler extends CI_Model
         }
     }
 
+    function get_contents_list_with_usages()
+    {
+        $contents = $this->get_contents_list();
+        foreach($contents as &$content)
+        {
+            $content['usages']= $this->find_usages($content['id']);
+        }
+        return $contents;
+    }
+
+    function find_usages($id)
+    {
+        $this->db->like('code', $id);
+        $query = $this->db->get('pages');
+        $usages=[];
+        foreach ($query->result() as $row)
+        {
+            $usages[]=array('id'=> $row->id, 'container' => $row->container, 'name' => $row->name);
+        }
+        return $usages;
+    }
+
     function get_content_data($id)
     {
         $query = $this->db->get_where('contents', array('id' => $id));

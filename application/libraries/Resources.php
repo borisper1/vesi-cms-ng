@@ -34,6 +34,11 @@ class Resources
         return $urls;
     }
 
+    public function get_aux_js_urls()
+    {
+        return $this->add_js_cache;
+    }
+
     public function load_aux_js_file($path)
     {
         $this->add_js_cache[]=base_url($path);

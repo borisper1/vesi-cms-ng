@@ -37,5 +37,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <script src="<?=base_url('assets/third_party/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js')?>"></script>
         <?php endif; ?>
         <script src="<?=base_url('assets/frontend-main.js')?>"></script>
+        <?php foreach($urls['aux_js_loader'] as $aux_url): ?>
+            <script src="<?=$aux_url?>"></script>
+        <?php endforeach; ?>
     </body>
 </html>

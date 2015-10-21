@@ -49,6 +49,7 @@ class Page_render extends MX_Controller
         $base_data['use_cdn']=$this->resources->use_cdn;
         $base_data['legacy_support']=$this->resources->legacy_support;
         $base_data['urls']=$this->resources->urls;
+        $base_data['urls']['aux_js_loader']=$this->resources->get_aux_js_urls();
         $base_data['fallback_urls']=$this->resources->fallback_urls;
         $base_data['hover_menus']=(boolean)$this->db_config->get('style','menu_hover');
 

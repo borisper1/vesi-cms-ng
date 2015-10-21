@@ -6,7 +6,9 @@ class Contents extends MX_Controller
 
     function index()
     {
-
+        $this->load->model('content_handler');
+        $data['content_list'] = $this->content_handler->get_contents_list_with_usages();
+        $this->load->view('content/list',$data);
     }
 
     function edit($id)

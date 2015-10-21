@@ -210,10 +210,25 @@ $(document).ready(function() {
                 $('#sidebar-side').text(translation_array[new_layout.replace('-','_')]);
             }else{
                 old_layout_obj.text(new_layout);
-                //TODO: invoke save command (with auto-refresh on success)
+                //invoke save command (with auto-refresh on success)
+                $('.alert').addClass('hidden');
+                $('#spinner').removeClass('hidden');
+                $.post(window.vbcknd.base_url+'ajax/admin/pages/save', GetPageData(), SaveRelayoutDone);
             }
         }
     });
+
+    function SaveRelayoutDone(data){
+        $('.alert').addClass('hidden');
+        if(data=="success"){
+            var id= $('#f-id').text();
+            window.location.href = window.vbcknd.base_url + 'admin/pages/edit/'+id;
+        }else{
+            $('#error-msg').html("Si è verificato un errore durante il salvataggio della pagina. (Il token CSRF potrebbe essere scaduto" +
+                " se la protezione CSRF è abilitata) - "+data.replace(/(<([^>]+)>)/ig,""));
+            $('#error-alert').removeClass('hidden');
+        }
+    }
 
     $('#generate-page-name').click(function(){
         var title = $('#i-page-title').val();
@@ -258,6 +273,12 @@ $(document).ready(function() {
     //PAGE SAVING CODE -------------------------------------------------------------------------------------------------
 
     $('#save-page').click(function(){
+        $('.alert').addClass('hidden');
+        $('#spinner').removeClass('hidden');
+        $.post(window.vbcknd.base_url+'ajax/admin/pages/save', GetPageData(), SaveEditDone);
+    });
+
+    function GetPageData(){
         var id = $('#f-id').text();
         var name = $('#f-page-name').text();
         var container = $('#f-container').text();
@@ -270,10 +291,14 @@ $(document).ready(function() {
             json_object.sidebar_elements = RunTree($('#sortable-sidebar > li > div'));
         }
         var json = JSON.stringify(json_object, null, '\t');
-        $('.alert').addClass('hidden');
-        $('#spinner').removeClass('hidden');
-        $.post(window.vbcknd.base_url+'ajax/admin/pages/save','id='+id+'&name='+name+'&container='+container+'&json='+encodeURIComponent(json)+'&title='+encodeURIComponent(title),SaveEditDone);
-    });
+        return {
+            "id": id,
+            "name": name,
+            "container": container,
+            "json": encodeURIComponent(json),
+            "title": encodeURIComponent(title)
+        };
+    }
 
     function SaveEditDone(data){
         $('.alert').addClass('hidden');

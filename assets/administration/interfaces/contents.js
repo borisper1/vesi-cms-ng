@@ -52,4 +52,14 @@ $(document).ready(function() {
         $(this).closest('.alert-dismissable').addClass('hidden');
     });
 
+    $('#show-all').click(function(){
+        var block = $('.content-row');
+        block.removeClass('hidden');
+    });
+
+    $('#show-orphans').click(function(){
+        var block = $('.label-success');
+        block.closest('.content-row').addClass('hidden');
+    });
+
 });
