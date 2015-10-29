@@ -3,15 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Page_handler extends CI_Model
 {
-    protected $installed_structures=[];
-
-    function __construct()
-    {
-        parent::__construct();
-        $modules=json_decode(file_get_contents(APPPATH."config/modules.json"));
-        $this->installed_structures = $modules->structures;
-    }
-
     public function get_page_obj($id){
         $query=$this->db->get_where('pages',array('id'=> $id));
         if ($query->num_rows() > 0)
@@ -207,7 +198,7 @@ class Page_handler extends CI_Model
             }
             else
             {
-                if (in_array($element->type, $this->installed_structures)) {
+                if (in_array($element->type, $this->modules_handler->installed_structures)) {
                     foreach ($element->views as $view) {
                         $ids = array_merge($ids, $this->get_section_ids($view->elements));
                     }

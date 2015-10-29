@@ -12,7 +12,6 @@ class Modal_model extends CI_Model
             return false;
         }
         $data=[];
-        $data['id']=$id;
         $data['content']=$row->content;
         $data['title']=htmlspecialchars($row->displayname);
         $settings = json_decode($row->settings);
@@ -27,5 +26,17 @@ class Modal_model extends CI_Model
         //This is not the correct place to do it, but will load js files required for the module here anyway
         $this->resources->load_aux_js_file('assets/third_party/ckeditor/ckeditor.js');
         return $this->get_render_data($id);
+    }
+
+    function get_new_data()
+    {
+        //This is not the correct place to do it, but will load js files required for the module here anyway
+        $this->resources->load_aux_js_file('assets/third_party/ckeditor/ckeditor.js');
+        $data['content']='';
+        $data['title']='';
+        $data['trigger_class']='';
+        $data['close']=false;
+        $data['large']=false;
+        return $data;
     }
 }

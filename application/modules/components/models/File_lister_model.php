@@ -60,7 +60,14 @@ class File_lister_model extends CI_Model
         $data['path']=$row->content;
         $data['files'] = $this->get_files_array($row->content);
         $data['path_exists'] = $data['files']!==null;
+        return $data;
+    }
 
+    function get_new_data()
+    {
+        $data['path']='';
+        $data['files'] = [];
+        $data['path_exists'] = false;
         return $data;
     }
 

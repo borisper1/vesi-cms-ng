@@ -37,4 +37,13 @@ class Link_model extends CI_Model
         $data['target']= isset($settings->target) ? $settings->target : '';
         return $data;
     }
+
+    function get_new_data()
+    {
+        $data['url']='';
+        $data['title']='';
+        $data['class']='';
+        $data['target']= '';
+        return $data;
+    }
 }

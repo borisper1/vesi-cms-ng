@@ -4,10 +4,13 @@
 $(document).ready(function() {
     //Code for the generic editor interface
     var is_new_unsaved = $('#is-new').text()==='true';
+    var CurrentId;
 
     $('#refresh').click(function(){
         if(is_new_unsaved) {
-            window.location.assign(window.vbcknd.base_url + 'admin/contents/edit/new');
+            var id= $('#f-id').text();
+            var type= $('#f-type').text();
+            window.location.assign(window.vbcknd.base_url + 'admin/contents/new_content/'+type+'::'+id);
         } else {
             var id= $('#f-id').text();
             window.location.assign(window.vbcknd.base_url + 'admin/contents/edit/'+id);
@@ -40,6 +43,10 @@ $(document).ready(function() {
         $('.alert').addClass('hidden');
         if(data=="success"){
             is_new_unsaved=false;
+            if(is_new_unsaved){
+                var id= $('#f-id').text();
+                history.replaceState( {} , '', window.vbcknd.base_url + 'contents/pages/edit/'+id );
+            }
             $('#success-alert').removeClass('hidden')
         }else{
             $('#error-msg').html("Si è verificato un errore durante il salvataggio del contenuto. I dati inseriti potrebbero essere non validi" +
@@ -60,6 +67,33 @@ $(document).ready(function() {
     $('#show-orphans').click(function(){
         var block = $('.label-success');
         block.closest('.content-row').addClass('hidden');
+    });
+
+    $('.delete-content').click(function(){
+        CurrentId = $(this).closest('.content-row').find('.f-id').text();
+        $('#delete-modal').modal();
+    });
+
+    $('#delete-modal-confirm').click(function(){
+        $.post(window.vbcknd.base_url+'ajax/admin/contents/delete_multiple','id_string='+CurrentId, DeleteContents);
+    });
+
+    function DeleteContents(data){
+        $('.content-alert').addClass('hidden');
+        if(data==='success'){
+            $('#content-deletion-success').removeClass('hidden');
+        }else{
+            $('#content-deletion-error').removeClass('hidden');
+        }
+    }
+
+    $('#new-content').click(function(){
+        $('#new-modal').modal();
+    });
+
+    $('#new-modal-confirm').click(function(){
+        var type = $('#i-content-type').val();
+        window.location.assign(window.vbcknd.base_url + 'admin/contents/new_content/'+type);
     });
 
 });

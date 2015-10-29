@@ -10,8 +10,8 @@ $(document).ready(function() {
     $('#events-cage').on('click','.remove-child',function(){
         $(this).closest('li').remove();
     }).on('click','.remove-parent',function(){
-        CurrentItem = $(this);
-        if(CurrentItem.data('type')==='dropdown'){
+        CurrentItem = $(this).closest('.parent-voices');
+        if(CurrentItem.data('type')=='dropdown'){
             $('#parent-delete-modal').modal();
         }else {
             CurrentItem.closest('li').remove();

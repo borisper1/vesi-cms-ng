@@ -303,6 +303,10 @@ $(document).ready(function() {
     function SaveEditDone(data){
         $('.alert').addClass('hidden');
         if(data=="success"){
+            if(is_new_unsaved){
+                var id= $('#f-id').text();
+                history.replaceState( {} , '', window.vbcknd.base_url + 'admin/pages/edit/'+id );
+            }
             is_new_unsaved=false;
             $('#success-alert').removeClass('hidden');
             $('#events-cage').find('.fa-clock-o').remove();

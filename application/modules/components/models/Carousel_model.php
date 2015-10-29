@@ -55,6 +55,14 @@ class Carousel_model extends CI_Model
         return $data;
     }
 
+    function get_new_data()
+    {
+        $data['path'] = '';
+        $data['files'] = [];
+        $data['path_exists'] = false;
+        return $data;
+    }
+
     function get_preview_data($data)
     {
         $data = json_decode($data, true);

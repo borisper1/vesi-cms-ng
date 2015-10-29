@@ -54,18 +54,9 @@ class Pages extends MX_Controller
 
     private function load_json_descriptor()
     {
-        $modules=json_decode(file_get_contents(APPPATH.'config/modules.json'));
-        foreach($modules->structures as $structure)
-        {
-            if($structure->editor=='blocks')
-            {
-                $this->blocks_editor[] = $structure->name;
-            }
-            elseif($structure->editor=='view')
-            {
-                $this->single_view_editor[] = $structure->name;
-            }
-        }
+        $data = $this->modules_handler->get_editors_arrays();
+        $this->single_view_editor = $data['single_view'];
+        $this->blocks_editor = $data['blocks'];
     }
 
     private function generate_tree($elements)

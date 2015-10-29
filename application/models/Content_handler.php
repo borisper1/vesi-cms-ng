@@ -126,21 +126,9 @@ class Content_handler extends CI_Model
         }
     }
 
-    function get_component_info($type)
-    {
-        $output = false;
-        $modules=json_decode(file_get_contents(APPPATH.'config/modules.json'));
-        foreach($modules->components as $component){
-            if($component->name == $type){
-                $output = $component;
-            }
-        }
-        return $output;
-    }
-
     function save($id, $type, $content, $settings, $displayname)
     {
-        $component_info = $this->get_component_info($type);
+        $component_info = $this->modules_handler->get_component_info($type);
         $this->load->library('validation');
         $valid = false;
         if ($component_info->save_type=='html')
@@ -190,7 +178,7 @@ class Content_handler extends CI_Model
         }
         else
         {
-            $data['id'] = uniqid();
+            $data['id'] = $id;
             return $this->db->insert('contents', $data) ? 0 : 1;
         }
     }

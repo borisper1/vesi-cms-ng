@@ -26,4 +26,12 @@ class Html_text_model extends CI_Model
         $this->resources->load_aux_js_file('assets/third_party/ckeditor/ckeditor.js');
         return $this->get_render_data($id);
     }
+
+    function get_new_data()
+    {
+        //This is not the correct place to do it, but will load js files required for the module here anyway
+        $this->resources->load_aux_js_file('assets/third_party/ckeditor/ckeditor.js');
+        $data['content']='';
+        return $data;
+    }
 }

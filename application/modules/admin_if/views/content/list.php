@@ -7,6 +7,18 @@
     <button type="button" class="btn btn-default" id="show-all"><i class="fa fa-eye"></i> Mostra tutto</button>
     <button type="button" class="btn btn-default" id="show-orphans"><i class="fa fa-crosshairs"></i> Mostra solo orfani</button>
 </div>
+<br>
+<br>
+<div class="alert alert-danger alert-dismissable hidden content-alert" id="content-deletion-error">
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+    <i class="fa fa-exclamation-circle"></i> <b>Impossibile eliminare il contenuto:</b> errore del server
+</div>
+<div class="alert alert-success alert-dismissable hidden content-alert" id="content-deletion-success">
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+    <i class="fa fa-check"></i> Contenuto eliminato con successo
+</div>
+<div class="alert alert-info hidden content-alert" id="content-deletion-spinner"><i class="fa fa-refresh fa-spin"></i> Eliminazione del contenuto selezionato...</div>
+
 <table class="table table-hover">
     <thead>
     <tr>
@@ -21,7 +33,7 @@
             <td>
                 <span class="label label-default f-type"><?=$content['type'] ?></span>
                 <a href="<?=base_url('admin/contents/edit/'.$content['id']) ?>"><?=$content['preview'] ?></a>
-                <a class='delete-content lmbnc pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-trash'></i></a>
+                <a href="#" class="delete-content lmbnc pull-right tooltipped" data-toggle="tooltip" title="Elimina"><i class="fa fa-remove"></i></a>
             </td>
             <td>
                 <?php $i=0; ?>
@@ -36,8 +48,50 @@
                     <span class="label label-warning">contenuto orfano</span>
                 <?php endif; ?>
             </td>
-            <td><?=$content['id'] ?></td>
+            <td class="f-id"><?=$content['id'] ?></td>
         </tr>
     <?php endforeach; ?>
     </tbody>
 </table>
+
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-label" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="delete-modal-label"><i class="fa fa-lg fa-trash"></i> Eliminazione contenuto</h4>
+            </div>
+            <div class="modal-body">
+                L'eliminazione è una operazione definitiva. Eliminare questo contenuto?
+                <br>Tutte le pagine che integrano questo contenuto visualizzeranno un errore.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-danger" id="delete-modal-confirm" data-dismiss="modal"><i class="fa fa-trash"></i> Elimina</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="new-modal" tabindex="-1" role="dialog" aria-labelledby="new-modal-label" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="new-modal-label"><i class="fa fa-lg fa-plus"></i> Nuovo contenuto</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label" for="i-page-layout"> Scegliere il tipo di contenuto da creare</label>
+                    <select class="selectpicker form-control" id="i-content-type">
+                        <?php foreach($components_list as $component): ?>
+                            <option data-content="<span class='label label-default'><?=$component['name'] ?></span>  <?=$component['description'] ?>"><?=$component['name'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-success" id="new-modal-confirm" data-dismiss="modal"><i class="fa fa-bolt"></i> Crea contenuto</button>
+            </div>
+        </div>
+    </div>
+</div>

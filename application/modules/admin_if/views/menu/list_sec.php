@@ -17,7 +17,7 @@
         <tr>
             <td>
                 <a href="<?=base_url('admin/sec_menu/edit/'.$menu['id']) ?>"><?=$menu['title'] ?></a>
-                <a class='delete-menu lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina' data-id="<?=$menu['id'] ?>"><i class='fa fa-trash'></i></a>
+                <a class='delete-menu lmbnc pull-right tooltipped' data-toggle='tooltip' title='Elimina' data-id="<?=$menu['id'] ?>"><i class='fa fa-remove'></i></a>
             </td>
             <td><span class="label label-info"><?=$menu['display_title'] ? 'sì' : 'no' ?></span></td>
             <td><?=$menu['id'] ?></td>
@@ -26,7 +26,7 @@
     </tbody>
 </table>
 
-<div class='modal fade' id='delete-modal' tabindex='-1' role='dialog' aria-labelledby='delete-modal-label' aria-hidden='true'>
+<div class='modal fade' id='delete-modal' tabindex='-1' role='dialog' aria-labelledby='delete-modal-label' aria-hidden='true' data-backdrop="static">
     <div class='modal-dialog'>
         <div class='modal-content'>
             <div class='modal-header'>
@@ -36,8 +36,8 @@
                 L'eliminazione è una operazione definitiva. Eliminare questo menu?
             </div>
             <div class='modal-footer'>
-                <button type='button' class='btn btn-default' data-dismiss='modal'>Annulla</button>
-                <button type='button' class='btn btn-danger' id='delete-modal-confirm' data-dismiss='modal'>Elimina</button>
+                <button type='button' class='btn btn-default' data-dismiss='modal'><i class="fa fa-remove"></i> Annulla</button>
+                <button type='button' class='btn btn-danger' id='delete-modal-confirm' data-dismiss='modal'><i class="fa fa-trash"></i> Elimina</button>
             </div>
         </div>
     </div>

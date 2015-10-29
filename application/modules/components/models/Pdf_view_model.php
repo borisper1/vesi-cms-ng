@@ -48,4 +48,13 @@ class Pdf_view_model extends CI_Model
         }
         return $data;
     }
+
+    function get_new_data()
+    {
+        $data['path']='';
+        $data['is_external_server'] = false;
+        $data['file_exists'] = false;
+        $data['true_path'] = '';
+        return $data;
+    }
 }

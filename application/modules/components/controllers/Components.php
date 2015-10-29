@@ -3,28 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Components extends MX_Controller
 {
-    protected $installed_components=[], $installed_structures=[];
-
-    function __construct()
-    {
-        parent::__construct();
-        $modules=json_decode(file_get_contents(APPPATH."config/modules.json"));
-        foreach($modules->components as $component)
-        {
-            $this->installed_components[] = $component->name;
-        }
-        foreach($modules->structures as $structure)
-        {
-            $this->installed_structures[] = $structure->name;
-        }
-    }
 
     function render_component($id)
     {
         //TODO: Ensure survival if the model/view does not exist (ERR_CORRUPT_INSTALL)
         $type = $this->get_content_type($id);
         //TODO: Add error checking
-        if(in_array($type,$this->installed_components))
+        if(in_array($type,$this->modules_handler->installed_components))
         {
             $model_cname=str_replace('-','_',$type).'_model';
             $this->load->model($model_cname);
@@ -62,7 +47,7 @@ class Components extends MX_Controller
             }
             else
             {
-                if(in_array($element->type,$this->installed_structures))
+                if(in_array($element->type,$this->modules_handler->installed_structures))
                 {
                     $structure_data=[];
                     foreach($element->views as $view)
@@ -103,6 +88,17 @@ class Components extends MX_Controller
         $model_cname=$module_cname.'_model';
         $this->load->model($model_cname);
         $data = $this->$model_cname->get_edit_data($id);
+        //Load the js actions file for the editor
+        $this->resources->load_aux_js_file('assets/administration/editors/'.$module_cname.'.js');
+        $this->load->view('editors/'.$module_cname.'_editor', $data);
+    }
+
+    function load_new_editor($type)
+    {
+        $module_cname=str_replace('-','_',$type);
+        $model_cname=$module_cname.'_model';
+        $this->load->model($model_cname);
+        $data = $this->$model_cname->get_new_data();
         //Load the js actions file for the editor
         $this->resources->load_aux_js_file('assets/administration/editors/'.$module_cname.'.js');
         $this->load->view('editors/'.$module_cname.'_editor', $data);

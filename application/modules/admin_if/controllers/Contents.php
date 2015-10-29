@@ -8,6 +8,7 @@ class Contents extends MX_Controller
     {
         $this->load->model('content_handler');
         $data['content_list'] = $this->content_handler->get_contents_list_with_usages();
+        $data['components_list'] = $this->modules_handler->get_components_list();
         $this->load->view('content/list',$data);
     }
 
@@ -18,6 +19,26 @@ class Contents extends MX_Controller
         $data['is_new']=false;
         $this->load->view('content/editor_wrapper',$data);
         echo Modules::run('components/load_editor',$id);
+    }
+
+    function new_content($args)
+    {
+        if(strpos($args, '::')===false)
+        {
+            $data['id']=uniqid();
+            $data['type']=$args;
+        }
+        else
+        {
+            $args = explode('::',$args);
+            $data['id']=$args[1];
+            $data['type']=$args[0];
+        }
+        $data['is_new']=true;
+        $data['preview']='';
+
+        $this->load->view('content/editor_wrapper',$data);
+        echo Modules::run('components/load_new_editor',$data['type']);
     }
 
     function check_orphans()

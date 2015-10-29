@@ -42,4 +42,12 @@ class Html_field_model extends CI_Model
             return false;
         }
     }
+    function get_new_data()
+    {
+        $data['content']='';
+        $data['js_enabled'] = false;
+        $data['js_string'] = '';
+        return $data;
+    }
+
 }
