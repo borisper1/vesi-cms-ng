@@ -39,7 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <li><a href="<?=base_url('admin/main_menu')?>"><i class="fa fa-fw fa-th-list"></i> Menu principale</a></li>
                         <li><a href="<?=base_url('admin/sec_menu/')?>"><i class="fa fa-fw fa-list"></i> Menu secondari</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="<?=base_url('admin//footer')?>"><i class="fa fa-fw fa-file"></i> Piè di pagina</a></li>
+                        <li><a href="<?=base_url('admin/footer')?>"><i class="fa fa-fw fa-file"></i> Piè di pagina</a></li>
                     </ul>
                 </li>
 

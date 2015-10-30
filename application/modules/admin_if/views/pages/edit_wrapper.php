@@ -254,6 +254,55 @@
     </div>
 </div>
 
+<div class="modal fade" id="new-content-modal" tabindex="-1" role="dialog" aria-labelledby="new-content-modal-label" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="new-content-modal-label"><i class="fa fa-lg fa-plus"></i> Associa nuovo contenuto</h4>
+            </div>
+            <div class="modal-body">
+                <div id="new-content-modal-selector">
+                    <div class="form-group">
+                        <label class="control-label" for="i-page-layout"> Scegliere il tipo di contenuto da creare</label>
+                        <select class="selectpicker form-control" id="i-content-type">
+                            <?php foreach($components_list as $component): ?>
+                                <option data-content="<span class='label label-default'><?=$component['name'] ?></span>  <?=$component['description'] ?>"><?=$component['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <p class="text-info min-space-top no-margin" id="layout-change-warning"><i class="fa fa-info-circle"></i> NB: tutte le modifiche apportate verranno salvate (non sarà più possibile ripristinare una versione precedente). L'editor contenuti verrà aperto</p>
+                    </div>
+                    <div id="new-content-modal-wait">
+                        <p>Aggiunta del contenuto alla pagina. Attendere...</p>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped active" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="new-content-modal-create-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-success" id="new-content-modal-confirm"><i class="fa fa-bolt"></i> Crea contenuto</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit-content-modal" tabindex="-1" role="dialog" aria-labelledby="edit-content-modal-label" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="edit-content-modal-label"><i class="fa fa-lg fa-edit"></i> Modifica contenuto</h4>
+            </div>
+            <div class="modal-body">
+                <p>Salvataggio delle modifiche apportate. Attendere...</p>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped active" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row" id="events-cage">
     <div class="col-lg-<?=$has_sidebar ? '6' : '12' ?> editor-parent-element">
         <h3 class="ui horizontal divider header">

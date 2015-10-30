@@ -6,7 +6,7 @@ class Page_render extends MX_Controller
     /**
      * Index Page for this controller.
      *
-     * Calls Page_render::view() for the page home::home, this displays the homepage.
+     * Calls Page_render::view() for the page set as home in db_config.
      */
     public function index()
     {
@@ -44,6 +44,9 @@ class Page_render extends MX_Controller
         $page_data = $this->page_handler->get_page_obj($page_id);
         $base_data['title']=strip_tags($page_data->title).' | '.$this->db_config->get('general','website_name');
         $base_data['content']=$this->display_layout($page_data);
+        if($this->db_config->get('content','display_footer')){
+            $base_data['content'].=$this->db_config->get('content','footer_html');
+        }
 
         //Load basic system data
         $base_data['use_cdn']=$this->resources->use_cdn;
@@ -89,6 +92,7 @@ class Page_render extends MX_Controller
         $base_data['use_cdn']=$this->resources->use_cdn;
         $base_data['legacy_support']=$this->resources->legacy_support;
         $base_data['urls']=$this->resources->urls;
+        $base_data['urls']['aux_js_loader']=[];
         $base_data['fallback_urls']=$this->resources->fallback_urls;
         $base_data['hover_menus']=(boolean)$this->db_config->get('style','menu_hover');
 

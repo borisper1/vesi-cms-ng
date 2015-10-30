@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var CurrentItem, CurrentMode;
+    var CurrentItem, CurrentMode, CurrentCommand;
 
     var is_new_unsaved = $('#is-new').text()==='true';
     if(is_new_unsaved){
@@ -423,9 +423,63 @@ $(document).ready(function() {
         CurrentItem=$(this).closest('.editor-parent-element');
         $('#link-menu-modal').modal();
     }).on('click','.link-plugin',function(){
-        alert("Il supporto ai plug-in non è ancora stato ultimato - Plug-ins are not currently supported")
+        alert("Il supporto ai plug-in non è ancora stato ultimato - Plug-ins are not currently supported");
+    }).on('click','.new-standard-content',function(){
+        CurrentItem=$(this).closest('.editor-parent-element');
+        $('#new-content-modal-selector, #new-content-modal-create-footer').removeClass('hidden');
+        $('#new-content-modal-wait').addClass('hidden');
+        $('#new-content-modal').modal();
+    }).on('click','.edit-content',function(){
+        CurrentItem=$(this).closest('.content-symbol');
+        $('#spinner').removeClass('hidden');
+        $.post(window.vbcknd.base_url+'ajax/admin/pages/save', GetPageData(), EditContentSave);
+        $('#edit-content-modal').modal();
     });
 
+    function EditContentSave(data){
+        $('.alert').addClass('hidden');
+        if(data=="success"){
+            var id = CurrentItem.find('.f-id').text();
+            window.location.assign(window.vbcknd.base_url + 'admin/contents/edit/'+id);
+        }else{
+            $('#error-msg').html("Si è verificato un errore durante il salvataggio della pagina. (Il token CSRF potrebbe essere scaduto" +
+                " se la protezione CSRF è abilitata) - "+data.replace(/(<([^>]+)>)/ig,""));
+            $('#error-alert').removeClass('hidden');
+        }
+    }
+
+    $('#new-content-modal-confirm').click(function(){
+        $('#new-content-modal-selector, #new-content-modal-create-footer').addClass('hidden');
+        $('#new-content-modal-wait').removeClass('hidden');
+        CurrentCommand = $('#i-content-type').val();
+        $.get(window.vbcknd.base_url+'ajax/admin/pages/get_new_id', CreateNewContent);
+    });
+
+    function CreateNewContent(data){
+        $('.content-alert').addClass('hidden');
+        $('#content-linking-spinner').removeClass('hidden');
+        CurrentCommand += '::'+data;
+        $.post(window.vbcknd.base_url+'ajax/admin/pages/get_content_symbol','id='+data, CreateNewContentLink);
+    }
+
+    function CreateNewContentLink(data){
+        LinkExistingContent(data);
+        if(data!=''){
+            $('#spinner').removeClass('hidden');
+            $.post(window.vbcknd.base_url+'ajax/admin/pages/save', GetPageData(), CreateNewContentSave);
+        }
+    }
+
+    function CreateNewContentSave(data){
+        $('.alert').addClass('hidden');
+        if(data=="success"){
+            window.location.assign(window.vbcknd.base_url + 'admin/contents/new_content/'+CurrentCommand);
+        }else{
+            $('#error-msg').html("Si è verificato un errore durante il salvataggio della pagina. (Il token CSRF potrebbe essere scaduto" +
+                " se la protezione CSRF è abilitata) - "+data.replace(/(<([^>]+)>)/ig,""));
+            $('#error-alert').removeClass('hidden');
+        }
+    }
 
     $('#link-content-modal-confirm').click(function(){
         var id = $('#i-link-content-id').val();
