@@ -21,10 +21,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php endif; ?>
     </head>
     <body>
-        <?php echo $menu ?>
+        <div id="page-wrapper">
+            <?php echo $menu ?>
 
-        <?php echo $content ?>
-
+            <?php echo $content ?>
+        </div>
         <script src="<?=$urls['jquery']?>"></script>
         <?php if($use_cdn['jquery']): ?>
             <script>window.jQuery || document.write('<script src="<?=$fallback_urls['jquery']?>">\x3C/script>')</script>

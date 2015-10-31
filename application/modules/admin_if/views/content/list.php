@@ -9,12 +9,12 @@
 </div>
 <br>
 <br>
-<div class="alert alert-danger alert-dismissable hidden content-alert" id="content-deletion-error">
-    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+<div class="alert alert-danger alert-dismissible hidden content-alert" id="content-deletion-error">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-exclamation-circle"></i> <b>Impossibile eliminare il contenuto:</b> errore del server
 </div>
-<div class="alert alert-success alert-dismissable hidden content-alert" id="content-deletion-success">
-    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+<div class="alert alert-success alert-dismissible hidden content-alert" id="content-deletion-success">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-check"></i> Contenuto eliminato con successo
 </div>
 <div class="alert alert-info hidden content-alert" id="content-deletion-spinner"><i class="fa fa-refresh fa-spin"></i> Eliminazione del contenuto selezionato...</div>

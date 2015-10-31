@@ -11,17 +11,17 @@
 <div class="clearfix"></div>
 <br><br>
 
-<div class="alert alert-danger alert-dismissable hidden" id="deletion-error-alert">
-    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+<div class="alert alert-danger alert-dismissible hidden" id="deletion-error-alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-exclamation-circle"></i> <b>Impossibile eliminare la pagina:</b><br><span id="error-msg"></span>
 </div>
 
-<div class="alert alert-danger alert-dismissable hidden content-alert" id="content-deletion-error">
-    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+<div class="alert alert-danger alert-dismissible hidden content-alert" id="content-deletion-error">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-exclamation-circle"></i> <b>Impossibile eliminare i contenuti:</b><br> I contenuti sono stati dissociati, ma non è stato possible eliminare alcuni contenuti. Questi contenuti sono adesso orfani.
 </div>
-<div class="alert alert-success alert-dismissable hidden content-alert" id="content-deletion-success">
-    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+<div class="alert alert-success alert-dismissible hidden content-alert" id="content-deletion-success">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-check"></i> Contenuti eliminati con successo
 </div>
 <div class="alert alert-info hidden content-alert" id="content-deletion-spinner"><i class="fa fa-refresh fa-spin"></i> Eliminazione dei contenuti selezionati...</div>

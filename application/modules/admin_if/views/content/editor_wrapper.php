@@ -14,8 +14,8 @@
 <br>
 
 <div class="alert alert-danger hidden" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile salvare il contenuto:</b><br><span id="error-msg"></span></div>
-<div class="alert alert-success alert-dismissable  hidden" id="success-alert">
-    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+<div class="alert alert-success alert-dismissible hidden" id="success-alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-check"></i> Contenuto salvato con successo.
 </div>
 <div class="alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Salvataggio del contenuto...</div>

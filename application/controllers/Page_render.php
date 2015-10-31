@@ -67,6 +67,9 @@ class Page_render extends MX_Controller
         $hide_title = ($page_data->container.'::'.$page_data->page_name==$this->db_config->get('general','home_page') and $this->db_config->get('general','display_home_page_title')==0);
         $data['title']=$hide_title ? '' : $page_data->title;
         $data['container_class']=$this->db_config->get('style','use_fluid_containers') ? 'container-fluid' : 'container';
+        if($this->db_config->get('content','display_footer')){
+            $data['container_class'].=' with-footer';
+        }
         $data['content']=Modules::run('components/render_section',$page_data->elements);
         if(isset($page_data->sidebar_elements))
         {

@@ -82,7 +82,7 @@ class Content_handler extends CI_Model
         }
         else
         {
-            return false;
+            return [];
         }
     }
 

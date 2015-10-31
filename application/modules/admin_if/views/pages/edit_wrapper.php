@@ -18,24 +18,24 @@
 <br>
 
 <div class="alert alert-danger hidden" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile salvare la pagina:</b><br><span id="error-msg"></span></div>
-<div class="alert alert-success alert-dismissable  hidden" id="success-alert">
-    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+<div class="alert alert-success alert-dismissible  hidden" id="success-alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-check"></i> Pagina salvata con successo, <b>Premere su <i>Aggiorna</i></b> per ricaricare le informazioni sullo stato contenuti
 </div>
 <div class="alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Salvataggio della pagina...</div>
 
-<div class="alert alert-danger alert-dismissable hidden content-alert" id="content-deletion-error">
-    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+<div class="alert alert-danger alert-dismissible hidden content-alert" id="content-deletion-error">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-exclamation-circle"></i> <b>Impossibile eliminare i contenuti:</b><br> I contenuti sono stati dissociati, ma non è stato possible eliminare alcuni contenuti. Questi contenuti sono adesso orfani.
 </div>
-<div class="alert alert-success alert-dismissable hidden content-alert" id="content-deletion-success">
-    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+<div class="alert alert-success alert-dismissible hidden content-alert" id="content-deletion-success">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-check"></i> Contenuti eliminati con successo
 </div>
 <div class="alert alert-info hidden content-alert" id="content-deletion-spinner"><i class="fa fa-refresh fa-spin"></i> Eliminazione dei contenuti selezionati...</div>
 <div class="alert alert-info hidden content-alert" id="content-linking-spinner"><i class="fa fa-refresh fa-spin"></i> Aggiunta del contenuto/menu/plug-in in corso...</div>
-<div class="alert alert-danger alert-dismissable hidden content-alert" id="content-linking-error">
-    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+<div class="alert alert-danger alert-dismissible hidden content-alert" id="content-linking-error">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-exclamation-circle"></i> <b>Impossibile aggiungere il contenuto/menu/plug-in:</b><br> Il server non risponde alla richiesta.
 </div>
 

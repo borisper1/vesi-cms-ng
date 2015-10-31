@@ -45,7 +45,7 @@ $(document).ready(function() {
             is_new_unsaved=false;
             if(is_new_unsaved){
                 var id= $('#f-id').text();
-                history.replaceState( {} , '', window.vbcknd.base_url + 'contents/pages/edit/'+id );
+                history.replaceState( {} , '', window.vbcknd.base_url + 'admin/contents/edit/'+id );
             }
             $('#success-alert').removeClass('hidden')
         }else{
