@@ -26,20 +26,46 @@ $(document).ready(function() {
         var data ={};
         data.id = $('#f-id').text();
         data.type = $('#input-type').val();
-        data.disimissible = $('#input-dismissible').prop('checked') ? 1 : 0;
+        data.dismissible = $('#input-dismissible').prop('checked') ? 1 : 0;
         data.display_on = encodeURIComponent($('#input-pages').val());
         data.content = encodeURIComponent(CKEDITOR.instances.gui_editor.getData());
+        $('.alert').addClass('hidden');
+        $('#spinner').removeClass('hidden');
         $.post(window.vbcknd.base_url+'ajax/admin/alerts/save',data, SaveEditDone);
     });
 
+    $('.delete-alert').click(function(){
+        CurrentId = $(this).closest('.content-row');
+        $('#delete-modal').modal();
+    });
+
+    $('#delete-modal-confirm').click(function(){
+        $('.alert').addClass('hidden');
+        $('#alert-deletion-spinner').removeClass('hidden');
+        $.post(window.vbcknd.base_url+'ajax/admin/alerts/delete','id='+CurrentId.find('.f-id').text(), DeleteAlert);
+    });
+
+    $('#new-content').click(function(){
+        window.location.href = window.vbcknd.base_url+'admin/alerts/edit/new';
+    });
+
+    function DeleteAlert(data){
+        $('.alert').addClass('hidden');
+        if(data==='success'){
+            CurrentId.remove();
+            $('#alert-deletion-success').removeClass('hidden');
+        }else{
+            $('#alert-deletion-error').removeClass('hidden');
+        }
+    }
 
     function SaveEditDone(data){
         $('.alert').addClass('hidden');
         if(data=="success"){
-            is_new_unsaved=false;
             if(is_new_unsaved){
                 var id= $('#f-id').text();
                 history.replaceState( {} , '', window.vbcknd.base_url + 'admin/alerts/edit/'+id );
+                is_new_unsaved=false;
             }
             $('#success-alert').removeClass('hidden')
         }else{

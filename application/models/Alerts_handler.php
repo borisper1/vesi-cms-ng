@@ -58,5 +58,35 @@ class Alerts_handler extends CI_Model
             return false;
         }
     }
-    
+
+    function save($id, $type, $dismissible, $display_on, $content)
+    {
+        $this->load->library('validation');
+        $content = $this->validation->filter_html($content, false);
+        $data = array(
+            'type' => $type,
+            'dismissible' => $dismissible,
+            'display_on' => $display_on,
+            'content'=> $content
+        );
+        //create a new content if the id does not exists
+        $query=$this->db->get_where('alerts',array('id'=> $id));
+        if ($query->num_rows() > 0)
+        {
+            $this->db->where('id', $id);
+            return $this->db->update('alerts', $data);
+        }
+        else
+        {
+            $data['id'] = $id;
+            return $this->db->insert('alerts', $data);
+        }
+    }
+
+    function delete($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('alerts');
+    }
+
 }

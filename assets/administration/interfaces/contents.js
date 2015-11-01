@@ -42,11 +42,11 @@ $(document).ready(function() {
     function SaveEditDone(data){
         $('.alert').addClass('hidden');
         if(data=="success"){
-            is_new_unsaved=false;
             if(is_new_unsaved){
                 var id= $('#f-id').text();
                 history.replaceState( {} , '', window.vbcknd.base_url + 'admin/contents/edit/'+id );
             }
+            is_new_unsaved=false;
             $('#success-alert').removeClass('hidden')
         }else{
             $('#error-msg').html("Si è verificato un errore durante il salvataggio del contenuto. I dati inseriti potrebbero essere non validi" +
@@ -70,17 +70,20 @@ $(document).ready(function() {
     });
 
     $('.delete-content').click(function(){
-        CurrentId = $(this).closest('.content-row').find('.f-id').text();
+        CurrentId = $(this).closest('.content-row');
         $('#delete-modal').modal();
     });
 
     $('#delete-modal-confirm').click(function(){
-        $.post(window.vbcknd.base_url+'ajax/admin/contents/delete_multiple','id_string='+CurrentId, DeleteContents);
+        $('.content-alert').addClass('hidden');
+        $('#content-deletion-spinner').removeClass('hidden');
+        $.post(window.vbcknd.base_url+'ajax/admin/contents/delete_multiple','id_string='+CurrentId.find('.f-id').text(), DeleteContents);
     });
 
     function DeleteContents(data){
         $('.content-alert').addClass('hidden');
         if(data==='success'){
+            CurrentId.remove();
             $('#content-deletion-success').removeClass('hidden');
         }else{
             $('#content-deletion-error').removeClass('hidden');
