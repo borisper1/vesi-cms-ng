@@ -14,9 +14,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link href="<?=base_url('assets/frontend-main.css')?>" rel="stylesheet">
 
         <?php if($legacy_support): ?>
+            <!--[if lt IE 8]>
+                <script>window.location.href = "<?=base_url('assets/unsupported.html') ?>"</script>
+            <![endif]-->
             <!--[if lt IE 9]>
             <script src="<?=base_url('assets/third_party/legacy-support/html5shiv.min.js')?>"></script>
             <script src="<?=base_url('assets/third_party/legacy-support/respond.min.js')?>"></script>
+            <![endif]-->
+        <?php else: ?>
+            <!--[if lt IE 9]>
+            <script>window.location.href = "<?=base_url('assets/unsupported.html') ?>"</script>
             <![endif]-->
         <?php endif; ?>
     </head>

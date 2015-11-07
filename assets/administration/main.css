@@ -68,3 +68,8 @@ h3.inline{
     height:250px;
     resize: none;
 }
+
+.form-control-feedback.tooltipped{
+    pointer-events: auto;
+    cursor: pointer;
+}

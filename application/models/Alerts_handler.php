@@ -59,6 +59,25 @@ class Alerts_handler extends CI_Model
         }
     }
 
+    function get_alerts_for_page($container, $name)
+    {
+        $page_id = $container.'::'.$name;
+        $this->db->like('display_on', $page_id);
+        $this->db->or_where('display_on', 'all');
+        $query = $this->db->get('alerts');
+        $alerts =[];
+        if ($query->num_rows() > 0)
+        {
+            $row = $query->row();
+            $alert['id'] = $row->id;
+            $alert['type'] = $row->type;
+            $alert['content'] = $row->content;
+            $alert['dismissible'] = $row->dismissible == 1;
+            $alerts[]=$alert;
+        }
+        return $alerts;
+    }
+
     function save($id, $type, $dismissible, $display_on, $content)
     {
         $this->load->library('validation');

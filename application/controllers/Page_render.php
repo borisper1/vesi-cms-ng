@@ -43,7 +43,7 @@ class Page_render extends MX_Controller
 
         $page_data = $this->page_handler->get_page_obj($page_id);
         $base_data['title']=strip_tags($page_data->title).' | '.$this->db_config->get('general','website_name');
-        $base_data['content']=$this->display_layout($page_data);
+        $base_data['content'] =$this->display_layout($page_data);
         if($this->db_config->get('content','display_footer')){
             $base_data['content'].=$this->db_config->get('content','footer_html');
         }
@@ -60,16 +60,29 @@ class Page_render extends MX_Controller
         $this->load->view('frontend/base', $base_data);
     }
 
+    protected function render_alerts($container, $name)
+    {
+        $this->load->model('alerts_handler');
+        $alerts = $this->alerts_handler-> get_alerts_for_page($container, $name);
+        $render_out = PHP_EOL;
+        foreach($alerts as $alert)
+        {
+            $render_out.= $this->load->view('frontend/alert', $alert, true).PHP_EOL;
+        }
+        return $render_out;
+    }
+
     protected function display_layout($page_data)
     {
         $page_view=str_replace('-','_',$page_data->layout);
         $data=[];
-        $hide_title = ($page_data->container.'::'.$page_data->page_name==$this->db_config->get('general','home_page') and $this->db_config->get('general','display_home_page_title')==0);
+        $hide_title = ($page_data->container.'::'.$page_data->page_name==$this->db_config->get('general','home_page') and $this->db_config->get('style','display_home_page_title')==0);
         $data['title']=$hide_title ? '' : $page_data->title;
         $data['container_class']=$this->db_config->get('style','use_fluid_containers') ? 'container-fluid' : 'container';
         if($this->db_config->get('content','display_footer')){
             $data['container_class'].=' with-footer';
         }
+        $data['alerts'] = $this->render_alerts($page_data->container, $page_data->page_name);
         $data['content']=Modules::run('components/render_section',$page_data->elements);
         if(isset($page_data->sidebar_elements))
         {
