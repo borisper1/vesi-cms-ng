@@ -24,7 +24,7 @@
             <div class="panel-body">
                 <p>Le Content Delivery Networks permettono di rendere il caricamento delle pagine più veloce per gli utenti del sito caricando alcune risorse da siti di terze parti.
                     Nel caso il CDN indicato non sia raggiungibile a causa di problemi momentanei il sito ricorrerà automaticamente a copie locali (tranne per Font Awesome).</p>
-                <p>Si consiglia di attivare il supporto al CDN e di indicare un CDN affidabile e popolare come ad esempio i <a href="https://developers.google.com/speed/libraries/" target="_blank">CDN di Google</a> </p>
+                <p>Si consiglia di attivare il supporto al CDN e di indicare un CDN affidabile e popolare come ad esempio i <a href="https://developers.google.com/speed/libraries/" target="_blank">CDN di Google</a> e <a href="https://www.bootstrapcdn.com/" target="_blank">BootstrapCDN</a></p>
                 <h4>jQuery</h4>
                 <div class="form-group">
                     <div class="checkbox toggle">
