@@ -32,7 +32,7 @@ class Config extends MX_Controller
 
     function save()
     {
-        $data = $this->input->post('code');
+        $data = rawurldecode($this->input->post('code'));
         $decoded = json_decode($data, true);
         $sections = array_keys($decoded);
         foreach($sections as $section)
@@ -40,9 +40,8 @@ class Config extends MX_Controller
             $keys = array_keys($decoded[$section]);
             foreach($keys as $key)
             {
-                $this->db_config->set($section, $key, $decoded[$section][$key]);
+                $this->db_config->set($section, $key, (string)$decoded[$section][$key]);
             }
-
         }
         $this->db_config->save();
     }
