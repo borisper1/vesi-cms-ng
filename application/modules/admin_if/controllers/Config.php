@@ -30,6 +30,23 @@ class Config extends MX_Controller
         $this->load->view('config/sources', $data);
     }
 
+    function save()
+    {
+        $data = $this->input->post('code');
+        $decoded = json_decode($data, true);
+        $sections = array_keys($decoded);
+        foreach($sections as $section)
+        {
+            $keys = array_keys($decoded[$section]);
+            foreach($keys as $key)
+            {
+                $this->db_config->set($section, $key, $decoded[$section][$key]);
+            }
+
+        }
+        $this->db_config->save();
+    }
+
 
 
 }

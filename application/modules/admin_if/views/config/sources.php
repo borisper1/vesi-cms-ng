@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="i-bootstrap-cdnurl">URL per jQuery 1.x:</label>
+                    <label for="i-bootstrap-cdnurl">URL per Bootstrap (JavaScript):</label>
                     <input type="text" class="form-control cdn-reqssl-url" id="i-bootstrap-cdnurl" placeholder="Inserire l'URL per Bootstrap (JavaScript)" value="<?=$bootstrap_js_cdnurl ?>">
                     <span class="form-control-feedback tooltipped" data-toggle="tooltip" title="">
                         <i class="fa fa-lg"></i>
@@ -94,7 +94,7 @@
                 <p>La modalità di compatibilità permette di visualizzare il sito utilizzando browser obsoleti (Internet Explorer 8 e Firefox 3.6). Questa modalità deve essere attivata solo
                     quando si ha la necessità esplicita di supportare browser obsoleti in quanto rallenta il caricamento delle pagine per tutti gli utenti. In caso si tenti di accedere al sito
                     con un browser non supportato verrà visualizzato un invito ad aggiornare il browser.
-                    <br>La modalità di compatibilità si basa su <code>Respond.js</code> e <code>html5shim</code>.
+                    <br>La modalità di compatibilità si basa su <code>Respond.js</code> e <code>html5shiv</code>.
                 </p>
                 <div class="form-group">
                     <div class="checkbox toggle">

@@ -8,8 +8,6 @@
     }
 }();
 
-
-
 $(document).ready(function() {
     var elevator_href;
     $('.vcms-elevator').click(function(){
