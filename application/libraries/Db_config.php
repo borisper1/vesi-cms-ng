@@ -49,7 +49,7 @@ class Db_config
         $sql_i="INSERT INTO configuration (section,`key`,value) VALUES (?,?,?);";
         foreach($this->config as $section => $options)
         {
-            $save = array_diff($options,$this->cache[$section]); //THIS DOES NOT RETURN THE KEY IF THE VALUE IS DIFFERENT (NOT ALWAYS, ANYWAY)
+            $save = $this->array_diff_manual($options, $this->cache[$section]); //Array diff sembra non funzionare, implementata manualmente
             foreach($save as $key => $value)
             {
                 if(isset($this->cache[$section][$key]))
@@ -62,5 +62,17 @@ class Db_config
                 }
             }
         }
+    }
+
+    private function array_diff_manual($actual, $cache){
+        $output = [];
+        foreach($actual as $key => $value)
+        {
+            if($cache[$key] !== $value)
+            {
+                $output[$key] = $value;
+            }
+        }
+        return $output;
     }
 }

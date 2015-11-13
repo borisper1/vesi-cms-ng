@@ -6,7 +6,7 @@ $(document).ready(function() {
     switch (url_segment){
         case 'config':
             $('#i-menu-hover, #i-use-fluid-containers, #i-display-home-page-title').bootstrapSwitch();
-
+            $('#i-menu-class').selectpicker('val', $('#c-menu-class').text());
             get_data = function (){
                 var data = {};
                 data.style ={};
