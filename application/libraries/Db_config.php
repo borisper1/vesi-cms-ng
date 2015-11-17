@@ -36,15 +36,6 @@ class Db_config
 
     public function save()
     {
-        //Dump config data (DEBUG)
-        ob_start();
-        echo "<h3>Dati di configurazione attuale</h3>";
-        var_dump($this->config);
-        echo "<h3>Dati di configurazione nella cache</h3>";
-        var_dump($this->cache);
-        file_put_contents(FCPATH.'config_save_debug.html',ob_get_contents());
-        ob_end_clean();
-        //END DEBUG
         $sql_u="UPDATE configuration SET value = ? WHERE (section = ? AND `key` = ?);";
         $sql_i="INSERT INTO configuration (section,`key`,value) VALUES (?,?,?);";
         foreach($this->config as $section => $options)

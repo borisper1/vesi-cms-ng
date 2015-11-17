@@ -44,8 +44,6 @@ class Config extends MX_Controller
             }
         }
         $this->db_config->save();
+        echo "success";
     }
-
-
-
 }

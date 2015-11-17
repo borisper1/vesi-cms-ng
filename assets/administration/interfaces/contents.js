@@ -56,7 +56,7 @@ $(document).ready(function() {
     }
 
     $('.close').click(function(){
-        $(this).closest('.alert-dismissable').addClass('hidden');
+        $(this).closest('.alert-dismissible').addClass('hidden');
     });
 
     $('#show-all').click(function(){

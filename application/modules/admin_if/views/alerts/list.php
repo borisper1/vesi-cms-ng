@@ -6,11 +6,11 @@
 <br>
 <br>
 <div class="alert alert-danger alert-dismissible hidden" id="alert-deletion-error">
-    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-exclamation-circle"></i> <b>Impossibile eliminare l'avviso:</b> errore del server
 </div>
 <div class="alert alert-success alert-dismissible hidden" id="alert-deletion-success">
-    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-check"></i> Avviso eliminato con successo
 </div>
 <div class="alert alert-info hidden" id="alert-deletion-spinner"><i class="fa fa-refresh fa-spin"></i> Eliminazione dell'avviso selezionato...</div>

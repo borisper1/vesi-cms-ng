@@ -159,7 +159,7 @@ $(document).ready(function() {
     $(".sortable").sortable().disableSelection();
 
     $('.close').click(function(){
-        $(this).closest('.alert-dismissable').addClass('hidden');
+        $(this).closest('.alert-dismissible').addClass('hidden');
     });
 
     $('#refresh').click(function(){

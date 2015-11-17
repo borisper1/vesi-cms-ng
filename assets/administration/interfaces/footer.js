@@ -11,9 +11,14 @@ $(document).ready(function() {
 
     $('#i-activate').bootstrapSwitch();
 
+    $('.close').click(function(){
+        $(this).closest('.alert-dismissible').addClass('hidden');
+    });
+
     $('#save-footer').click(function(){
         var active = $('#i-activate').prop('checked') ? 1 : 0;
         var html = encodeURIComponent(editor.getValue());
+        $('.alert').addClass('hidden');
         $('#spinner').removeClass('hidden');
         $.post(window.vbcknd.base_url+'ajax/admin/footer/save','enable='+active+'&html='+html,SaveEditDone)
     });

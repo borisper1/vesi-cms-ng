@@ -70,12 +70,27 @@ $(document).ready(function() {
     });
 
     $('#save-config').click(function(){
-        $.post(window.vbcknd.base_url+'ajax/admin/config/save', 'code='+encodeURIComponent(JSON.stringify(get_data())));
+        $('.alert').addClass('hidden');
+        $('#spinner').removeClass('hidden');
+        $.post(window.vbcknd.base_url+'ajax/admin/config/save', 'code='+encodeURIComponent(JSON.stringify(get_data())), ConfigSaveDone);
     });
 
     $('#refresh').click(function(){
         window.location.reload(true);
-    })
+    });
+
+    function ConfigSaveDone(data){
+        $('.alert').addClass('hidden');
+        if(data=="success"){
+            $('#success-alert').removeClass('hidden')
+        }else{
+            $('#error-alert').removeClass('hidden');
+        }
+    }
+
+    $('.close').click(function(){
+        $(this).closest('.alert-dismissible').addClass('hidden');
+    });
 
 
 });

@@ -18,6 +18,10 @@ $(document).ready(function() {
         window.location.reload(true);
     });
 
+    $('.close').click(function(){
+        $(this).closest('.alert-dismissible').addClass('hidden');
+    });
+
     $('#close-edit').click(function(){
         window.location.href = window.vbcknd.base_url+'admin/alerts';
     });

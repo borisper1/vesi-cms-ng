@@ -161,4 +161,64 @@ class User_handler extends CI_Model
         $this->db->where_in('username',$users);
         return $this->db->update('admin_users', array('active' => 0));
     }
+
+    private function get_group()
+    {
+        if($this->session->type!=='administrative')
+        {
+            return false;
+        }
+        $query = $this->db->get_where('admin_users',array('username' => $this->session->username));
+        if ($query->num_rows() > 0)
+        {
+            $row = $query->row();
+            if(intval($row->active)===1 and intval($row->failed_access)<5)
+            {
+                return $row->group;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private function parse_group($group)
+    {
+        $query = $this->db->get_where('admin_groups',array('name' => $group));
+        if ($query->num_rows() > 0)
+        {
+            $row = $query->row();
+            if($row->active===1)
+            {
+                return json_decode($row->code);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    function check_permissions($action){
+        $group = $this->get_group();
+        if($group==='super-users')
+        {
+            return true;
+        }
+        else
+        {
+            $group = $this->parse_group($group);
+            return in_array($action, $group->allowed_actions);
+        }
+
+    }
 }
