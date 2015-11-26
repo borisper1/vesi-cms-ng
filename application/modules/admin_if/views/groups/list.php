@@ -1,7 +1,10 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 ?><div class="page-header"><h1><i class="fa fa-lock"></i> Gruppi e permessi</h1></div>
-<div class="btn-group" id="list-actions">
-    <button type="button" class="btn btn-success" id="new-group"><i class="fa fa-plus"></i> Nuovo gruppo</button>
+<button type="button" class="btn btn-success" id="new-group"><i class="fa fa-plus"></i> Nuovo gruppo</button>
+<div class="btn-group hidden" id="group-actions">
+    <button type="button" class="btn btn-default" id="enable-groups"><span class="fa fa-check"></span> Attiva</button>
+    <button type="button" class="btn btn-default" id="disable-groups"><span class="fa fa-ban"></span> Blocca</button>
+    <button type="button" class="btn btn-danger" id="delete-groups"><span class="fa fa-trash"></span> Elimina</button>
 </div>
 <br>
 <br>
@@ -29,7 +32,17 @@
             </td>
         </tr>
         <?php foreach($groups as $group): ?>
-
+            <tr>
+                <td><input type="checkbox" class="vcms-select-group" value="<?=$group['name'] ?>"> <a href="<?=base_url('admin/groups/edit/'.$group['name']) ?>"><?=$group['name'] ?></a></td>
+                <td><?=$group['description'] ?></td>
+                <td><?=$group['active'] ? "<i class=\"fa fa-check\"></i> Attivo" : "<i class=\"fa fa-ban\"></i> Bloccato" ?></td>
+                <td><?=$group['permissions'] ?></td>
+                <td>
+                    <?php foreach($group['users'] as $user): ?>
+                        <span class="label label-default"><?=$user ?></span>
+                    <?php endforeach; ?>
+                </td>
+            </tr>
         <?php endforeach; ?>
     </tbody>
 </table>

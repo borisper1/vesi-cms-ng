@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 ?><div class="modal fade" id="system_reauth_modal">
     <div class="modal-dialog">
         <div class="modal-content">

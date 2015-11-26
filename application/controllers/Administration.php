@@ -27,9 +27,13 @@ class Administration extends MX_Controller
         $this->load->model('user_handler');
         $menu_data['user_fname']=$this->user_handler->get_admin_full_name();
         $base_data['menu']= $this->load->view('administration/main_menu',$menu_data , TRUE);
-
-        $base_data['content'] = Modules::run('admin_if/'.$interface.'/'.$method,$arguments);
-
+        if($this->user_handler->check_interface_permissions($interface)){
+            $base_data['content'] = Modules::run('admin_if/'.$interface.'/'.$method,$arguments);
+        }
+        else
+        {
+            $base_data['content'] = $this->load->view('administration/not_authorized', null, TRUE);
+        }
         $base_data['system_dom'] = $this->load->view('administration/system_reauth',null , TRUE);
 
         $base_data['title']='Amministrazione - Vesi-CMS';

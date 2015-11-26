@@ -30,6 +30,7 @@ class Page_render extends MX_Controller
         $id=$this->menu_handler->get_main_menu_id();
         $menu_data = $this->menu_handler->get_menu_array($id,$container,$page);
         $menu_data['home_active'] = ($container==='home' and $page==='home');
+        $menu_data['class'] = $this->db_config->get('style', 'menu_class');
         $base_data['menu']=$this->load->view('frontend/main_menu',$menu_data,true);
 
         //Get page data

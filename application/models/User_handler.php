@@ -208,7 +208,7 @@ class User_handler extends CI_Model
         }
     }
 
-    function check_permissions($action){
+    function check_interface_permissions($interface){
         $group = $this->get_group();
         if($group==='super-users')
         {
@@ -217,8 +217,9 @@ class User_handler extends CI_Model
         else
         {
             $group = $this->parse_group($group);
-            return in_array($action, $group->allowed_actions);
+            return in_array($interface, $group->allowed_interfaces);
         }
-
     }
+
+
 }
