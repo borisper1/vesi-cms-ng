@@ -42,9 +42,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="form-group">
         <label for="i-group" class="col-sm-3 control-label">Gruppo permessi:</label>
         <div class="col-sm-7">
-            <select class="form-control" id="i-group">
+            <span class="hidden" id="current-group"><?=$group ?></span>
+            <select class="form-control selectpicker" id="i-group">
+                <option value="super-users" data-content="<span class='label label-danger'>super-users</span> Gruppo per gli utenti con accesso completo al sistema">super-users</option>
                 <?php foreach($groups as $group_i): ?>
-                    <option value="<?=$group_i['name'] ?>" <?=$group_i['name']===$group ? 'selected': '' ?>><?=$group_i['fullname'] ?></option>
+                    <option data-content="<span class='label label-info'><?=$group_i['name'] ?></span> <?=$group_i['description'] ?>"><?=$group_i['name'] ?></option>
                 <?php endforeach; ?>
             </select>
         </div>

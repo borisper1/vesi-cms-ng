@@ -1,19 +1,36 @@
 {
-  "system":["users"],
-  "plugin":["circolari"],
-  "plugin_menu":{
-    "in_content":[
-      {
-        "title":"Nuova circolare",
-        "icon":"fa-plus",
-        "href":"admin/circolari/new"
-      },
-      {
-        "title":"Gestisci circolari",
-        "icon":"fa-files-o",
-        "href":"admin/circolari"
-      }
+  "system":{
+    "items":[
+      {"name":"config", "label": "Impostazioni", "description":"Permette di modificare la configurazione del sistema (incluse le opzioni di sicurezza)", "icon":"fa-gear", "builtin":true, "only_su":false},
+      {"name":"security", "label": "Sicurezza", "description":"Visualizza lo stato di sicurezza del sistema e permette di evitare errori comuni", "icon":"fa-shield", "builtin":true, "only_su":false},
+      {"name":"sysdiag", "label": "Risoluzione dei problemi", "description":"Fornisce procedure automatiche o guidate per la risoluzione dei problemi più comuni", "icon":"fa-magic", "builtin":true, "only_su":false},
+      {"name":"plugins", "label": "Componenti aggiuntivi", "description":"Permette di istallare, configurare e rimuovere i componenti aggiuntivi", "icon":"fa-plug", "builtin":true, "only_su":false},
+      {"name":"special::separator", "builtin":true},
+      {"name":"users", "label": "Account utente", "description":"Permette di creare, modificare e eliminare gli account utente", "icon":"fa-users", "builtin":true, "only_su":true},
+      {"name":"groups", "label": "Gruppi e permessi", "description":"Permette di creare e modificare i gruppi per il controllo dei permessi", "icon":"fa-lock", "builtin":true, "only_su":true},
+      {"name":"special::separator", "builtin":true},
+      {"name":"sysevents", "label": "Avvisi di sistema", "description":"Visualizza un elenco dei problemi riscontrati dal sistema o eventuali avvisi su errori comuni (come HTTP 404)", "icon":"fa-bell", "builtin":true, "only_su":false},
+      {"name":"sysinfo", "label": "Informazioni sul sistema", "description":"Visualizza le caratteristiche del server e del software installato", "icon":"fa-info-circle", "builtin":true, "only_su":false}
     ],
-    "standalone": []
+    "label":"Sistema", "description":"", "icon":"fa-wrench", "builtin":true
+  },
+  "structure":{
+    "items":[
+      {"name":"main_menu", "label": "Menu principale", "description":"Permette di modificare il menu principale del sito", "icon":"fa-th-list", "builtin":true, "only_su":false},
+      {"name":"sec_menu", "label": "Menu secondari", "description":"Permette di creare, modificare e eliminare i menu secondari del sito", "icon":"fa-list", "builtin":true, "only_su":false},
+      {"name":"special::separator", "builtin":true},
+      {"name":"footer", "label": "Piè di pagina", "description":"Permette di modificare il pié di pagina visualizzato su ogni pagina", "icon":"fa-file", "builtin":true, "only_su":false}
+    ],
+    "label":"Struttura", "description":"", "icon":"fa-sitemap", "builtin":true
+  },
+  "content":{
+    "items":[
+      {"name":"pages", "label": "Pagine", "description":"Permette di gestire le pagine e associare e dissociare contenuti, menu e componenti aggiuntivi. Si consiglia di consentirne l'accesso a tutti gli utenti", "icon":"fa-file", "builtin":true, "only_su":false},
+      {"name":"special::separator", "builtin":true},
+      {"name":"contents", "label": "Gestione contenuti", "description":"Permette di gestire manualmente i contenuti e modificarli. Si consiglia di consentirne l'accesso a tutti gli utenti", "icon":"fa-cubes", "builtin":true, "only_su":false},
+      {"name":"alerts", "label": "Avvisi", "description":"Permette di creare avvisi globali visualizzati in cima alle pagine del sito", "icon":"fa-bullhorn", "builtin":true, "only_su":false},
+      {"name":"files", "label": "File e immagini", "description":"Permette di caricare, visualizzare e eliminare file e immagini per l'inclusione nel sito (permette di non usare l'accesso FTP)", "icon":"fa-upload", "builtin":true, "only_su":false}
+    ],
+    "label":"Contenuto", "description":"", "icon":"fa-pencil", "builtin":true
   }
 }

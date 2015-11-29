@@ -7,9 +7,9 @@ class Administration extends MX_Controller
     {
         $this->redirect_if_no_login();
         $this->load->model('user_handler');
-        $menu_data=[];
-        $menu_data['user_fname']=$this->user_handler->get_admin_full_name();
-        $base_data=[];
+        $this->load->library('interfaces_handler');
+        $menu_data['user_fname'] = $this->user_handler->get_admin_full_name();
+        $menu_data['structure'] = $this->interfaces_handler->get_admin_menu_structure();
         $base_data['menu']= $this->load->view('administration/main_menu',$menu_data , TRUE);
 
         $base_data['content'] = null;
@@ -25,7 +25,9 @@ class Administration extends MX_Controller
     {
         $this->redirect_if_no_login();
         $this->load->model('user_handler');
-        $menu_data['user_fname']=$this->user_handler->get_admin_full_name();
+        $this->load->library('interfaces_handler');
+        $menu_data['user_fname'] = $this->user_handler->get_admin_full_name();
+        $menu_data['structure'] = $this->interfaces_handler->get_admin_menu_structure();
         $base_data['menu']= $this->load->view('administration/main_menu',$menu_data , TRUE);
         if($this->user_handler->check_interface_permissions($interface)){
             $base_data['content'] = Modules::run('admin_if/'.$interface.'/'.$method,$arguments);

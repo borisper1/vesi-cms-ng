@@ -21,8 +21,8 @@
     </thead>
     <tbody>
         <tr>
-            <td>super-users</td>
-            <td>Gruppo per gli utenti con accesso completo al sistema.</td>
+            <td><span class="label label-danger">super-users</span></td>
+            <td>Gruppo per gli utenti con accesso completo al sistema</td>
             <td><i class="fa fa-check"></i> Attivo</td>
             <td>Accesso completo</td>
             <td>

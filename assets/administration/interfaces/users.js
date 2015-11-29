@@ -9,6 +9,11 @@ $(document).ready(function() {
         }
     });
 
+    var group_control = $('#i-group');
+    if(group_control){
+        group_control.selectpicker('val', $('#current-group').text());
+    }
+
     $('#delete-users').click(function(){
         var users=[];
         $('.vcms-select-user:checked').each(function(){

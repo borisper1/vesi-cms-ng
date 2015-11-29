@@ -73,3 +73,6 @@ h3.inline{
     pointer-events: auto;
     cursor: pointer;
 }
+.permission-block{
+    margin-bottom: 8px;
+}
