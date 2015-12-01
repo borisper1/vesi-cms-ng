@@ -43,14 +43,13 @@ class Group_handler extends CI_Model
         return $users;
     }
 
-    function get_group_data($id)
+    function get_group_data($group)
     {
-        $query = $this->db->get_where('admin_groups', array('name' => $id));
+        $query = $this->db->get_where('admin_groups', array('name' => $group));
         $row = $query->row();
         if (isset($row))
         {
             $data['description'] = $row->fullname;
-            $data['active'] = (bool)$row->active;
             $processed_code = json_decode($row->code);
             $data['allowed_interfaces_csv'] = implode(',', $processed_code->allowed_interfaces);
             $data['use_content_filter'] = $processed_code->use_content_filter;
@@ -58,5 +57,42 @@ class Group_handler extends CI_Model
             $data['content_filter_directives'] = implode(',', $processed_code->content_filter_directives);
         }
         return $data;
+    }
+
+    function save($group, $description, $code)
+    {
+        $data = array(
+            'fullname' => $description,
+            'code' => $code
+        );
+        //create a new content if the id does not exists
+        $query=$this->db->get_where('admin_groups',array('name'=> $group));
+        if ($query->num_rows() > 0)
+        {
+            $this->db->where('name', $group);
+            return $this->db->update('admin_groups', $data);
+        }
+        else
+        {
+            $data['name'] = $group;
+            $data['active'] = 0;
+            return $this->db->insert('admin_groups', $data);
+        }
+    }
+
+
+    function delete_groups($groups){
+        $this->db->where_in('name',$groups);
+        return $this->db->delete('admin_groups');
+    }
+
+    function enable_groups($groups){
+        $this->db->where_in('name',$groups);
+        return $this->db->update('admin_groups', array('active' => 1));
+    }
+
+    function disable_groups($groups){
+        $this->db->where_in('name',$groups);
+        return $this->db->update('admin_groups', array('active' => 0));
     }
 }

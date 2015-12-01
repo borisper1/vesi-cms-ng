@@ -13,9 +13,15 @@ class Groups extends MX_Controller
     function edit($id)
     {
         $this->load->library('interfaces_handler');
+        $this->load->model('page_handler');
         if($id=='new')
         {
-            $data['group_name']="";
+            $data['group_name']='';
+            $data['description']='';
+            $data['allowed_interfaces_csv']='';
+            $data['use_content_filter']=false;
+            $data['content_filter_mode']='whitelist';
+            $data['content_filter_directives'] = '';
             $data['is_new']=true;
         }
         else
@@ -26,6 +32,80 @@ class Groups extends MX_Controller
             $data['is_new']=false;
         }
         $data['permission_groups'] = $this->interfaces_handler->get_raw_array();
+        $data['containers']=$this->page_handler->get_containers_list();
         $this->load->view('groups/edit',$data);
+    }
+
+    function get_pages()
+    {
+        $this->load->model('page_handler');
+        $pages = $this->page_handler->get_pages_in_container($this->input->post('container'));
+        //Upload data in CSV fromat, js generates the DOM <option> elements
+        if($pages){
+            echo implode(',', $pages);
+        }
+        else
+        {
+            echo "failed - 500";
+        }
+    }
+
+    function save()
+    {
+        $name = $this->input->post('name');
+        $description = rawurldecode($this->input->post('description'));
+        $code = rawurldecode($this->input->post('code'));
+        $this->load->model('group_handler');
+        $response = $this->group_handler->save($name, $description, $code);
+        if($response)
+        {
+            echo 'success';
+        }
+        else
+        {
+            echo 'failed - 500';
+        }
+    }
+
+    function delete(){
+        $groups = explode(',', $this->input->post('groups'));
+        $this->load->model('group_handler');
+        $result = $this->group_handler->delete_groups($groups);
+        if($result)
+        {
+            echo 'success';
+        }
+        else
+        {
+            echo 'failed - 500';
+        }
+    }
+
+    function enable(){
+        $groups = explode(',', $this->input->post('groups'));
+        $this->load->model('group_handler');
+        $result = $this->group_handler->enable_groups($groups);
+        if($result)
+        {
+            echo 'success';
+        }
+        else
+        {
+            echo 'failed - 500';
+        }
+    }
+
+    function disable(){
+        $groups = explode(',', $this->input->post('groups'));
+        $this->load->model('group_handler');
+        $result = $this->group_handler->disable_groups($groups);
+        if($result)
+        {
+            echo 'success';
+        }
+        else
+        {
+            echo 'failed - 500';
+        }
     }
 }

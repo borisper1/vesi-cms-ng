@@ -76,7 +76,7 @@ h3.inline{
 .permission-block{
     margin-bottom: 8px;
 }
-.btn-group{
+.btn-group.spaced{
     margin-bottom: 12px;
 }
 .btn-group-sm{
