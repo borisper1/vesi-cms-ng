@@ -42,4 +42,21 @@ class Group_handler extends CI_Model
         }
         return $users;
     }
+
+    function get_group_data($id)
+    {
+        $query = $this->db->get_where('admin_groups', array('name' => $id));
+        $row = $query->row();
+        if (isset($row))
+        {
+            $data['description'] = $row->fullname;
+            $data['active'] = (bool)$row->active;
+            $processed_code = json_decode($row->code);
+            $data['allowed_interfaces_csv'] = implode(',', $processed_code->allowed_interfaces);
+            $data['use_content_filter'] = $processed_code->use_content_filter;
+            $data['content_filter_mode'] = $processed_code->content_filter_mode;
+            $data['content_filter_directives'] = implode(',', $processed_code->content_filter_directives);
+        }
+        return $data;
+    }
 }

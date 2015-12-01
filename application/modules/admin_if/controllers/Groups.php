@@ -20,7 +20,9 @@ class Groups extends MX_Controller
         }
         else
         {
-
+            $this->load->model('group_handler');
+            $data = $this->group_handler->get_group_data($id);
+            $data['group_name']=$id;
             $data['is_new']=false;
         }
         $data['permission_groups'] = $this->interfaces_handler->get_raw_array();
