@@ -193,7 +193,7 @@ class User_handler extends CI_Model
         if ($query->num_rows() > 0)
         {
             $row = $query->row();
-            if($row->active===1)
+            if($row->active==1)
             {
                 return json_decode($row->code);
             }
@@ -208,16 +208,45 @@ class User_handler extends CI_Model
         }
     }
 
-    function check_interface_permissions($interface){
+    function check_interface_permissions($interface)
+    {
         $group = $this->get_group();
-        if($group==='super-users')
+        if($group==='super-users' or $group===false)
         {
             return true;
         }
         else
         {
             $group = $this->parse_group($group);
+            if($group===false)
+            {
+                return false;
+            }
             return in_array($interface, $group->allowed_interfaces);
+        }
+    }
+
+    function check_content_filter()
+    {
+        $group = $this->get_group();
+        if($group==='super-users')
+        {
+            return false;
+        }
+        else
+        {
+            $source =  $this->parse_group($group);
+            if($source->use_content_filter)
+            {
+                $data['mode'] = $source->content_filter_mode;
+                $data['directives'] = $source->content_filter_directives;
+                return $data;
+            }
+            else
+            {
+                return false;
+            }
+
         }
     }
 

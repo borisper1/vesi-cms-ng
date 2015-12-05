@@ -9,7 +9,7 @@
     <button type="button" class="btn btn-default" id="hide-all"><i class="fa fa-eye-slash"></i> Nascondi tutto</button>
 </div>
 <div class="clearfix"></div>
-<br><br>
+<br>
 
 <div class="alert alert-danger alert-dismissible hidden" id="deletion-error-alert">
     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
@@ -25,6 +25,11 @@
     <i class="fa fa-check"></i> Contenuti eliminati con successo
 </div>
 <div class="alert alert-info hidden content-alert" id="content-deletion-spinner"><i class="fa fa-refresh fa-spin"></i> Eliminazione dei contenuti selezionati...</div>
+<?php
+if($cfilter_on){
+    $this->load->view('administration/notify_cfilter_on');
+}
+?>
 
 <datalist id="containers-list">
     <?php foreach($containers as $container): ?>

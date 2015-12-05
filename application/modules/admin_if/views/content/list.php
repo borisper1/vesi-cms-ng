@@ -18,6 +18,11 @@
     <i class="fa fa-check"></i> Contenuto eliminato con successo
 </div>
 <div class="alert alert-info hidden content-alert" id="content-deletion-spinner"><i class="fa fa-refresh fa-spin"></i> Eliminazione del contenuto selezionato...</div>
+<?php
+    if($cfilter_on){
+        $this->load->view('administration/notify_cfilter_on');
+    }
+?>
 
 <table class="table table-hover">
     <thead>

@@ -34,7 +34,7 @@ class Administration extends MX_Controller
         }
         else
         {
-            $base_data['content'] = $this->load->view('administration/not_authorized', null, TRUE);
+            $base_data['content'] = $this->load->view('administration/not_authorized', array('interface' => $interface), TRUE);
         }
         $base_data['system_dom'] = $this->load->view('administration/system_reauth',null , TRUE);
 

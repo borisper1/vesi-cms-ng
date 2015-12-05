@@ -239,7 +239,7 @@ $(document).ready(function() {
         }
         var data ={};
         data.name = $('#group-name').text();
-        data.descritpion = encodeURIComponent($('group-description').text());
+        data.description = encodeURIComponent($('#group-description').text());
         data.code = encodeURIComponent(JSON.stringify(json, null, '\t'));
         $('.alert').addClass('hidden');
         $('#spinner').removeClass('hidden');

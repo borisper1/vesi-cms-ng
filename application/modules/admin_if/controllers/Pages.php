@@ -7,8 +7,11 @@ class Pages extends MX_Controller
 
     function index()
     {
-        $this->load->model('content_handler');
-        $data['rendered_elements']=$this->render_interactive_list();
+        $this->load->model('user_handler');
+        $this->load->model('page_handler');
+        $cfilter = $this->user_handler->check_content_filter();
+        $data['cfilter_on'] = $cfilter!==false;
+        $data['rendered_elements']=$this->render_interactive_list($cfilter);
         $data['containers']=$this->page_handler->get_containers_list();
         $this->load->view('pages/list_wrapper', $data);
     }
@@ -212,14 +215,61 @@ class Pages extends MX_Controller
 
     //Functions for the list view (ajax-able)
 
-    protected function render_interactive_list(){
+    protected function render_interactive_list($cfilter = false)
+    {
+        //TODO: Implement content filtering
         $this->load->model('page_handler');
         $containers = $this->page_handler->get_containers_list();
         $rendered_html='';
-        foreach($containers as $container)
+        foreach($containers as &$container)
         {
             $pages = $this->page_handler->get_pages_container_list($container);
-            $rendered_html.=$this->load->view('pages/list_block', array('pages' => $pages, 'container' => $container), true);
+            $pages_full_identifiers = [];
+            foreach($pages as &$page)
+            {
+                $pages_full_identifiers[]=$container.'::'.$page['name'];
+            }
+            $load_block = true;
+            if($cfilter!==false)
+            {
+                $directives_containers =[];
+                $directives_pages = [];
+                foreach($cfilter['directives'] as &$directive)
+                {
+                    if(strpos($directive, '::')===false)
+                    {
+                        $directives_containers[]=$directive;
+                    }
+                    else
+                    {
+                        $directives_pages[]=$directive;
+                    }
+                }
+                $common_pages = array_intersect($pages_full_identifiers,$directives_pages);
+                if(in_array($container, $directives_containers))
+                {
+                    if($cfilter['mode']==='blacklist')
+                    {
+                        $load_block = false;
+                    }
+                }
+                elseif($common_pages!=[])
+                {
+                    $pages=[];
+                    foreach($common_pages as $common_page)
+                    {
+                        $pages[]=explode('::',$common_page)[1];
+                    }
+                }
+                else
+                {
+                    $load_block = false;
+                }
+            }
+            if($load_block)
+            {
+                $rendered_html.=$this->load->view('pages/list_block', array('pages' => $pages, 'container' => $container, 'cfilter_status' => $cfilter!==false), true);
+            }
         }
         return $rendered_html;
     }

@@ -24,7 +24,7 @@
                         <td>
                             <?=$page['home'] ? '<i class="fa fa-home"></i>' : '<i class="fa fa-file-o"></i>' ?> <a href="<?=base_url('admin/pages/edit/'.$page['id']) ?>"><?=$page['title'] ?></a>
                             <a class='remove-page lmbnc pull-right tooltipped' title='Elimina'><i class='fa fa-remove'></i></a>
-                            <?php if(!$page['home']): ?>
+                            <?php if(!$page['home'] and !$cfilter_status): ?>
                                 <a class='set-home lmbnc pull-right tooltipped' title='Imposta come pagina iniziale'><i class='fa fa-home'></i></a>
                             <?php endif; ?>
                         </td>

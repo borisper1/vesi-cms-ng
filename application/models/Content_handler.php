@@ -86,12 +86,52 @@ class Content_handler extends CI_Model
         }
     }
 
-    function get_contents_list_with_usages()
+    function get_contents_list_with_usages($cfilter = false)
     {
         $contents = $this->get_contents_list();
         foreach($contents as &$content)
         {
             $content['usages']= $this->find_usages($content['id']);
+        }
+        if($cfilter!==false){
+            //Separate directives in container level and page level.
+            $directives_containers =[];
+            $directives_pages = [];
+            foreach($cfilter['directives'] as &$directive)
+            {
+                if(strpos($directive, '::')===false)
+                {
+                    $directives_containers[]=$directive;
+                }
+                else
+                {
+                    $directives_pages[]=$directive;
+                }
+            }
+            foreach($contents as $key => &$content)
+            {
+                $containers=[];
+                $pages=[];
+                foreach($content['usages'] as &$usage)
+                {
+                    $containers[]=$usage['container'];
+                    $pages[]=$usage['container'].'::'.$usage['name'];
+                }
+                if(array_intersect($containers, $directives_containers)!=[] or array_intersect($pages, $directives_pages)!=[])
+                {
+                    if($cfilter['mode']==='blacklist')
+                    {
+                        unset($contents[$key]);
+                    }
+                }
+                else
+                {
+                    if($cfilter['mode']==='whitelist')
+                    {
+                        unset($contents[$key]);
+                    }
+                }
+            }
         }
         return $contents;
     }
