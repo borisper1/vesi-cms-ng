@@ -222,4 +222,29 @@ class Content_handler extends CI_Model
             return $this->db->insert('contents', $data) ? 0 : 1;
         }
     }
+
+    function filter_all()
+    {
+        $this->load->library('validation');
+        $query = $this->db->get('contents');
+        $contents=[];
+        foreach ($query->result() as $row)
+        {
+            $component_info = $this->modules_handler->get_component_info($row->type);
+            if ($component_info and $component_info->save_type == 'html') {
+                $content['id'] = $row->id;
+                $content['type'] = $row->type;
+                $content['filtered_content'] = $this->validation->filter_html($row->content, $component_info->allow_iframe);
+                $content['old_digest'] = md5($row->content);
+                $content['digest'] = md5($content['filtered_content']);
+                $content['changed'] = $content['old_digest'] !== $content['digest'];
+                if ($content['changed']) {
+                    $this->db->where('id', $content['id']);
+                    $content['update_result'] = $this->db->update('contents', array('content' => $content['filtered_content']));
+                    array_push($contents, $content);
+                }
+            }
+        }
+        return $contents;
+    }
 }

@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?><div class="page-header"><h1><i class="fa fa-cog"></i> Configurazione</h1></div>
+?><div class="page-header"><h1><i class="fa fa-cog"></i> Impostazioni</h1></div>
 
 <div class="row">
     <div class="col-md-3">
