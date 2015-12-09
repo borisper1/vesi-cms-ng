@@ -2,33 +2,24 @@
 
 class Config extends MX_Controller
 {
-    function index()
+    function load_interface($name)
     {
-        $data=array(
-            'website_name' => $this->db_config->get('general', 'website_name'),
-            'menu_class' => $this->db_config->get('style', 'menu_class'),
-            'menu_hover' => (boolean)$this->db_config->get('style', 'menu_hover'),
-            'use_fluid_containers' => (boolean)$this->db_config->get('style', 'use_fluid_containers'),
-            'display_home_page_title' => (boolean)$this->db_config->get('style', 'display_home_page_title')
-        );
-        $this->load->view('config/index', $data);
+        $this->load->library('interfaces_handler');
+        $base_data['interfaces'] = $this->interfaces_handler->get_config_interfaces();
+        $base_data['active_interface'] = $name;
+        $model_name = $name.'_model';
+        $this->load->model('config/'.$model_name);
+        $data = $this->$model_name->get_data();
+        $base_data['rendered_interface'] = $this->load->view('config/'.$name, $data, true);
+        $this->load->view('config/base', $base_data);
+        $this->resources->load_aux_js_file('assets/administration/interfaces/config/'.$name.'.js');
     }
 
-    function sources()
+    function index()
     {
-        $data=array(
-            'enable_legacy_support' => (boolean)$this->db_config->get('general', 'enable_legacy_support'),
-            'bootstrap_js_usecdn' => (boolean)$this->db_config->get('resources', 'bootstrap_js_usecdn'),
-            'fontawesome_usecdn' => (boolean)$this->db_config->get('resources', 'fontawesome_usecdn'),
-            'jquery1_usecdn' => (boolean)$this->db_config->get('resources', 'jquery1_usecdn'),
-            'jquery2_usecdn' => (boolean)$this->db_config->get('resources', 'jquery2_usecdn'),
-            'bootstrap_js_cdnurl' => $this->db_config->get('resources', 'bootstrap_js_cdnurl'),
-            'fontawesome_cdnurl' => $this->db_config->get('resources', 'fontawesome_cdnurl'),
-            'jquery1_cdnurl' => $this->db_config->get('resources', 'jquery1_cdnurl'),
-            'jquery2_cdnurl' => $this->db_config->get('resources', 'jquery2_cdnurl'),
-        );
-        $this->load->view('config/sources', $data);
+        $this->load_interface('general');
     }
+
 
     function save()
     {

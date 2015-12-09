@@ -60,6 +60,7 @@ $route['admin'] = 'administration';
 $route['admin/login'] = 'administration/login';
 $route['admin/logout'] = 'administration/logout';
 $route['admin/(:any)'] = 'administration/load_interface/$1/index';
+$route['admin/config/(:any)'] = 'administration/load_interface/config/load_interface/$1';
 $route['admin/(:any)/(:any)'] = 'administration/load_interface/$1/$2';
 $route['admin/(:any)/(:any)/(:any)'] = 'administration/load_interface/$1/$2/$3';
 $route['ajax/admin/(:any)/(:any)'] = 'administration/ajax_interface/$1/$2';

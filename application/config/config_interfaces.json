@@ -1,0 +1,6 @@
+{
+  "interfaces":[
+      {"name":"general", "label": "Generali", "icon":"fa-sliders", "builtin":true},
+      {"name":"resources", "label": "Risorse esterne e compatibilità", "icon":"fa-cubes", "builtin":true}
+    ]
+}

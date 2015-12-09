@@ -28,8 +28,15 @@ class Interfaces_handler
         return $menu;
     }
 
-    public function get_raw_array(){
+    public function get_raw_array()
+    {
         return json_decode(file_get_contents(APPPATH."config/admin_interfaces.json"),true);
+    }
+
+    public function get_config_interfaces()
+    {
+        $schema = json_decode(file_get_contents(APPPATH."config/config_interfaces.json"),true);
+        return $schema['interfaces'];
     }
 
 }
