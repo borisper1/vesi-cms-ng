@@ -32,7 +32,7 @@ $(document).ready(function() {
         $.ajax({
             type: 'POST',
             data: data,
-            url: window.vbcknd.base_url + 'ajax/admin/sysdiag/filter_html',
+            url: window.vbcknd.base_url + 'ajax/admin/sysdiag/rebase_site',
             success: diagDone,
             error: diagFailed
         });

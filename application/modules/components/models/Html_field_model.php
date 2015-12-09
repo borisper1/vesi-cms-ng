@@ -12,7 +12,7 @@ class Html_field_model extends CI_Model
 
             $data=[];
             $data['content']=$row->content;
-            $js_array =  explode(',', $row->settings != '' ? json_decode($row->settings)->addjs : '');
+            $js_array =  array_filter(explode(',', $row->settings != '' ? json_decode($row->settings)->addjs : ''));
             foreach($js_array as $js_file){
                 $this->resources->load_aux_js_file('assets/'.$js_file);
             }
