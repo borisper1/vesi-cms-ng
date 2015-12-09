@@ -247,4 +247,40 @@ class Content_handler extends CI_Model
         }
         return $contents;
     }
+
+    function rebase_website($mode, $url)
+    {
+        $this->load->library('validation');
+        $query = $this->db->get('contents');
+        $contents=[];
+        foreach ($query->result() as $row)
+        {
+            $component_info = $this->modules_handler->get_component_info($row->type);
+            if ($component_info and $component_info->save_type == 'html') {
+                $content['id'] = $row->id;
+                $content['type'] = $row->type;
+                $content['old_digest'] = md5($row->content);
+                $content['filtered_content'] = $row->content;
+                if($mode==='after')
+                {
+                    $content['filtered_content'] = str_replace('href="'.$url, 'href="'.base_url(), $content['filtered_content']);
+                    $content['filtered_content'] = str_replace('src="'.$url, 'src="'.base_url(), $content['filtered_content']);
+                }
+                $content['filtered_content'] = $this->validation->filter_html($content['filtered_content'], $component_info->allow_iframe);
+                if($mode==='before')
+                {
+                    $content['filtered_content'] = str_replace('href="'.base_url(), 'href="'.$url, $content['filtered_content']);
+                    $content['filtered_content'] = str_replace('src="'.base_url(), 'src="'.$url, $content['filtered_content']);
+                }
+                $content['digest'] = md5($content['filtered_content']);
+                $content['changed'] = $content['old_digest'] !== $content['digest'];
+                if ($content['changed']) {
+                    $this->db->where('id', $content['id']);
+                    $content['update_result'] = $this->db->update('contents', array('content' => $content['filtered_content']));
+                    array_push($contents, $content);
+                }
+            }
+        }
+        return $contents;
+    }
 }

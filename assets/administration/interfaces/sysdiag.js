@@ -20,6 +20,25 @@ $(document).ready(function() {
        $('#diag-run-modal').modal();
     });
 
+    $('#execute-rebase').click(function(){
+        var data = {};
+        data.url = $('#rebase-url').val();
+        data.mode = $('#rebase-before').prop('checked') ? 'before' : 'after';
+        if(data.url=='')
+        {
+            alert('Inserire un URL valido per spostare il sito');
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            data: data,
+            url: window.vbcknd.base_url + 'ajax/admin/sysdiag/filter_html',
+            success: diagDone,
+            error: diagFailed
+        });
+        $('#diag-run-modal').modal();
+    });
+
     function diagDone(data){
         $('#diag-run-modal').modal('hide');
         $('#diag-results-box').html(data);
