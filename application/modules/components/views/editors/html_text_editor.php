@@ -13,6 +13,7 @@
         </button>
         <ul class="dropdown-menu">
             <li><a href="#" id="import-winword"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
+            <li><a href="#" id="import-odf"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
         </ul>
     </div>
     <div class="btn-group">
@@ -21,7 +22,7 @@
         </button>
         <ul class="dropdown-menu">
             <li><a href="#" id="export-winword"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
-            <li><a href="#" id="export-odf"><i class="fa fa-fw fa-file-text-o"></i> File ODF</a></li>
+            <li><a href="#" id="export-odf"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
             <li><a href="#" id="export-pdf"><i class="fa fa-fw fa-file-pdf-o"></i> File PDF</a></li>
         </ul>
     </div>

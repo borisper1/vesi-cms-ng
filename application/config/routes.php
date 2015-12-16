@@ -64,6 +64,8 @@ $route['admin/config/(:any)'] = 'administration/load_interface/config/load_inter
 $route['admin/(:any)/(:any)'] = 'administration/load_interface/$1/$2';
 $route['admin/(:any)/(:any)/(:any)'] = 'administration/load_interface/$1/$2/$3';
 $route['ajax/admin/(:any)/(:any)'] = 'administration/ajax_interface/$1/$2';
+$route['services/(:any)'] =  'services/execute_service/$1';
+$route['services/(:any)/(:any)'] =  'services/execute_service/$1/$2';
 
 //The route for standard page views
 $route['(:any)/(:any)'] = 'page_render/view/$1/$2';
