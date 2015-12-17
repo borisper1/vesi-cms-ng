@@ -12,8 +12,8 @@
             <i class="fa fa-upload"></i> Importa da file <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><a href="#" id="import-winword"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
-            <li><a href="#" id="import-odf"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
+            <li><a href="#" class="import-document" data-format="docx"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
+            <li><a href="#" class="import-document" data-format="odt"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
         </ul>
     </div>
     <div class="btn-group">
@@ -21,9 +21,9 @@
             <i class="fa fa-download"></i> Esporta <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><a href="#" id="export-winword"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
-            <li><a href="#" id="export-odf"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
-            <li><a href="#" id="export-pdf"><i class="fa fa-fw fa-file-pdf-o"></i> File PDF</a></li>
+            <li><a href="#" class="export-document" data-format="docx"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
+            <li><a href="#" class="export-document" data-format="odt"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
+            <li><a href="#" class="export-document" data-formt="pdf"><i class="fa fa-fw fa-file-pdf-o"></i> File PDF</a></li>
         </ul>
     </div>
     <div class="btn-group">
