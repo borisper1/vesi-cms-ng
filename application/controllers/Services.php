@@ -5,6 +5,6 @@ class Services extends MX_Controller
 {
     public function execute_service($name, $option = null)
     {
-
+        echo "failed";
     }
 }

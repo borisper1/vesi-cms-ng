@@ -37,4 +37,10 @@ class Config extends MX_Controller
         $this->db_config->save();
         echo "success";
     }
+
+    function is_writable()
+    {
+        $path = rawurldecode($this->input->post('path'));
+        return is_writable($path) ? 'yes' : 'no';
+    }
 }

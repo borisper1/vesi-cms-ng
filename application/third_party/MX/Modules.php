@@ -73,14 +73,8 @@ class Modules
 				return ($output !== NULL) ? $output : $buffer;
 			}
 		}
-        $error_message = "Module controller failed to run: {$module}/{$method}";
-
-        if (defined('ENVIRONMENT') && ENVIRONMENT == 'development')
-        {
-            return $error_message;
-        } else {
-        	log_message('error', $error_message);
-        }
+		
+		log_message('error', "Module controller failed to run: {$module}/{$method}");
 	}
 	
 	/** Load a module controller **/

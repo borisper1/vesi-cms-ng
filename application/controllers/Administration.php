@@ -15,6 +15,7 @@ class Administration extends MX_Controller
         $base_data['content'] = null;
 
         $base_data['system_dom'] = $this->load->view('administration/system_reauth',null , TRUE);
+        $base_data['system_dom'] .= $this->load->view('file_conversion_service', null , TRUE);
 
         $base_data['title']='Dashboard - Vesi-CMS';
         $base_data['urls']=$this->resources->get_administration_urls();
@@ -36,7 +37,8 @@ class Administration extends MX_Controller
         {
             $base_data['content'] = $this->load->view('administration/not_authorized', array('interface' => $interface), TRUE);
         }
-        $base_data['system_dom'] = $this->load->view('administration/system_reauth',null , TRUE);
+        $base_data['system_dom'] = $this->load->view('administration/system_reauth', null , TRUE);
+        $base_data['system_dom'] .= $this->load->view('file_conversion_service', null , TRUE);
 
         $base_data['title']='Amministrazione - Vesi-CMS';
         $base_data['urls']=$this->resources->get_administration_urls();

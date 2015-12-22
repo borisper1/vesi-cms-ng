@@ -103,7 +103,7 @@ class Page_render extends MX_Controller
         $base_data['menu']=$this->load->view('frontend/main_menu',$menu_data,true);
 
         $base_data['title']='404 - Page not found';
-        $base_data['content']=$this->load->view('frontend/404');
+        $base_data['content']=$this->load->view('frontend/404', null, true);
 
         //Load basic system data
         $base_data['use_cdn']=$this->resources->use_cdn;

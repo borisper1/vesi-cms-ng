@@ -22,4 +22,8 @@ $(document).ready(function() {
         var data = encodeURIComponent(CKEDITOR.instances.gui_editor.getData());
         window.vbcknd.content.save(data, null, null);
     });
+
+    $('.export-document').click(function(){
+        window.vbcknd.services.file_conversion.export_from_text(CKEDITOR.instances.gui_editor.getData(), 'html', $(this).data('format'));
+    });
 });

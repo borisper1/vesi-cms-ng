@@ -12,7 +12,7 @@ class File_conversion extends MX_Controller
         {
             //TODO: Lanuch local conversion
         }
-        elseif($convert_mode === 'local')
+        elseif($convert_mode === 'remote')
         {
             //TODO: Lanuch remote conversion
         }

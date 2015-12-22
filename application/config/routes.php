@@ -49,7 +49,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'page_render';$route['404_override'] = 'page_render/display_404';
+$route['default_controller'] = 'page_render';
+$route['404_override'] = 'page_render/display_404';
 $route['translate_uri_dashes'] = FALSE;
 
 //define the 404 route
@@ -64,6 +65,7 @@ $route['admin/config/(:any)'] = 'administration/load_interface/config/load_inter
 $route['admin/(:any)/(:any)'] = 'administration/load_interface/$1/$2';
 $route['admin/(:any)/(:any)/(:any)'] = 'administration/load_interface/$1/$2/$3';
 $route['ajax/admin/(:any)/(:any)'] = 'administration/ajax_interface/$1/$2';
+//Routes for services system
 $route['services/(:any)'] =  'services/execute_service/$1';
 $route['services/(:any)/(:any)'] =  'services/execute_service/$1/$2';
 
