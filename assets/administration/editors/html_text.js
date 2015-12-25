@@ -24,6 +24,6 @@ $(document).ready(function() {
     });
 
     $('.export-document').click(function(){
-        window.vbcknd.services.file_conversion.export_from_text(CKEDITOR.instances.gui_editor.getData(), 'html', $(this).data('format'));
+        window.vbcknd.services.file_conversion.export_from_text(CKEDITOR.instances.gui_editor.getData(), 'html', $(this).data('format'), $('#f-id').text());
     });
 });

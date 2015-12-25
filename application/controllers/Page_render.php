@@ -92,9 +92,8 @@ class Page_render extends MX_Controller
         return $this->load->view('frontend/'.$page_view,$data,true);
     }
 
-    public function display_404(){
-        $basedata=[];
-
+    public function display_404()
+    {
         $this->load->model('menu_handler');
         //Load the main menu (evaluate whether to make this a HMVC module)
         $id=$this->menu_handler->get_main_menu_id();

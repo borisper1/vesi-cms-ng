@@ -23,7 +23,7 @@
         <ul class="dropdown-menu">
             <li><a href="#" class="export-document" data-format="docx"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
             <li><a href="#" class="export-document" data-format="odt"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
-            <li><a href="#" class="export-document" data-formt="pdf"><i class="fa fa-fw fa-file-pdf-o"></i> File PDF</a></li>
+            <li><a href="#" class="export-document" data-format="pdf"><i class="fa fa-fw fa-file-pdf-o"></i> File PDF</a></li>
         </ul>
     </div>
     <div class="btn-group">

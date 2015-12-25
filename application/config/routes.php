@@ -56,6 +56,10 @@ $route['translate_uri_dashes'] = FALSE;
 //define the 404 route
 $route['page_render/display_404'] = 'page_render/display_404';
 
+//Routes for services system
+$route['services/(:any)'] =  'services/execute_service/$1';
+$route['services/(:any)/(:any)'] =  'services/execute_service/$1/$2';
+
 //Routes for administration interface (page + ajax)
 $route['admin'] = 'administration';
 $route['admin/login'] = 'administration/login';
@@ -65,9 +69,6 @@ $route['admin/config/(:any)'] = 'administration/load_interface/config/load_inter
 $route['admin/(:any)/(:any)'] = 'administration/load_interface/$1/$2';
 $route['admin/(:any)/(:any)/(:any)'] = 'administration/load_interface/$1/$2/$3';
 $route['ajax/admin/(:any)/(:any)'] = 'administration/ajax_interface/$1/$2';
-//Routes for services system
-$route['services/(:any)'] =  'services/execute_service/$1';
-$route['services/(:any)/(:any)'] =  'services/execute_service/$1/$2';
 
 //The route for standard page views
 $route['(:any)/(:any)'] = 'page_render/view/$1/$2';
