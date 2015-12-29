@@ -6,6 +6,10 @@ class File_conversion extends MX_Controller
     protected $extension_array = array('docx' => '.docx', 'html' => '.html', 'html5' => '.html', 'latex' => '.pdf', 'odt' => '.odt');
 
     function export_from_text(){
+        if(!$this->check_enabled())
+        {
+            return;
+        }
         $input = rawurldecode($this->input->post('text'));
         $from = $this->input->post('text_format');
         $to = $this->input->post('output_format');
@@ -32,6 +36,10 @@ class File_conversion extends MX_Controller
     }
 
     function import_file_to_html(){
+        if(!$this->check_enabled())
+        {
+            return;
+        }
         if($_FILES['to_convert']['name'] == ''){
             $this->output->set_status_header(400);
             $this->output->set_output('Expected a file upload');
@@ -68,6 +76,10 @@ class File_conversion extends MX_Controller
 
     function convert_document($input_mode, $input, $out_name, $from, $to)
     {
+        if(!$this->check_enabled())
+        {
+            return;
+        }
         if($input_mode === 'text')
         {
             $temp_input = APPPATH.'tmp/'.uniqid().$this->extension_array[$from];
@@ -88,11 +100,10 @@ class File_conversion extends MX_Controller
 
         if($this->db_config->get('file_conversion', 'execute_on_remote'))
         {
-
+            $output_file = $this->execute_pandoc_remote($input, $from, $to);
         }
         else
         {
-            //Execute local conversion
             $output_file = $this->execute_pandoc($input, $from, $to);
         }
         if($output_file === false)
@@ -128,5 +139,56 @@ class File_conversion extends MX_Controller
         }
         unlink($input);
         return $output;
+    }
+
+    protected function execute_pandoc_remote($input, $from, $to)
+    {
+        //TODO: Implement CURL based remote conversion
+        $url = $this->db_config->get('file_conversion', 'remote_server_url');
+        $token = $this->db_config->get('file_conversion', 'remote_server_token');
+        $hmac_key = $this->db_config->get('file_conversion', 'hmac_key');
+        $digest = hash_hmac_file('sha256', $input, $hmac_key);
+        $finfo = new finfo(FILEINFO_MIME);
+        $cfile = new CURLFile($input, $finfo->file($input),'to_convert');
+        $post_data = array('to_convert' => $cfile, 'type' => $from, 'covert_to' => $to, 'digest' => $digest, 'token' => $token);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $file_data = curl_exec($curl);
+        $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+        $output = APPPATH.'tmp/'.uniqid().$this->extension_array[$to];
+        if($httpcode === 200)
+        {
+            $fp = fopen($output, 'w');
+            fwrite($fp, $file_data);
+            fclose($fp);
+        }
+        else
+        {
+            return false;
+        }
+        if(!file_exists($output))
+        {
+            $output = false;
+        }
+        unlink($input);
+        return $output;
+    }
+
+    protected function check_enabled()
+    {
+        if($this->db_config->get('file_conversion', 'enable_file_conversion'))
+        {
+            return true;
+        }
+        else
+        {
+            $this->output->set_status_header(403);
+            $this->output->set_output('The file conversion service is disabled - please enable it in the configuration');
+            return false;
+        }
     }
 }

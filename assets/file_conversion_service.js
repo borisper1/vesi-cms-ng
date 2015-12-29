@@ -78,7 +78,6 @@ $(document).ready(function() {
     }
 
     function importDoneHTML(data){
-        //TODO: Check if data is ok
         CallbackFunction(data);
         CallbackFunction = null;
         $('#import-conversion-progress-modal').modal('hide');

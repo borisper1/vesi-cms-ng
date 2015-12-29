@@ -3,7 +3,6 @@ $(document).ready(function() {
     $('#i-menu-hover, #i-use-fluid-containers, #i-display-home-page-title').bootstrapSwitch();
     $('#i-menu-class').selectpicker('val', $('#c-menu-class').text());
 
-    window.vbcknd.config ={};
     window.vbcknd.config.get_data = function (){
         var data = {};
         data.style ={};

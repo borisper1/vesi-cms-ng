@@ -2,7 +2,6 @@ $(document).ready(function() {
 
     $('#i-jquery1-usecdn, #i-jquery2-usecdn, #i-bootstrap-usecdn, #i-fontawesome-usecdn, #i-enable-legacy-support').bootstrapSwitch();
 
-    window.vbcknd.config ={};
     window.vbcknd.config.get_data = function (){
         var data = {};
         data.resources = {};

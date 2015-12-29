@@ -21,4 +21,14 @@ $(document).ready(function() {
         }
     }
 
+    window.vbcknd.config.get_data = function (){
+        var data = {};
+        data.file_conversion ={};
+        data.file_conversion.remote_server_token = $('#i-remote-server-token').val();
+        data.file_conversion.remote_server_url = $('#i-remote-server-url').val();
+        data.file_conversion.execute_on_remote = $('#i-execute-on-remote').prop('checked') ? 1 : 0;
+        data.file_conversion.enable_file_conversion = $('#i-enable-file-conversion').prop('checked') ? 1 : 0;
+        return data;
+    }
+
 });
