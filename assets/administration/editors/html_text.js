@@ -26,4 +26,12 @@ $(document).ready(function() {
     $('.export-document').click(function(){
         window.vbcknd.services.file_conversion.export_from_text(CKEDITOR.instances.gui_editor.getData(), 'html', $(this).data('format'), $('#f-id').text());
     });
+
+    $('.import-document').click(function(){
+        window.vbcknd.services.file_conversion.import_to_html($(this).data('format'), FileImportCallback);
+    });
+
+    function FileImportCallback(html){
+        CKEDITOR.instances.gui_editor.insertHtml(html);
+    }
 });
