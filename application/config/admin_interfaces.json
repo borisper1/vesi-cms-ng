@@ -2,7 +2,6 @@
   "system":{
     "items":[
       {"name":"config", "label": "Impostazioni", "description":"Permette di modificare la configurazione del sistema (incluse le opzioni di sicurezza)", "icon":"fa-wrench", "builtin":true, "only_su":false},
-      {"name":"security", "label": "Sicurezza", "description":"Visualizza lo stato di sicurezza del sistema e permette di evitare errori comuni", "icon":"fa-shield", "builtin":true, "only_su":false},
       {"name":"sysdiag", "label": "Risoluzione dei problemi", "description":"Fornisce procedure automatiche o guidate per la risoluzione dei problemi più comuni", "icon":"fa-magic", "builtin":true, "only_su":false},
       {"name":"plugins", "label": "Componenti aggiuntivi", "description":"Permette di istallare, configurare e rimuovere i componenti aggiuntivi", "icon":"fa-plug", "builtin":true, "only_su":false},
       {"name":"special::separator", "builtin":true},

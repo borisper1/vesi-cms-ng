@@ -143,18 +143,19 @@ class File_conversion extends MX_Controller
 
     protected function execute_pandoc_remote($input, $from, $to)
     {
-        //TODO: Implement CURL based remote conversion
+        $transaction_id = bin2hex(openssl_random_pseudo_bytes(256));
         $url = $this->db_config->get('file_conversion', 'remote_server_url');
         $token = $this->db_config->get('file_conversion', 'remote_server_token');
         $hmac_key = $this->db_config->get('file_conversion', 'hmac_key');
         $digest = hash_hmac_file('sha256', $input, $hmac_key);
         $finfo = new finfo(FILEINFO_MIME);
         $cfile = new CURLFile($input, $finfo->file($input),'to_convert');
-        $post_data = array('to_convert' => $cfile, 'type' => $from, 'covert_to' => $to, 'digest' => $digest, 'token' => $token);
+        $post_data = array('to_convert' => $cfile, 'type' => $from, 'covert_to' => $to, 'digest' => $digest, 'token' => $token, 'transaction_id' => $transaction_id);
+        //Request the file
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
-        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_URL, $url.'execute_conversion');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $file_data = curl_exec($curl);
         $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -170,12 +171,22 @@ class File_conversion extends MX_Controller
         {
             return false;
         }
+        unlink($input);
         if(!file_exists($output))
         {
-            $output = false;
+            return false;
         }
-        unlink($input);
-        return $output;
+        //Request HMAC for message authentication
+        $post_data = array('token' => $token, 'transaction_id' => $transaction_id);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+        curl_setopt($curl, CURLOPT_URL, $url.'get_digest');
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $response_digest = curl_exec($curl);
+        curl_close($curl);
+        $digest = hash_hmac_file('sha256', $output, $hmac_key);
+        return $response_digest === $digest ? $output : false;
     }
 
     protected function check_enabled()

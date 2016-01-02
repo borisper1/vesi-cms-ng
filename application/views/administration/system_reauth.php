@@ -16,7 +16,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"> <i class="fa fa-ban"></i> Annulla</button>
+                <button type="button" class="btn btn-default" id="system_reauth_failed"> <i class="fa fa-ban"></i> Annulla</button>
                 <button type="button" class="btn btn-primary" id="system_reauth_ok"><i class="fa fa-check"></i> OK</button>
             </div>
         </div>

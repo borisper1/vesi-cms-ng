@@ -13,14 +13,32 @@ $(document).ready(function() {
     var elevator_href;
     $('.vcms-elevator').click(function(){
         elevator_href=$(this).data('href');
+        $('#system_reauth_modal').modal();
     });
 
     $('#system_reauth_ok').click(function(){
-        var password = $('#system_reauth_password').val();
-        if(password != ""){
-            $.post(window.vbcknd.base_url+'ajax/admin/users/check_pass')
+        var data = {};
+        data.password = $('#system_reauth_password').val();
+        if(data.password != ""){
+            $.post(window.vbcknd.base_url+'ajax/admin/users/check_pass', data, ReauthRedirect)
+        }else{
+            $('#system_reauth_password').val('');
+            $('#system_reauth_modal').modal('hide');
+            alert('Password non vailda, riprovare')
         }
     });
+
+    $('#system_reauth_failed').click(function(){
+        $('#system_reauth_password').val('');
+        $('#system_reauth_modal').modal('hide');
+    });
+
+    function ReauthRedirect(data){
+        if(data === 'success')
+        {
+            window.location.href = window.vbcknd.base_url + elevator_href;
+        }
+    }
 
     $('.selectpicker').selectpicker();
 });

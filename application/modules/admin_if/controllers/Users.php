@@ -92,4 +92,42 @@ class Users extends MX_Controller
             echo 'failed - 500';
         }
     }
+
+    function check_pass()
+    {
+        $password = $this->input->post('password');
+        $result = $this->user_handler->check_admin_login($this->session->username, $password);
+        echo $result[0] ? 'success' : 'failed';
+    }
+
+    function user_profile()
+    {
+        $user = $this->session->username;
+        $this->load->model('user_handler');
+        $data = $this->user_handler->get_user_data($user);
+        $this->load->view('users/self_edit',$data);
+    }
+
+    function save_self()
+    {
+        $this->load->model('user_handler');
+        $user = $this->session->username;
+        $data = $this->user_handler->get_user_data($user);
+        $result = $this->user_handler->save_user(
+            $user,
+            $data['fullname'],
+            $this->input->post('email'),
+            $this->input->post('password'),
+            $data['group'],
+            $data['active']
+        );
+        if($result)
+        {
+            echo 'success';
+        }
+        else
+        {
+            echo 'failed - 500';
+        }
+    }
 }

@@ -137,6 +137,26 @@ $(document).ready(function() {
         $.post(window.vbcknd.base_url+'ajax/admin/users/save',data,SaveEditDone);
     });
 
+    $('#save-edit-self').click(function(){
+        var email = $('#i-email');
+        var group = $('#i-group').val();
+        var err_msg="";
+        $('.alert').addClass('hidden');
+        $('.has-error').removeClass('has-error');
+        if(email.val()==""){
+            email.parent().parent().addClass('has-error');
+            $('#error-msg').html("Uno o più campi non sono stati compliati.<br>");
+            $('#error-alert').removeClass('hidden');
+            return;
+        }
+        $('#spinner').removeClass('hidden');
+        var data= {email: email.val()};
+        if(staged_changes.hasOwnProperty('password')){
+            data.password = staged_changes.password;
+        }
+        $.post(window.vbcknd.base_url+'ajax/admin/users/save_self',data,SaveEditDone);
+    });
+
     function SaveEditDone(data){
         $('.alert').addClass('hidden');
         if(data=="success"){
