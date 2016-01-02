@@ -82,3 +82,9 @@ h3.inline{
 .btn-group-sm{
     margin-bottom: 8px;
 }
+.path-indicator{
+    margin-bottom: 8px;
+}
+#file-preview-download{
+    margin-right:16px;
+}

@@ -32,7 +32,7 @@
                     <span class="label label-default tooltipped" data-toggle="tooltip" title="Avviso che può essere chiuso dall'utente">[D]</span>
                 <?php endif; ?>
                 <a href="<?=base_url('admin/alerts/edit/'.$alert['id']) ?>"><?=$alert['preview'] ?></a>
-                <a href="#" class="delete-alert lmbnc pull-right tooltipped" data-toggle="tooltip" title="Elimina"><i class="fa fa-remove"></i></a>
+                <a href="#" class="delete-alert lmbnc pull-right tooltipped" data-toggle="tooltip" title="Elimina"><i class="fa fa-trash"></i></a>
             </td>
             <td>
                 <?php if($alert['rules']=='all'): ?>

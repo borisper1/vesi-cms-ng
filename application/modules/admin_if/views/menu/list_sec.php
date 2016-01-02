@@ -17,7 +17,7 @@
         <tr>
             <td>
                 <a href="<?=base_url('admin/sec_menu/edit/'.$menu['id']) ?>"><?=$menu['title'] ?></a>
-                <a class='delete-menu lmbnc pull-right tooltipped' data-toggle='tooltip' title='Elimina' data-id="<?=$menu['id'] ?>"><i class='fa fa-remove'></i></a>
+                <a class='delete-menu lmbnc pull-right tooltipped' data-toggle='tooltip' title='Elimina' data-id="<?=$menu['id'] ?>"><i class='fa fa-trash'></i></a>
             </td>
             <td><span class="label label-info"><?=$menu['display_title'] ? 'sì' : 'no' ?></span></td>
             <td><?=$menu['id'] ?></td>

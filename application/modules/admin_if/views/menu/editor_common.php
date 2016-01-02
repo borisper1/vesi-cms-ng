@@ -9,7 +9,7 @@
                             <span class="f-title"><?=$menu['title'] ?></span>
                             <span class="label label-default f-container"><?=$menu['container'] ?></span>
                             <a class='new-child lmb pull-right tooltipped' data-toggle='tooltip' title='Aggiungi sottovoce'><i class='fa fa-plus'></i></a>
-                            <a class='remove-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-remove'></i></a>
+                            <a class='remove-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-trash'></i></a>
                             <a class='edit-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Modifica'><i class='fa fa-edit'></i></a>
                         </h3>
                     </div>
@@ -28,7 +28,7 @@
                                                 <?php else: ?>
                                                     <i class="fa fa-exclamation-triangle tooltipped" data-toggle="tooltip" title="Pagina inesistente"></i>
                                                 <?php endif; ?>
-                                                <a class='remove-child lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-remove'></i></a>
+                                                <a class='remove-child lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-trash'></i></a>
                                                 <a class='edit-child lmb pull-right tooltipped' data-toggle='tooltip' title='Modifica'><i class='fa fa-edit'></i></a>
                                             </h3>
                                         </div>
@@ -50,7 +50,7 @@
                             <?php else: ?>
                                 <i class="fa fa-exclamation-triangle tooltipped" data-toggle="tooltip" title="Pagina inesistente"></i>
                             <?php endif; ?>
-                            <a class='remove-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-remove'></i></a>
+                            <a class='remove-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-trash'></i></a>
                             <a class='edit-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Modifica'><i class='fa fa-edit'></i></a>
                         </h3>
                     </div>
@@ -65,7 +65,7 @@
         <div class="panel-heading">
             <h3 class="panel-title child-voices">
                 <i class="fa fa-sort"></i> <span class="f-title"></span> <span class="label label-default f-page"></span>
-                <a class='remove-child lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-remove'></i></a>
+                <a class='remove-child lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-trash'></i></a>
                 <a class='edit-child lmb pull-right tooltipped' data-toggle='tooltip' title='Modifica'><i class='fa fa-edit'></i></a>
             </h3>
         </div>
@@ -79,7 +79,7 @@
                 <span class="f-title"></span>
                 <span class="label label-default f-container"></span>
                 <a class='new-child lmb pull-right tooltipped' data-toggle='tooltip' title='Aggiungi sottovoce'><i class='fa fa-plus'></i></a>
-                <a class='remove-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-remove'></i></a>
+                <a class='remove-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-trash'></i></a>
                 <a class='edit-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Modifica'><i class='fa fa-edit'></i></a>
             </h3>
         </div>
@@ -94,7 +94,7 @@
         <div class="panel-heading">
             <h3 class="panel-title parent-voices" data-type="link">
                 <span class="f-title"></span> <span class="label label-default"><span class="f-container"></span> <i class="fa fa-ellipsis-v"></i> <span class="f-page"></span></span>
-                <a class='remove-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-remove'></i></a>
+                <a class='remove-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Elimina'><i class='fa fa-trash'></i></a>
                 <a class='edit-parent lmb pull-right tooltipped' data-toggle='tooltip' title='Modifica'><i class='fa fa-edit'></i></a>
             </h3>
         </div>

@@ -10,7 +10,7 @@
                     <input type="checkbox" class="file-manager-select-element" value="<?=$file['name'] ?>"> <i class="fa fa-lg fa-fw <?=$file['icon'] ?>"></i> <a href="#" class="file-manager-element-link"><?=$file['name'] ?></a>
                     <div class="dropdown pull-right">
                         <a class="dropdown-toggle lmbnc pull-right tooltipped" type="button" data-toggle="dropdown" title="Più opzioni">
-                            <i class="fa fa-ellipsis-h"></i>
+                            <i class="fa fa-bars"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="#" class="file-manager-rename-element"><i class="fa fa-pencil fa-fw"></i> Rinomina</a></li>

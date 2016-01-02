@@ -22,7 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <body>
 
         <?php echo $menu ?>
-        <div class="container-fluid">
+        <div class="container-fluid" id="base-gui-container">
             <?php echo $content ?>
         </div>
 

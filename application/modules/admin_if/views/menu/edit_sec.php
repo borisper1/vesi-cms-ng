@@ -10,8 +10,8 @@
             <i class="fa fa-plus"></i> Nuovo <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><a href="#" id="new-parent-dropdown">Menu a tendina</a></li>
-            <li><a href="#" id="new-parent-link">Link semplice</a></li>
+            <li><a href="#" id="new-parent-dropdown"><i class="fa fa-fw fa-bars"></i> Menu a tendina</a></li>
+            <li><a href="#" id="new-parent-link"> <i class="fa fa-fw fa-link"></i> Link semplice</a></li>
         </ul>
     </div>
     <button type="button" class="btn btn-default" id="save-menu"><i class="fa fa-save"></i> Salva</button>

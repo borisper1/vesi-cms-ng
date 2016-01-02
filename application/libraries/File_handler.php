@@ -125,10 +125,6 @@ class File_handler
 
     function get_path_array($path)
     {
-        //TODO: Move protection to controller
-        if(!in_array(explode('/', $path)[0], array('files', 'img'))){
-            return false;
-        }
         $output = [];
         $base_path = FCPATH.$path;
         $fs_array=array_diff(scandir($base_path),array('..', '.', '.DS_Store'));
@@ -164,6 +160,19 @@ class File_handler
                 }
                 $output[]=$file;
             }
+        }
+        return $output;
+    }
+
+    function get_path_indicator_array($path)
+    {
+        $output = [];
+        $path_items=explode('/',$path);
+        $last_value = end($path_items);
+        $previous_path = '';
+        foreach($path_items as $item){
+            $output[] = array('path' =>$previous_path.$item, 'name' => $item, 'active' => $item===$last_value);
+            $previous_path.=$item.'/';
         }
         return $output;
     }
