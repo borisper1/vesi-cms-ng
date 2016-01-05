@@ -2,6 +2,13 @@
 
 class File_handler
 {
+    protected $CI;
+
+    public function __construct()
+    {
+        $this->CI =& get_instance();
+    }
+
     function get_fa_icon($path)
     {
         if(!file_exists($path))
@@ -175,6 +182,73 @@ class File_handler
             $previous_path.=$item.'/';
         }
         return $output;
+    }
+
+    function rename_path($path, $new_name)
+    {
+        $path_array = explode('/', $path);
+        if(array_pop($path_array) !==  $new_name)
+        {
+            $base_path = implode(('/'), $path_array);
+            return rename(FCPATH.$path, FCPATH.$base_path.'/'.$new_name);
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    function delete_path($path)
+    {
+        if(is_dir(FCPATH.$path))
+        {
+            $this->CI->load->helper('file');
+            delete_files(FCPATH.$path, TRUE);
+            return rmdir(FCPATH.$path);
+        }
+        else
+        {
+            return unlink(FCPATH.$path);
+        }
+    }
+
+    function pack_zip($paths, $base_path)
+    {
+        $output_id = uniqid();
+        $output = APPPATH.'tmp/'.$output_id.'.zip';
+        $zip = new ZipArchive();
+        $zip->open($output, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+        foreach($paths as $path)
+        {
+            $relative_path = substr($path, strlen($base_path) + 1);
+            if(is_dir(FCPATH.$path))
+            {
+                //Code to compress a directory
+                $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(FCPATH.$path), RecursiveIteratorIterator::LEAVES_ONLY);
+                foreach ($files as $name => $file)
+                {
+                    if (!$file->isDir())
+                    {
+                        // Get real and relative path for current file
+                        $filePath = $file->getRealPath();
+                        $relativePath = substr($filePath, strlen(FCPATH.$base_path) + 1);
+                        $zip->addFile($filePath, $relativePath);
+                    }
+                }
+            }
+            else
+            {
+                $zip->addFile(FCPATH.$path, $relative_path);
+            }
+        }
+        $zip->close();
+        $final_url = 'files/converted_files/'.$output_id.'.zip';
+        if(!file_exists($output))
+        {
+            return false;
+        }
+        rename($output, FCPATH.$final_url);
+        return base_url($final_url);
     }
 
 }

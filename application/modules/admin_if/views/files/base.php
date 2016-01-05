@@ -27,18 +27,23 @@
 <span class="hidden" id="boot-path">files</span>
 <div class="alert alert-info hidden" id="loading-spinner"><i class="fa fa-refresh fa-spin"></i> Caricamento del percorso...</div>
 <div class="alert alert-danger hidden" id="error-warning">
-    <i class="fa fa-warning"></i> <b>Si è verificato un errore imprevisto nel caricamento del percorso.</b>
+    <i class="fa fa-exclamation-circle"></i> <b>Si è verificato un errore imprevisto nel caricamento del percorso.</b>
     Il server potrebbe esser non disponibile oppure non si dispone delle autorizzazioni necessarie per accedere al percorso. <a href="<?=base_url('admin/files') ?>" class="alert-link">Ricaricare</a> la pagina per riprovare
 </div>
-<div class='modal fade' id='preview-modal' tabindex='-1' role='dialog' aria-labelledby='preview-modal-label' aria-hidden='true'>
-    <div class='modal-dialog modal-lg'>
-        <div class='modal-content'>
-            <div class='modal-header'>
+<div class="alert alert-info hidden" id="operation-spinner"><i class="fa fa-refresh fa-spin"></i> Operazione su file in corso...</div>
+<div class="alert alert-danger alert-dismissible hidden" id="operation-error">
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+    <i class="fa fa-exclamation-circle"></i> <b>Impossibile completare l'operazione su file</b> Il server potrebbe esser non disponibile oppure non si dispone delle autorizzazioni necessarie per accedere al percorso.
+</div>
+<div class="modal fade" id="preview-modal" tabindex="-1" role="dialog" aria-labelledby="preview-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <a href="#" target="_blank" class="pull-right" id="file-preview-download"><i class="fa fa-download"></i> Scarica file</a>
-                <h4 class='modal-title' id='preview-modal-label'><i class="fa fa-eye"></i> Anteprima file</h4>
+                <h4 class="modal-title" id="preview-modal-label"><i class="fa fa-eye"></i> Anteprima file</h4>
             </div>
-            <div class='modal-body' id="preview-modal-content"></div>
+            <div class="modal-body" id="preview-modal-content"></div>
         </div>
     </div>
 </div>
@@ -58,6 +63,42 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
                 <button type="button" class="btn btn-success" id="rename-element-modal-confirm" data-dismiss="modal"><i class="fa fa-pencil"></i> Rinomina</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-label" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="delete-modal-label"><i class="fa fa-lg fa-trash"></i> Eliminazione elementi</h4>
+            </div>
+            <div class="modal-body">
+                L'eliminazione è una operazione definitiva. Eliminare gli elementi selezionati?
+                <div id="delete-modal-list"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-danger" id="delete-modal-confirm" data-dismiss="modal"><i class="fa fa-trash"></i> Elimina</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="choose-target-modal" tabindex="-1" role="dialog" aria-labelledby="choose-target-modal-label" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="choose-target-modal-label"><i class="fa fa-lg fa-folder-open"></i> Scegli la destinazione</h4>
+            </div>
+            <div class="modal-body">
+                <p>Scegliere la cartella in cui spostare/copiare i file selezionati</p>
+                <div id="choose-target-fs-view"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-danger" id="delete-modal-confirm" data-dismiss="modal"><i class="fa fa-bolt"></i> Sposta/copia</button>
             </div>
         </div>
     </div>

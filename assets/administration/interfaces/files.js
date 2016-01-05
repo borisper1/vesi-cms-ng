@@ -23,8 +23,8 @@ $(document).ready(function() {
         var element = $(this).closest('.file-manager-element');
         if (element.hasClass('file-manager-file') || element.hasClass('file-manager-file-previewable')) {
             window.open(window.vbcknd.base_url + element.data('path'));
-        } else if (element.hasClass('file-manager-file')) {
-            //TODO: Pack and download file
+        } else if (element.hasClass('file-manager-folder')) {
+            PreparePack([element.data('path')]);
         }
     }).on('click', '.file-manager-rename-element', function() {
         CurrentItem = $(this).closest('.file-manager-element');
@@ -38,6 +38,53 @@ $(document).ready(function() {
             $('#file-system-actions').addClass('hidden');
         }
         $('#fmgr-rename').prop('disabled', length !== 1);
+    }).on('click', '.file-manager-delete-element', function() {
+        CurrentItem = [];
+        CurrentItem.push($(this).closest('.file-manager-element').data('path'));
+        $('#delete-modal-list').html('<code>'+CurrentItem[0]+'</code>');
+        $('#delete-modal').modal();
+    });
+
+    $('#fmgr-download').click(function(){
+        var SelectedItems = $('.file-manager-select-element:checked');
+        if(SelectedItems.length===1){
+            var element = SelectedItems.closest('.file-manager-element');
+            if (element.hasClass('file-manager-file') || element.hasClass('file-manager-file-previewable')) {
+                window.open(window.vbcknd.base_url + element.data('path'));
+            } else if (element.hasClass('file-manager-folder')) {
+                PreparePack([element.data('path')]);
+            }
+        }else{
+            var paths = [];
+            SelectedItems.each(function(){
+                paths.push($(this).closest('.file-manager-element').data('path'));
+            });
+            PreparePack(paths);
+        }
+    });
+
+    $('#fmgr-delete').click(function(){
+        CurrentItem = [];
+        var ListObject =$('#delete-modal-list');
+        ListObject.empty();
+        $('.file-manager-select-element:checked').each(function(){
+            var path  = $(this).closest('.file-manager-element').data('path');
+            CurrentItem.push(path);
+            ListObject.append('<code>'+path+'</code><br>');
+        });
+        $('#delete-modal').modal();
+    });
+
+    $('#delete-modal-confirm').click(function(){
+        $('#operation-spinner').removeClass('hidden');
+        var paths = encodeURIComponent(CurrentItem.join(';'));
+        $.ajax({
+            type: "POST",
+            url: window.vbcknd.base_url+'ajax/admin/files/delete',
+            data: {'paths': paths},
+            success: AJAXFileOperationOK,
+            error: AJAXFileOperationFailed
+        });
     });
 
     $('#fmgr-rename').click(function(){
@@ -46,10 +93,23 @@ $(document).ready(function() {
         $('#rename-element-modal').modal();
     });
 
-    $('')
+    $('#rename-element-modal-confirm').click(function(){
+        $('#operation-spinner').removeClass('hidden');
+        $.ajax({
+            type: "POST",
+            url: window.vbcknd.base_url+'ajax/admin/files/rename',
+            data: {'path': encodeURIComponent(CurrentItem.data('path')), 'new_name':  encodeURIComponent($('#i-rename-element').val())},
+            success: AJAXFileOperationOK,
+            error: AJAXFileOperationFailed
+        });
+    });
 
     $('#file-manager-path-indicator').on('click', '.file-manager-path-indicator-link', function(){
         SetPath($(this).data('path'));
+    });
+
+    $('.close').click(function(){
+        $(this).closest('.alert-dismissible').addClass('hidden');
     });
 
     function SetPath(path){
@@ -59,14 +119,14 @@ $(document).ready(function() {
         $.ajax({
             type: "POST",
             url: window.vbcknd.base_url+'ajax/admin/files/get_path_body',
-            data: 'path='+path,
+            data: 'path='+encodeURIComponent(path),
             success: AJAXLoadPath,
             error: AJAXLoadPathFailed
         });
         $.ajax({
             type: "POST",
             url: window.vbcknd.base_url+'ajax/admin/files/get_path_indicator',
-            data: 'path='+path,
+            data: 'path='+encodeURIComponent(path),
             success: AJAXLoadPathIndicator,
             error: AJAXLoadPathFailed
         });
@@ -102,6 +162,17 @@ $(document).ready(function() {
         $('#error-warning').removeClass('hidden');
         $('.file-manager-list').find('tbody').empty();
     }
+
+    function AJAXFileOperationOK() {
+        $('#operation-spinner').addClass('hidden');
+        SetPath(CurrentPath);
+    }
+
+    function AJAXFileOperationFailed() {
+        $('#operation-spinner').addClass('hidden');
+        $('#operation-error').removeClass('hidden');
+        SetPath(CurrentPath);
+    }
     
     function ShowPreviewModal(path, mode)
     {
@@ -120,5 +191,28 @@ $(document).ready(function() {
         $('#preview-modal-content').html(content);
         $('#preview-modal').modal();
     }
+
+    function PreparePack(files)
+    {
+        $('#operation-spinner').removeClass('hidden');
+        var paths = encodeURIComponent(files.join(';'));
+        $.ajax({
+            type: "POST",
+            url: window.vbcknd.base_url+'ajax/admin/files/pack',
+            data: {'paths': paths, 'base_path': CurrentPath},
+            success: AJAXFilePackOK,
+            error: AJAXFileOperationFailed
+        });
+    }
+
+    function AJAXFilePackOK(data)
+    {
+        $('#operation-spinner').addClass('hidden');
+        window.location.href = data;
+    }
+
+    $('#preview-modal').on('hidden.bs.modal',function(){
+        $("#preview-modal-content").empty();
+    });
 
 });
