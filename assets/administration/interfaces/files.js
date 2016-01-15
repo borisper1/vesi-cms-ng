@@ -158,7 +158,9 @@ $(document).ready(function() {
     }
 
     function LoadPathInModalError() {
-
+        var object = $('#choose-target-fs-view');
+        object.find('table').remove();
+        object.append('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> Si è verificato un errore durante il caricamento dell\'elenco</div>');
     }
 
     $('#choose-target-modal-confirm').click(function(){
