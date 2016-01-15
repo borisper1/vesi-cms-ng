@@ -5,8 +5,8 @@
         <i class="fa fa-plus"></i> Nuovo <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-        <li><a href="#"><i class="fa fa-cloud-upload fa-fw"></i> Carica file </a></li>
-        <li><a href="#"><i class="fa fa-folder fa-fw"></i> Nuova cartella</a></li>
+        <li><a href="#" id="filemgr-upload-file"><i class="fa fa-cloud-upload fa-fw"></i> Carica file </a></li>
+        <li><a href="#" id="filemgr-new-folder"><i class="fa fa-folder fa-fw"></i> Nuova cartella</a></li>
     </ul>
 </div>
 <div class="btn-group spaced hidden" id="file-system-actions">
@@ -94,12 +94,70 @@
             </div>
             <div class="modal-body">
                 <p>Scegliere la cartella in cui spostare/copiare i file selezionati</p>
-                <div id="choose-target-fs-view"></div>
+                <div id="choose-target-fs-view">
+                    <button class="btn btn-default path-indicator" id="file-picker-level-up" disabled><i class="fa fa-level-up"></i></button> <code id="file-picker-path-indicator">/</code>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
-                <button type="button" class="btn btn-danger" id="delete-modal-confirm" data-dismiss="modal"><i class="fa fa-bolt"></i> Sposta/copia</button>
+                <button type="button" class="btn btn-success" id="choose-target-modal-confirm" data-dismiss="modal"><i class="fa fa-bolt"></i> Sposta/copia</button>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="modal fade" id="new-folder-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><i class="fa fa-folder"></i> Nuova cartella</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label" for="i-folder-name">Inserire il nome della cartella</label>
+                    <input type="text" class="form-control" id="i-folder-name">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-success" id="new-folder-modal-confirm" data-dismiss="modal"><i class="fa fa-plus"></i> Crea cartella</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="upload-file-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><i class="fa fa-cloud-upload"></i> Carica file</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" id="upload-engine-image-warning" role="alert"><i class="fa fa-info-circle"></i> E' possibile caricare solo immagini in formato <code>JPEG</code>, <code>PNG</code>, <code>GIF</code>, <code>Bitmap</code> o <code>SVG</code> in questa cartella</div>
+                <div id="upload-engine-drop-zone">
+                    TRASCINA QUI I FILE oppure
+                    <button type="button" class="btn btn-default" id="upload-engine-select-files"><i class="fa fa-folder-open"></i> Seleziona files</button>
+                </div>
+                <form id="upload-engine-form" method="post" action="<?=base_url('services/file_upload/index') ?>" enctype="multipart/form-data" class="hidden">
+                    <input type="file" id="upload-engine-files-input" name="files" multiple>
+                    <input type="hidden" id="upload-engine-target-field" name="target">
+                </form>
+                <div id="upload-engine-file-cage"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="upload-file-modal-close"><i class="fa fa-remove"></i> Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="file-uploading-template" class="hidden">
+    <div class="upload-engine-file-indicator" data-status="uploading">
+        <i class="fa fa-file-o fa-2x path-indicator"></i> <span class="upload-engine-file-label">Nome file.ext</span>
+        <button type="button" class="btn btn-default btn-sm pull-right"><i class="fa fa-remove"></i> Annulla</button>
+        <div class="progress">
+            <div class="progress-bar" style="width: 0%; min-width: 2em;"><span class="upload-engine-file-progress-label">0%</span></div>
+        </div>
+        <p class="text-danger upload-engine-file-failed hidden"><i class="fa fa-exclamation-circle"></i> Si è verificato un errore durante il caricamento del file.</p>
     </div>
 </div>

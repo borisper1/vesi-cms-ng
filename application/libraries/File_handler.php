@@ -127,7 +127,7 @@ class File_handler
         $mult= $use_binary ? 1024 : 1000;
         $base = log($size) / log($mult);
         $suffixes = $use_binary ? array('  B', ' KiB', ' MiB', ' GiB', ' TiB') : array(' B', ' KB', ' MB', ' GB', ' TB');
-        return round(pow($mult, $base - floor($base)), $precision) . $suffixes[floor($base)];
+        return $size===0 ? '0 B' : round(pow($mult, $base - floor($base)), $precision) . $suffixes[floor($base)];
     }
 
     function get_path_array($path)
@@ -168,6 +168,30 @@ class File_handler
                 $output[]=$file;
             }
         }
+        return $output;
+    }
+
+    function get_root_path_array()
+    {
+        $output = [];
+        $full_path = FCPATH.'/files';
+        $output[] = array(
+            'icon' => 'fa-folder',
+            'type' => 'folder',
+            'name' => 'files',
+            'size' => $this->get_folder_size($full_path),
+            'edit_date' => date("d/m/Y",stat($full_path)['mtime']),
+            'path' => 'files'
+        );
+        $full_path = FCPATH.'/img';
+        $output[] = array(
+            'icon' => 'fa-folder',
+            'type' => 'folder',
+            'name' => 'img',
+            'size' => $this->get_folder_size($full_path),
+            'edit_date' => date("d/m/Y",stat($full_path)['mtime']),
+            'path' => 'img'
+        );
         return $output;
     }
 
@@ -251,4 +275,46 @@ class File_handler
         return base_url($final_url);
     }
 
+    function move_path($path, $target)
+    {
+        $path_array = explode('/', $path);
+        $file_name = end($path_array);
+        return rename(FCPATH.$path, FCPATH.$target.'/'.$file_name);
+    }
+
+    function copy_path($path, $target)
+    {
+        $path_array = explode('/', $path);
+        $file_name = end($path_array);
+        if(is_dir(FCPATH.$path))
+        {
+            $this->recursive_copy(FCPATH.$path, FCPATH.$target.'/'.$file_name);
+        }
+        else
+        {
+            copy(FCPATH.$path, FCPATH.$target.'/'.$file_name);
+        }
+    }
+
+    function new_folder($path)
+    {
+        return mkdir(FCPATH.$path);
+    }
+
+    protected function recursive_copy($src,$dst)
+    {
+        $dir = opendir($src);
+        @mkdir($dst);
+        while(false !== ( $file = readdir($dir)) ) {
+            if (( $file != '.' ) && ( $file != '..' )) {
+                if ( is_dir($src . '/' . $file) ) {
+                    $this->recursive_copy($src . '/' . $file,$dst . '/' . $file);
+                }
+                else {
+                    copy($src . '/' . $file,$dst . '/' . $file);
+                }
+            }
+        }
+        closedir($dir);
+    }
 }

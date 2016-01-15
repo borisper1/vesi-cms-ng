@@ -49,3 +49,11 @@ $(document).ready(function() {
         selector: ".tooltipped"
     });
 });
+
+//POLYFILLS FOR NON ECMASCRPT6 Browsers --------------------------------------------------------------------------------
+if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function(searchString, position) {
+        position = position || 0;
+        return this.indexOf(searchString, position) === position;
+    };
+}

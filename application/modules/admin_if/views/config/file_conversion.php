@@ -34,8 +34,6 @@
         </div>
         <p>Il trasferimento sarà autenticato usando <code>HMAC-SHA256</code>. Questo non impedice a un utente mailintenzionato la lettura del documento, ma impedisce la modifica del documento con attacchi MITM.<br>
         Per una sicurezza migliore si consiglia di usare il protocollo <code>HTTPS (TLS 1.2)</code> per impedire l'intercettazione dei documenti.</p>
-        <p>La chiave di autenticazione <code>HMAC-256</code> è impostabile nel database (<code>config->file_conversion->hmac_key</code>). Questa chiave è generata dal server e deve rimanaere segreta (non va inviata con mezzi insciuri come e-mail o chat).
-        Se si sta utilizzando una connessione sicura (HTTPS) o una rete locale è possibile impostare la chiave facendo click su Cambia chiave</p>
-        <button type="button" class="btn btn-sm btn-default"><i class="fa fa-key"></i> Cambia chiave</button>
+        <p>La chiave di autenticazione <code>HMAC-256</code> è impostabile nel database (<code>config->file_conversion->hmac_key</code>). Questa chiave è generata dal server e deve rimanaere segreta (non va inviata con mezzi insciuri come e-mail o chat).</p>
     </div>
 </div>

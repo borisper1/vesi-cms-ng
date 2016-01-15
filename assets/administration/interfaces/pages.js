@@ -35,7 +35,7 @@ $(document).ready(function() {
         $.post(window.vbcknd.base_url+'ajax/admin/pages/set_home','id='+CurrentItem.data('id'), UpdatePageHome);
     }).on('click', '.edit-redirect', function(){
         $('#redirect-modal-title').html('<i class="fa fa-exchange"></i> Modifica reindirizzamento contenitore');
-        $('#redirect-modal-confirm').html('<i class="fa fa-plus"></i> Modifica reindirizzamento');
+        $('#redirect-modal-confirm').html('<i class="fa fa-bolt"></i> Modifica reindirizzamento');
         CurrentItem = $(this).closest('.page-element');
         $('#i-redirect-container').val(CurrentItem.closest('.container-block').data('container'));
         $('#i-redirect-page').val(CurrentItem.find('.f-name').text());

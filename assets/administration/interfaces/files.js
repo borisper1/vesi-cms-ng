@@ -43,7 +43,137 @@ $(document).ready(function() {
         CurrentItem.push($(this).closest('.file-manager-element').data('path'));
         $('#delete-modal-list').html('<code>'+CurrentItem[0]+'</code>');
         $('#delete-modal').modal();
+    }).on('click', '.file-manager-copy-element', function() {
+        CurrentItem = {};
+        CurrentItem.paths = [];
+        CurrentItem.paths.push($(this).closest('.file-manager-element').data('path'));
+        CurrentItem.action = 'copy';
+        CurrentItem.target = '/';
+        LoadPathSelector();
+    }).on('click', '.file-manager-move-element', function() {
+        CurrentItem = {};
+        CurrentItem.paths = [];
+        CurrentItem.paths.push($(this).closest('.file-manager-element').data('path'));
+        CurrentItem.action = 'move';
+        CurrentItem.target = '/';
+        LoadPathSelector();
     });
+
+    $('#filemgr-upload-file').click(function(){
+        $('#upload-engine-file-cage').find('.upload-engine-file-indicator').empty();
+        $('#upload-engine-target-field').val(CurrentPath);
+        if(CurrentPath.startsWith('img')){
+            $('#upload-engine-image-warning').removeClass('hidden');
+        }else{
+            $('#upload-engine-image-warning').addClass('hidden');
+        }
+        $('#upload-file-modal').modal();
+    });
+
+    $('#fmgr-copy').click(function(){
+        CurrentItem = {};
+        CurrentItem.paths = [];
+        $('.file-manager-select-element:checked').each(function(){
+            CurrentItem.paths.push($(this).closest('.file-manager-element').data('path'));
+        });
+        CurrentItem.action = 'copy';
+        CurrentItem.target = '/';
+        LoadPathSelector();
+    });
+
+    $('#fmgr-move').click(function(){
+        CurrentItem = {};
+        CurrentItem.paths = [];
+        $('.file-manager-select-element:checked').each(function(){
+            CurrentItem.paths.push($(this).closest('.file-manager-element').data('path'));
+        });
+        CurrentItem.action = 'move';
+        CurrentItem.target = '/';
+        LoadPathSelector();
+    });
+
+    $('#filemgr-new-folder').click(function(){
+        $('#i-folder-name').val('');
+        $('#new-folder-modal').modal();
+    });
+
+    $('#new-folder-modal-confirm').click(function(){
+        var name = encodeURIComponent($('#i-folder-name').val());
+        $('#operation-spinner').removeClass('hidden');
+        $.ajax({
+            type: "POST",
+            url: window.vbcknd.base_url+'ajax/admin/files/new_folder',
+            data: {'path': encodeURIComponent(CurrentPath), 'name': name},
+            success: AJAXFileOperationOK,
+            error: AJAXFileOperationFailed
+        });
+    });
+
+    //BEGIN PATH SELECTOR CODE -----------------------------------------------------------------------------------------
+
+    function LoadPathSelector(){
+        $.ajax({
+            type: "POST",
+            url: window.vbcknd.base_url+'ajax/admin/files/get_path_picker_table',
+            data: {'path': CurrentItem.target},
+            success: LoadPathInModal,
+            error: LoadPathInModalError
+        });
+        $('#file-picker-path-indicator').text('/');
+        $('#choose-target-fs-view').find('table').remove();
+        $('#choose-target-modal').modal();
+    }
+
+    $('#choose-target-fs-view').on('click', '.file-manager-picker-link', function(){
+        var element = $(this).closest('.file-picker-element');
+        if (element.hasClass('file-picker-folder')) {
+            UpdatePathSelector(element.data('path'));
+        }
+    });
+    
+    function UpdatePathSelector(path){
+        $.ajax({
+            type: "POST",
+            url: window.vbcknd.base_url+'ajax/admin/files/get_path_picker_table',
+            data: {'path': path, 'mode': 'only_folders'},
+            success: LoadPathInModal,
+            error: LoadPathInModalError
+        });
+        CurrentItem.target = path;
+        $('#file-picker-path-indicator').text(path);
+        $('#file-picker-level-up').prop('disabled', path==='/');
+    }
+
+    $('#file-picker-level-up').click(function(){
+        var path_array = CurrentItem.target.split('/');
+        path_array.pop();
+        var new_path = path_array.join('/')==='' ? '/' : path_array.join('/');
+        UpdatePathSelector(new_path);
+    });
+
+    function LoadPathInModal(data) {
+        var object = $('#choose-target-fs-view');
+        object.find('table').remove();
+        object.append(data);
+    }
+
+    function LoadPathInModalError() {
+
+    }
+
+    $('#choose-target-modal-confirm').click(function(){
+        $('#operation-spinner').removeClass('hidden');
+        var paths = encodeURIComponent(CurrentItem.paths.join(';'));
+        $.ajax({
+            type: "POST",
+            url: window.vbcknd.base_url+'ajax/admin/files/' + CurrentItem.action,
+            data: {'paths': paths, 'target': encodeURIComponent(CurrentItem.target)},
+            success: AJAXFileOperationOK,
+            error: AJAXFileOperationFailed
+        });
+    });
+
+    //END PATH SELECTOR CODE -------------------------------------------------------------------------------------------
 
     $('#fmgr-download').click(function(){
         var SelectedItems = $('.file-manager-select-element:checked');
@@ -215,4 +345,78 @@ $(document).ready(function() {
         $("#preview-modal-content").empty();
     });
 
+    //BEGIN UPLOAD HANDLING SECTION ------------------------------------------------------------------------------------
+
+    $('#upload-engine-select-files').click(function(){
+        $('#upload-engine-files-input').click();
+    });
+
+    $('#upload-engine-drop-zone').on('drop dragover', function (e) {
+        e.preventDefault();
+    });
+
+    var UploadEngineContainer = $('#upload-engine-file-cage');
+
+    $('#upload-engine-form').fileupload({
+        dropZone: $('#upload-engine-drop-zone'),
+        dataType:'json',
+        limitConcurrentUploads: 3,
+        maxChunkSize: 5000000,
+        //paramName: 'files[]',
+        add: function (e, data) {
+            var  $item = $('#file-uploading-template').children().clone();
+            $item.find('.upload-engine-file-label').html(data.files[0].name+ ' (<i>' + formatFileSize(data.files[0].size) + '</i>)');
+            data.context = $item.appendTo(UploadEngineContainer);
+            data.context.find('.btn-sm').click(function(){
+                if(data.context.data('status')==='uploading'){
+                    jqXHR.abort();
+                }
+                data.context.remove();
+            });
+            var jqXHR = data.submit();
+        },
+        progress: function(e, data){
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            // Update the hidden input field and trigger a change
+            // so that the jQuery knob plugin knows to update the dial
+            data.context.find('.progress-bar').width(progress+'%');
+            data.context.find('.upload-engine-file-progress-label').text(progress+'%');
+            if(progress == 100){
+                data.context.data('status', 'finished');
+            }
+        },
+        done:function(e, data){
+            console.debug(data.result);
+            data.context.find('.btn-sm').html('<i class="fa fa-remove"></i> Chiudi');
+            if(typeof data.result.files[0].error !== 'undefined'){
+                data.context.data('status', 'failed');
+                data.context.find('.progress-bar').addClass('progress-bar-danger');
+                data.context.find('.upload-engine-file-failed').removeClass('hidden');
+            }else{
+                data.context.data('status', 'success');
+                data.context.find('.progress-bar').addClass('progress-bar-success');
+            }
+            SetPath(CurrentPath);
+        },
+        fail:function(e, data){
+            data.context.data('status', 'failed');
+            data.context.find('.progress-bar').addClass('progress-bar-danger');
+            data.context.find('.upload-engine-file-failed').removeClass('hidden');
+            data.context.find('.btn-sm').html('<i class="fa fa-remove"></i> Chiudi');
+            SetPath(CurrentPath);
+        }
+    });
+
+    function formatFileSize(bytes) {
+        if (typeof bytes !== 'number') {
+            return '';
+        }
+        if (bytes >= 1000000000) {
+            return (bytes / 1000000000).toFixed(2) + ' GB';
+        }
+        if (bytes >= 1000000) {
+            return (bytes / 1000000).toFixed(2) + ' MB';
+        }
+        return (bytes / 1000).toFixed(2) + ' KB';
+    }
 });

@@ -4,6 +4,7 @@ class Files extends MX_Controller
 {
     function index()
     {
+        $this->resources->load_aux_js_file('assets/third_party/jquery-file-upload/jquery.fileupload.min.js');
         $this->load->library('file_handler');
         $data = array('files' => $this->file_handler->get_path_array('files'));
         $indicator_data = array('segments' => $this->file_handler->get_path_indicator_array('files'));
@@ -112,10 +113,111 @@ class Files extends MX_Controller
         }
     }
 
+    function move()
+    {
+        $paths = explode(';', rawurldecode($this->input->post('paths')));
+        $target = rawurldecode($this->input->post('target'));
+        if ($this->is_path_unsafe($target)) {
+            $this->output->set_status_header(403);
+            $this->output->set_output('The path indicated is reserved to the system');
+            return;
+        }
+        foreach($paths as $path)
+        {
+            $this->load->library('file_handler');
+            if ($this->is_path_unsafe($path)) {
+                $this->output->set_status_header(403);
+                $this->output->set_output('The path indicated is reserved to the system');
+                return;
+            }
+            $this->file_handler->move_path($path, $target);
+        }
+        $this->output->set_status_header(200);
+        $this->output->set_output('ok');
+    }
+
+    function copy()
+    {
+        $paths = explode(';', rawurldecode($this->input->post('paths')));
+        $target = rawurldecode($this->input->post('target'));
+        if ($this->is_path_unsafe($target)) {
+            $this->output->set_status_header(403);
+            $this->output->set_output('The path indicated is reserved to the system');
+            return;
+        }
+        foreach($paths as $path)
+        {
+            $this->load->library('file_handler');
+            if ($this->is_path_unsafe($path)) {
+                $this->output->set_status_header(403);
+                $this->output->set_output('The path indicated is reserved to the system');
+                return;
+            }
+            $this->file_handler->copy_path($path, $target);
+        }
+        $this->output->set_status_header(200);
+        $this->output->set_output('ok');
+    }
+
+    function new_folder()
+    {
+        $path = rawurldecode($this->input->post('path'));
+        $name = rawurldecode($this->input->post('name'));
+        if($this->is_path_unsafe($path))
+        {
+            $this->output->set_status_header(403);
+            $this->output->set_output('The path indicated is reserved to the system');
+            return;
+        }
+        $this->load->library('file_handler');
+        if($this->file_handler->new_folder($path.'/'.$name))
+        {
+            $this->output->set_status_header(200);
+            $this->output->set_output('ok');
+        }
+        else
+        {
+            $this->output->set_status_header(500);
+            $this->output->set_output('Internal server error or bad input charset');
+        }
+    }
+
     protected function is_path_unsafe($path)
     {
         $path_array =explode('/', $path);
         return (!in_array($path_array[0], array('files', 'img'))) or in_array('..', $path_array);
+    }
+
+    function get_path_picker_table()
+    {
+        $path = rawurldecode($this->input->post('path'));
+        $mode = $this->input->post('mode');
+        $this->load->library('file_handler');
+        if($path === '/')
+        {
+            $data = array('files' => $this->file_handler->get_root_path_array());
+        }
+        else
+        {
+            if($this->is_path_unsafe($path))
+            {
+                $this->output->set_status_header(403);
+                $this->output->set_output('The path indicated is reserved to the system');
+                return;
+            }
+            $data = array('files' => $this->file_handler->get_path_array($path));
+            if($mode==='only_folders')
+            {
+                foreach ($data['files'] as $key=> $item)
+                {
+                    if($item['type']!=='folder')
+                    {
+                        unset($data['files'][$key]);
+                    }
+                }
+            }
+        }
+        $this->load->view('files/file_picker_table', $data);
     }
 
 }
