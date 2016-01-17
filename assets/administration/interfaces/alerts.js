@@ -26,17 +26,31 @@ $(document).ready(function() {
         window.location.href = window.vbcknd.base_url+'admin/alerts';
     });
 
-    $('#save-alerts').click(function(){
+    function getData(content) {
         var data ={};
         data.id = $('#f-id').text();
         data.type = $('#input-type').val();
         data.dismissible = $('#input-dismissible').prop('checked') ? 1 : 0;
         data.display_on = encodeURIComponent($('#input-pages').val());
-        data.content = encodeURIComponent(CKEDITOR.instances.gui_editor.getData());
+        data.content = encodeURIComponent(content);
+        return data;
+    }
+
+    $('#save-alerts').click(function () {
         $('.alert').addClass('hidden');
         $('#spinner').removeClass('hidden');
-        $.post(window.vbcknd.base_url+'ajax/admin/alerts/save',data, SaveEditDone);
+        $.post(window.vbcknd.base_url + 'ajax/admin/alerts/save', getData(CKEDITOR.instances.gui_editor.getData()), SaveEditDone);
     });
+
+    $('#edit-code').click(function () {
+        window.vbcknd.start_code_editor('html', CKEDITOR.instances.gui_editor.getData(), ExecuteSaveAlert);
+    });
+
+    function ExecuteSaveAlert(html) {
+        $('.alert').addClass('hidden');
+        $('#spinner').removeClass('hidden');
+        $.post(window.vbcknd.base_url + 'ajax/admin/alerts/save', getData(html), SaveEditDone);
+    }
 
     $('.delete-alert').click(function(){
         CurrentId = $(this).closest('.content-row');

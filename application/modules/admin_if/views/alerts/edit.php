@@ -5,7 +5,7 @@
 </h3>
 <div class="btn-group pull-right" id="content-actions">
     <button type="button" class="btn btn-default" id="save-alerts"><i class="fa fa-save"></i> Salva</button>
-    <button type="button" class="btn btn-default" id="edit-code" disabled><i class="fa fa-code"></i> Modifica codice</button>
+    <button type="button" class="btn btn-default" id="edit-code"><i class="fa fa-code"></i> Modifica codice</button>
     <button type="button" class="btn btn-default" id="refresh"><i class="fa fa-refresh"></i> Aggiorna</button>
     <button type="button" class="btn btn-default" id="close-edit"><i class="fa fa-remove"></i> Chiudi</button>
 </div>

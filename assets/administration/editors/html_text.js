@@ -23,6 +23,14 @@ $(document).ready(function() {
         window.vbcknd.content.save(data, null, null);
     });
 
+    $('#edit-code').click(function () {
+        window.vbcknd.start_code_editor('html', CKEDITOR.instances.gui_editor.getData(), ExecuteSaveComponent);
+    });
+
+    function ExecuteSaveComponent(html) {
+        window.vbcknd.content.save(encodeURIComponent(html), null, null);
+    }
+
     $('.export-document').click(function(){
         window.vbcknd.services.file_conversion.export_from_text(CKEDITOR.instances.gui_editor.getData(), 'html', $(this).data('format'), $('#f-id').text());
     });

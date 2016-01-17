@@ -46,10 +46,10 @@ $(document).ready(function() {
     });
 
     $('#edit-code').click(function () {
-        window.vbcknd.start_code_editor('json', decodeURIComponent(generateJSON()), ExecuteSaveMenu);
+        window.vbcknd.start_code_editor('json', decodeURIComponent(generateJSON()), ExecuteSaveComponent);
     });
 
-    function ExecuteSaveMenu(json) {
+    function ExecuteSaveComponent(json) {
         window.vbcknd.content.save(encodeURIComponent(json), null, null);
     }
 

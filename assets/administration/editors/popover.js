@@ -16,15 +16,28 @@ $(document).ready(function() {
         enterMode: CKEDITOR.ENTER_P
     });
 
-    $('#save-content').click(function(){
-        var data = encodeURIComponent(CKEDITOR.instances.gui_editor.getData());
+    function getSettings() {
         var settings ={};
         settings.class=$("#input-class").val();
         settings.placement=$("#input-position").val();
         settings.title=$("#input-title").val();
         settings.linebreak=$("#input-linebreak").prop('checked');
         settings.dismissable=$("#input-dismissable").prop('checked');
+        return encodeURIComponent(JSON.stringify(settings));
+    }
+
+    $('#save-content').click(function () {
+        var data = encodeURIComponent(CKEDITOR.instances.gui_editor.getData());
         var displayname = encodeURIComponent($("#input-name").val());
-        window.vbcknd.content.save(data, encodeURIComponent(JSON.stringify(settings)), displayname);
+        window.vbcknd.content.save(data, getSettings(), displayname);
     });
+
+    $('#edit-code').click(function () {
+        window.vbcknd.start_code_editor('html', CKEDITOR.instances.gui_editor.getData(), ExecuteSaveComponent);
+    });
+
+    function ExecuteSaveComponent(html) {
+        var displayname = encodeURIComponent($("#input-title").val());
+        window.vbcknd.content.save(encodeURIComponent(html), getSettings(), displayname);
+    }
 });

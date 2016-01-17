@@ -47,6 +47,7 @@ $(document).ready(function() {
         window.vbcknd.code_editor.setTheme('ace/theme/chrome');
         window.vbcknd.code_editor.getSession().setMode('ace/mode/' + mode);
         window.vbcknd.code_editor.setValue(data, -1);
+        window.vbcknd.code_editor.getSession().setUseWrapMode(true);
         code_editor_callback = saveCallback;
         $('#code-editor-modal').modal();
     };
