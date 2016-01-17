@@ -102,7 +102,7 @@ class File_handler
         return round(pow($mult, $base - floor($base)), $precision) . $suffixes[floor($base)];
     }
 
-    private function get_folder_size_raw($path)
+    function get_folder_size_raw($path)
     {
         $count_size = 0;
         $count = 0;

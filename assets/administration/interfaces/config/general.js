@@ -12,6 +12,7 @@ $(document).ready(function() {
         data.style.display_home_page_title = $('#i-display-home-page-title').prop('checked') ? 1 : 0;
         data.general ={};
         data.general.website_name = $('#i-website-name').val();
+        data.general.logo_image_path = $('#i-logo-image-path').val()
         return data;
     }
 

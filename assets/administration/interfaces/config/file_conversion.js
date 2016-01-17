@@ -3,7 +3,7 @@
  */
 $(document).ready(function() {
 
-    $('#i-execute-on-remote, #i-enable-file-conversion').bootstrapSwitch();
+    $('#i-execute-on-remote, #i-enable-file-conversion, #i-limit-output-folder').bootstrapSwitch();
 
     $('#check-temp-folder-permissions').click(function()
     {
@@ -28,7 +28,13 @@ $(document).ready(function() {
         data.file_conversion.remote_server_url = $('#i-remote-server-url').val();
         data.file_conversion.execute_on_remote = $('#i-execute-on-remote').prop('checked') ? 1 : 0;
         data.file_conversion.enable_file_conversion = $('#i-enable-file-conversion').prop('checked') ? 1 : 0;
+        data.file_conversion.limit_output_folder = $('#i-limit-output-folder').prop('checked') ? 1 : 0;
+        data.file_conversion.output_folder_max_size = $('#i-output-folder-max-size').val();
         return data;
-    }
+    };
+
+    $('#i-output-folder-max-size').change(function () {
+        $('#output-current-max-size').text($(this).val());
+    })
 
 });

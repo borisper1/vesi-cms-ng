@@ -17,6 +17,12 @@
             </select>
         </div>
         <div class="form-group">
+            <label for="i-logo-image-path">Immagine logo del sito:</label>
+            <input type="text" class="form-control" id="i-logo-image-path" placeholder="Inserire il percorso"
+                   value="<?= $logo_image_path ?>">
+            <span class="help-block">Inserire il percorso (relativo alla base del sito) dell'immagine da utilizzare come logo del sito (generalmente situata in <code>img/...</code>)</span>
+        </div>
+        <div class="form-group">
             <div class="checkbox toggle">
                 <label>
                     <input type="checkbox" id="i-menu-hover" <?=$menu_hover ? 'checked' : '' ?>> &nbsp;Abilita menu a sfioramento (bootstrap-hover-dropdown)

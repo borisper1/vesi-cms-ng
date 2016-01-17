@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="<?=base_url();?>"><img src="<?=base_url('img/logo-bar.png');?>"></a>
+            <a class="navbar-brand" href="<?= base_url(); ?>"><img src="<?= base_url($logo_image_path); ?>"></a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">

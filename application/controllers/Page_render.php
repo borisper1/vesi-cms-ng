@@ -31,6 +31,7 @@ class Page_render extends MX_Controller
         $menu_data = $this->menu_handler->get_menu_array($id,$container,$page);
         $menu_data['home_active'] = ($container==='home' and $page==='home');
         $menu_data['class'] = $this->db_config->get('style', 'menu_class');
+        $menu_data['logo_image_path'] = $this->db_config->get('general', 'logo_image_path');
         $base_data['menu']=$this->load->view('frontend/main_menu',$menu_data,true);
 
         //Get page data
@@ -99,6 +100,7 @@ class Page_render extends MX_Controller
         $id=$this->menu_handler->get_main_menu_id();
         $menu_data = $this->menu_handler->get_menu_array($id,'','');
         $menu_data['home_active'] = false;
+        $menu_data['logo_image_path'] = $this->db_config->get('general', 'logo_image_path');
         $base_data['menu']=$this->load->view('frontend/main_menu',$menu_data,true);
 
         $base_data['title']='404 - Page not found';
