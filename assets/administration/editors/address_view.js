@@ -19,7 +19,7 @@ $(document).ready(function() {
     });
     $('.sortable').sortable().disableSelection();
 
-    $('#save-content').click(function(){
+    function generateJSON() {
         var json={};
         json.address_road=CKEDITOR.instances.gui_editor.getData();
         json.email=[];
@@ -38,9 +38,20 @@ $(document).ready(function() {
             element.label=$(this).find(".f-label").text();
             json.phone.push(element);
         });
-        var json_str = encodeURIComponent(JSON.stringify(json, null, '\t'));
-        window.vbcknd.content.save(json_str, null, null);
+        return encodeURIComponent(JSON.stringify(json, null, '\t'));
+    }
+
+    $('#save-content').click(function () {
+        window.vbcknd.content.save(generateJSON(), null, null);
     });
+
+    $('#edit-code').click(function () {
+        window.vbcknd.start_code_editor('json', decodeURIComponent(generateJSON()), ExecuteSaveMenu);
+    });
+
+    function ExecuteSaveMenu(json) {
+        window.vbcknd.content.save(encodeURIComponent(json), null, null);
+    }
 
     $('#new-email').click(function(){
         $('#email-new-modal').modal();

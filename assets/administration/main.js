@@ -10,7 +10,7 @@
 }();
 
 $(document).ready(function() {
-    var elevator_href;
+    var elevator_href, code_editor_callback;
     $('.vcms-elevator').click(function(){
         elevator_href=$(this).data('href');
         $('#system_reauth_modal').modal();
@@ -41,6 +41,20 @@ $(document).ready(function() {
     }
 
     $('.selectpicker').selectpicker();
+    window.vbcknd.code_editor = ace.edit('code-editor');
+
+    window.vbcknd.start_code_editor = function (mode, data, saveCallback) {
+        window.vbcknd.code_editor.setTheme('ace/theme/chrome');
+        window.vbcknd.code_editor.getSession().setMode('ace/mode/' + mode);
+        window.vbcknd.code_editor.setValue(data, -1);
+        code_editor_callback = saveCallback;
+        $('#code-editor-modal').modal();
+    };
+
+    $('#code-editor-save').click(function () {
+        code_editor_callback(window.vbcknd.code_editor.getValue());
+        $('#code-editor-modal').modal('hide');
+    });
 });
 
 $(document).ready(function() {
@@ -50,7 +64,7 @@ $(document).ready(function() {
     });
 });
 
-//POLYFILLS FOR NON ECMASCRPT6 Browsers --------------------------------------------------------------------------------
+//POLYFILLS FOR NON ECMASCRIPT6 Browsers --------------------------------------------------------------------------------
 if (!String.prototype.startsWith) {
     String.prototype.startsWith = function(searchString, position) {
         position = position || 0;

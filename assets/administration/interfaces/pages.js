@@ -272,6 +272,18 @@ $(document).ready(function() {
 
     //PAGE SAVING CODE -------------------------------------------------------------------------------------------------
 
+    $('#edit-code').click(function () {
+        window.vbcknd.start_code_editor('json', decodeURIComponent(GetPageData().json), ExecuteSavePage);
+    });
+
+    function ExecuteSavePage(json) {
+        var data = GetPageData();
+        data.json = encodeURIComponent(json);
+        $('.alert').addClass('hidden');
+        $('#spinner').removeClass('hidden');
+        $.post(window.vbcknd.base_url + 'ajax/admin/pages/save', data, SaveEditDone);
+    }
+
     $('#save-page').click(function(){
         $('.alert').addClass('hidden');
         $('#spinner').removeClass('hidden');

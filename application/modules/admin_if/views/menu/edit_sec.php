@@ -15,7 +15,7 @@
         </ul>
     </div>
     <button type="button" class="btn btn-default" id="save-menu"><i class="fa fa-save"></i> Salva</button>
-    <button type="button" class="btn btn-default" id="edit-code" disabled><i class="fa fa-code"></i> Modifica codice</button>
+    <button type="button" class="btn btn-default" id="edit-code"><i class="fa fa-code"></i> Modifica codice</button>
     <button type="button" class="btn btn-default" id="edit-attributes"><i class="fa fa-wrench"></i> Modifica attributi</button>
     <button type="button" class="btn btn-default" id="refresh-menu"><i class="fa fa-refresh"></i> Aggiorna</button>
     <button type="button" class="btn btn-default" id="close-edit"><i class="fa fa-remove"></i> Chiudi</button>

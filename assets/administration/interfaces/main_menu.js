@@ -7,7 +7,7 @@ $(document).ready(function() {
         window.location.reload(true);
     });
 
-    $('#save-menu').click(function(){
+    function generateSaveJSON() {
         var structure = {};
         structure.type='menu';
         structure.items=[];
@@ -29,10 +29,21 @@ $(document).ready(function() {
             }
             structure.items.push(menu);
         });
-        var json = JSON.stringify(structure, null, '\t');
+        return JSON.stringify(structure, null, '\t');
+    }
+
+    $('#save-menu').click(function () {
+        ExecuteSaveMenu(generateSaveJSON())
+    });
+
+    $('#edit-code').click(function () {
+        window.vbcknd.start_code_editor('json', generateSaveJSON(), ExecuteSaveMenu);
+    });
+
+    function ExecuteSaveMenu(json) {
         $('#spinner').removeClass('hidden');
         $.post(window.vbcknd.base_url+'ajax/admin/main_menu/save','json='+encodeURIComponent(json),SaveEditDone);
-    });
+    }
 
     function SaveEditDone(data){
         $('.alert').addClass('hidden');
