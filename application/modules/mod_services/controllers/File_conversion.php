@@ -143,10 +143,10 @@ class File_conversion extends MX_Controller
 
     protected function execute_pandoc_remote($input, $from, $to)
     {
-        $transaction_id = bin2hex(openssl_random_pseudo_bytes(256));
+        $transaction_id = bin2hex(openssl_random_pseudo_bytes(32));
         $url = $this->db_config->get('file_conversion', 'remote_server_url');
         $token = $this->db_config->get('file_conversion', 'remote_server_token');
-        $hmac_key = $this->db_config->get('file_conversion', 'hmac_key');
+        $hmac_key = base64_decode($this->db_config->get('file_conversion', 'hmac_key'));
         $digest = hash_hmac_file('sha256', $input, $hmac_key);
         $finfo = new finfo(FILEINFO_MIME);
         $cfile = new CURLFile($input, $finfo->file($input),'to_convert');
