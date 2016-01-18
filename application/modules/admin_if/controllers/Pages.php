@@ -90,8 +90,9 @@ class Pages extends MX_Controller
             }
             elseif($element->type==='menu')
             {
-                //SINGLE VIEW COMPONENTS
                 $rendered_html.= $this->draw_menu($element->id);
+            } elseif ($element->type === 'plugin') {
+                $rendered_html .= $this->draw_plugin($element->name, $element->data);
             }
         }
         return $rendered_html;
@@ -128,10 +129,24 @@ class Pages extends MX_Controller
         else
         {
             $menu_array['exists']=false;
-            $menu_array['id']='';
+            $menu_array['id'] = $id;
             $menu_array['title']='';
         }
         return $this->load->view('pages/menu_symbol', $menu_array, true);
+    }
+
+    private function draw_plugin($name, $data = [])
+    {
+        $plugin_array = $this->modules_handler->get_plugin_data($name);
+        if ($plugin_array !== false) {
+            $plugin_array['exists'] = true;
+        } else {
+            $plugin_array['exists'] = false;
+            $plugin_array['name'] = $name;
+            $plugin_array['title'] = '';
+        }
+        $plugin_array['data'] = json_encode($data, JSON_FORCE_OBJECT);
+        return $this->load->view('pages/plugin_symbol', $plugin_array, true);
     }
 
     //AJAX accessible functions
@@ -144,6 +159,12 @@ class Pages extends MX_Controller
     function get_menu_symbol(){
         $id = $this->input->post('id');
         echo $this->draw_menu($id);
+    }
+
+    function get_plugin_symbol()
+    {
+        $name = $this->input->post('name');
+        echo $this->draw_plugin($name);
     }
 
     function get_view_template(){

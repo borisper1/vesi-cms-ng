@@ -5,7 +5,7 @@
       "name": "circolari-engine",
       "version": "1.0.0-alpha",
       "title": "Gestione circolari",
-      "dscription": "Plugin per la gestione e la visualizzazione (anche in  frontend) delle circolari",
+      "description": "Plugin per la gestione e la visualizzazione (anche in  frontend) delle circolari",
       "author": "Boris Pertot",
       "components": [],
       "admin_interfaces": [],
@@ -13,7 +13,8 @@
       "has_db_tables": true,
       "db_install_file": "",
       "db_remove_file": "",
-      "files": []
+      "files": [],
+      "enabled": true
     }
   ]
 }

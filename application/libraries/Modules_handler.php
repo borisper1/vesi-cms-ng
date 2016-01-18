@@ -2,7 +2,7 @@
 
 class Modules_handler
 {
-    protected $CI, $schema;
+    protected $CI, $schema, $plugin_cache = null;
     public $installed_components = [],$installed_structures = [];
 
     public function __construct()
@@ -68,6 +68,48 @@ class Modules_handler
         }
         return false;
     }
+
+    protected function update_plugin_cache()
+    {
+        $this->plugin_cache = json_decode(file_get_contents(APPPATH . "config/plugins.json"));
+    }
+
+    function check_plugin($name)
+    {
+        if ($this->plugin_cache === null) {
+            $this->update_plugin_cache();
+        }
+        foreach ($this->plugin_cache->plugins as $plugin) {
+            if ($plugin->name === $name and $plugin->enabled) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function get_plugin_list()
+    {
+        if ($this->plugin_cache === null) {
+            $this->update_plugin_cache();
+        }
+
+        return $this->plugin_cache->plugins;
+    }
+
+    function get_plugin_data($name)
+    {
+        $plugins = $this->get_plugin_list();
+        foreach ($plugins as $plugin) {
+            if ($plugin->name === $name) {
+                return array(
+                    'name' => $name,
+                    'title' => $plugin->title
+                );
+            }
+        }
+        return false;
+    }
+
 
 
 }

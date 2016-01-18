@@ -44,6 +44,8 @@ class Components extends MX_Controller
             elseif($element->type==='menu')
             {
                 $html.=$this->render_sec_menu($element->id);
+            } elseif ($element->type === 'menu') {
+                $html .= $this->render_plugin($element->name, $element->data);
             }
             else
             {
@@ -64,6 +66,13 @@ class Components extends MX_Controller
             }
         }
         return $html;
+    }
+
+    function render_plugin($name, $data)
+    {
+        //TODO: Check if the plugin is registered
+        $output = Modules::run('plugins/' . $name . '/render', $data);
+        return $output;
     }
 
     protected function get_content_type($id)
