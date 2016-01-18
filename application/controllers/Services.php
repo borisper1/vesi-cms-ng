@@ -7,7 +7,15 @@ class Services extends MX_Controller
     public function execute_service($name, $option = null)
     {
         $option = $option===null ? '' : '/'.$option;
-        Modules::run('mod_services/'.$name.$option);
+        if($this->modules_handler->check_service(strtolower($name)))
+        {
+            Modules::run('mod_services/'.$name.$option);
+        }
+        else
+        {
+            $this->output->set_status_header(500);
+            $this->output->set_output('The called service does not exists or is disabled');
+        }
     }
 
 }

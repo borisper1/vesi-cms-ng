@@ -56,5 +56,18 @@ class Modules_handler
         return $output;
     }
 
+    function check_service($name)
+    {
+        $schema=json_decode(file_get_contents(APPPATH."config/services.json"));
+        foreach($schema->services as $service){
+            if($service->name === $name)
+            {
+                //For plugin-based services check if the plugin is enabled?
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }

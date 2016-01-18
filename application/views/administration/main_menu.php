@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
-
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main_menu_collapse" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
@@ -12,7 +11,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </button>
             <a class="navbar-brand" href="<?=base_url('admin')?>">Vesi-CMS 1.2</a>
         </div>
-
 
         <div class="collapse navbar-collapse" id="main_menu_collapse">
             <ul class="nav navbar-nav">
