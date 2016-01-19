@@ -45,7 +45,7 @@ class Components extends MX_Controller
             {
                 $html.=$this->render_sec_menu($element->id);
             } elseif ($element->type === 'menu') {
-                $html .= $this->render_plugin($element->name, $element->data);
+                $html .= $this->render_plugin($element->name, $element->command);
             }
             else
             {
@@ -68,11 +68,11 @@ class Components extends MX_Controller
         return $html;
     }
 
-    function render_plugin($name, $data)
+    function render_plugin($name, $command)
     {
         if($this->modules_handler->get_plugin_data($name)['type']==='full')
         {
-            return Modules::run('plugins/' . $name . '/render', $data);
+            return Modules::run('plugins/' . $name . '/render', $command);
         }
         else
         {

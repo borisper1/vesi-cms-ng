@@ -362,7 +362,7 @@ $(document).ready(function() {
                 var plugin = {};
                 plugin.type = 'plugin';
                 plugin.name = instance.find('.f-name').text();
-                plugin.data = JSON.parse(instance.data('plugindata'));
+                plugin.command = instance.find('.f-command').text();
                 elements.push(plugin);
             }
         });
@@ -398,6 +398,8 @@ $(document).ready(function() {
         $('#view-modal').modal();
     }).on('click','.remove-menu',function(){
         $(this).closest('.menu-symbol').remove();
+    }).on('click', '.remove-plugin', function () {
+        $(this).closest('.plugin-symbol').remove();
     }).on('click','.remove-content',function(){
         CurrentItem=$(this).closest('.content-symbol');
         var id = CurrentItem.find('.f-id').text();
@@ -452,6 +454,14 @@ $(document).ready(function() {
         $('#spinner').removeClass('hidden');
         $.post(window.vbcknd.base_url+'ajax/admin/pages/save', GetPageData(), EditContentSave);
         $('#edit-content-modal').modal();
+    }).on('click', '.edit-plugin-command', function () {
+        CurrentItem = $(this).closest('.plugin-symbol');
+        $('#i-edit-plugin-command').val(CurrentItem.find('.f-command').text());
+        $('#edit-plugin-modal').modal();
+    });
+
+    $('#edit-plugin-modal-confirm').click(function () {
+        CurrentItem.find('.f-command').text($('#i-edit-plugin-command').val());
     });
 
     function EditContentSave(data){
@@ -519,6 +529,14 @@ $(document).ready(function() {
         }else{
             alert('Non è stato inserito un id valido');
         }
+    });
+
+    $('#link-plugin-modal-confirm').click(function () {
+        var name = $('#i-link-plugin-name').val();
+        var command = encodeURIComponent($('#i-link-plugin-command').val());
+        $('.content-alert').addClass('hidden');
+        $('#content-linking-spinner').removeClass('hidden');
+        $.post(window.vbcknd.base_url + 'ajax/admin/pages/get_plugin_symbol', 'name=' + name + '&command=' + command, LinkExistingContent);
     });
 
     function LinkExistingContent(data){

@@ -268,8 +268,14 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-
+                <div class="form-group">
+                    <label class="control-label" for="i-link-plugin-command">Inserire il comando da inviare al
+                        componente aggiuntivo</label>
+                    <input type="text" class="form-control" id="i-link-plugin-command" placeholder="Comando/Profilo">
+                    <span class="text-info"><i class="fa fa-info-circle"></i> E' possibile trovare i comandi supportati nella documentazione del componente aggiuntivo. Alcuni componenti aggiuntivi supportano l'uso di profili</span>
+                </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
                 <button type="button" class="btn btn-success" id="link-plugin-modal-confirm" data-dismiss="modal"><i class="fa fa-link"></i> Associa componente aggiuntivo</button>
@@ -277,6 +283,34 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="edit-plugin-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="link-plugin-modal-title"><i class="fa fa-terminal"></i> Modifica comando
+                    componente aggiuntivo</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label" for="i-link-plugin-command">Inserire il comando da inviare al
+                        componente aggiuntivo</label>
+                    <input type="text" class="form-control" id="i-edit-plugin-command" placeholder="Comando/Profilo">
+                    <span class="text-info"><i class="fa fa-info-circle"></i> E' possibile trovare i comandi supportati nella documentazione del componente aggiuntivo. Alcuni componenti aggiuntivi supportano l'uso di profili</span>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
+                </button>
+                <button type="button" class="btn btn-success" id="edit-plugin-modal-confirm" data-dismiss="modal"><i
+                        class="fa fa-pencil"></i> Modifica comando
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="modal fade" id="new-content-modal" tabindex="-1" role="dialog" aria-labelledby="new-content-modal-label" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
@@ -293,7 +327,9 @@
                                 <option data-content="<span class='label label-default'><?=$component['name'] ?></span>  <?=$component['description'] ?>"><?=$component['name'] ?></option>
                             <?php endforeach; ?>
                         </select>
-                        <p class="text-info min-space-top no-margin" id="layout-change-warning"><i class="fa fa-info-circle"></i> NB: tutte le modifiche apportate verranno salvate (non sarà più possibile ripristinare una versione precedente). L'editor contenuti verrà aperto</p>
+                        <p class="text-info min-space-top no-margin"><i class="fa fa-info-circle"></i> NB: tutte le
+                            modifiche apportate verranno salvate (non sarà più possibile ripristinare una versione
+                            precedente). L'editor contenuti verrà aperto</p>
                     </div>
                     <div id="new-content-modal-wait">
                         <p>Aggiunta del contenuto alla pagina. Attendere...</p>

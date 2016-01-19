@@ -93,7 +93,7 @@ class Pages extends MX_Controller
             {
                 $rendered_html.= $this->draw_menu($element->id);
             } elseif ($element->type === 'plugin') {
-                $rendered_html .= $this->draw_plugin($element->name, $element->data);
+                $rendered_html .= $this->draw_plugin($element->name, $element->command);
             }
         }
         return $rendered_html;
@@ -136,7 +136,7 @@ class Pages extends MX_Controller
         return $this->load->view('pages/menu_symbol', $menu_array, true);
     }
 
-    private function draw_plugin($name, $data = [])
+    private function draw_plugin($name, $command = '')
     {
         $plugin_array = $this->modules_handler->get_plugin_data($name);
         if ($plugin_array !== false) {
@@ -146,7 +146,7 @@ class Pages extends MX_Controller
             $plugin_array['name'] = $name;
             $plugin_array['title'] = '';
         }
-        $plugin_array['data'] = json_encode($data, JSON_FORCE_OBJECT);
+        $plugin_array['command'] = $command;
         return $this->load->view('pages/plugin_symbol', $plugin_array, true);
     }
 
@@ -165,7 +165,8 @@ class Pages extends MX_Controller
     function get_plugin_symbol()
     {
         $name = $this->input->post('name');
-        echo $this->draw_plugin($name);
+        $command = rawurldecode($this->input->post('command'));
+        echo $this->draw_plugin($name, $command);
     }
 
     function get_view_template(){
