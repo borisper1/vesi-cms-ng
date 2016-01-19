@@ -70,9 +70,14 @@ class Components extends MX_Controller
 
     function render_plugin($name, $data)
     {
-        //TODO: Check if the plugin is registered
-        $output = Modules::run('plugins/' . $name . '/render', $data);
-        return $output;
+        if($this->modules_handler->get_plugin_data($name)['type']==='full')
+        {
+            return Modules::run('plugins/' . $name . '/render', $data);
+        }
+        else
+        {
+            return false;
+        }
     }
 
     protected function get_content_type($id)

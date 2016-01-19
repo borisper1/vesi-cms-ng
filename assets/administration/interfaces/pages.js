@@ -358,9 +358,14 @@ $(document).ready(function() {
                 menu.type = 'menu';
                 menu.id = instance.find('.f-id').text();
                 elements.push(menu);
+            } else if(instance.hasClass('plugin-symbol')){
+                var plugin = {};
+                plugin.type = 'plugin';
+                plugin.name = instance.find('.f-name').text();
+                plugin.data = JSON.parse(instance.data('plugindata'));
+                elements.push(plugin);
             }
         });
-
         return elements;
     }
 
@@ -435,7 +440,8 @@ $(document).ready(function() {
         CurrentItem=$(this).closest('.editor-parent-element');
         $('#link-menu-modal').modal();
     }).on('click','.link-plugin',function(){
-        alert("Il supporto ai plug-in non è ancora stato ultimato - Plug-ins are not currently supported");
+        CurrentItem=$(this).closest('.editor-parent-element');
+        $('#link-plugin-modal').modal();
     }).on('click','.new-standard-content',function(){
         CurrentItem=$(this).closest('.editor-parent-element');
         $('#new-content-modal-selector, #new-content-modal-create-footer').removeClass('hidden');

@@ -53,6 +53,7 @@ class Pages extends MX_Controller
         $data_array['contents_list']=$this->content_handler->get_contents_list();
         $data_array['containers']=$this->page_handler->get_containers_list();
         $data_array['components_list'] = $this->modules_handler->get_components_list();
+        $data_array['plugins'] = $this->modules_handler->get_full_plugin_list();
         $this->load->view('pages/edit_wrapper', $data_array);
     }
 

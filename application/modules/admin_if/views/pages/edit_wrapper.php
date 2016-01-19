@@ -238,7 +238,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="view-modal-title"><i class="fa fa-link"></i> Associa menu secondario</h4>
+                <h4 class="modal-title"><i class="fa fa-link"></i> Associa menu secondario</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -249,6 +249,30 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
                 <button type="button" class="btn btn-success" id="link-menu-modal-confirm" data-dismiss="modal"><i class="fa fa-link"></i> Associa menu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="link-plugin-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="link-plugin-modal-title"><i class="fa fa-link"></i> Associa componente aggiuntivo</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <select class="form-control selectpicker" id="i-link-plugin-name">
+                        <?php foreach($plugins as $plugin): ?>
+                            <option data-content="<span class='label label-info'><?=$plugin->name ?></span> <?=$plugin->title ?>"><?=$plugin->name ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-success" id="link-plugin-modal-confirm" data-dismiss="modal"><i class="fa fa-link"></i> Associa componente aggiuntivo</button>
             </div>
         </div>
     </div>
@@ -317,7 +341,7 @@
                     <li><a href="#" class="link-standard-content"><i class="fa fa-fw fa-link"></i> Contenuto esistente</a></li>
                     <li><a href="#" class="new-standard-content"><i class="fa fa-fw fa-plus"></i> Nuovo contenuto</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#" class="link-plugin"><i class="fa fa-fw fa-plug"></i> Plug-in</a></li>
+                    <li><a href="#" class="link-plugin"><i class="fa fa-fw fa-plug"></i> Componente aggiuntivo</a></li>
                 </ul>
             </div>
             <div class="btn-group">

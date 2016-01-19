@@ -96,12 +96,25 @@ class Modules_handler
         return $this->plugin_cache->plugins;
     }
 
+    function get_full_plugin_list()
+    {
+        $plugins = $this->get_plugin_list();
+        $output = [];
+        foreach ($plugins as $plugin) {
+            if ($plugin->type === 'full') {
+                $output[] = $plugin;
+            }
+        }
+        return $output;
+    }
+
     function get_plugin_data($name)
     {
         $plugins = $this->get_plugin_list();
         foreach ($plugins as $plugin) {
             if ($plugin->name === $name) {
                 return array(
+                    'type' => $plugin->type,
                     'name' => $name,
                     'title' => $plugin->title
                 );
