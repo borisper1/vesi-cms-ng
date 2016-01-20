@@ -24,6 +24,14 @@
   "content":{
     "items":[
       {"name":"pages", "label": "Pagine", "description":"Permette di gestire le pagine e associare e dissociare contenuti, menu e componenti aggiuntivi. Si consiglia di consentirne l'accesso a tutti gli utenti", "icon":"fa-file", "builtin":true, "only_su":false},
+      {
+        "name": "circolari_engine",
+        "label": "Circolari",
+        "description": "Permette di gestire le circolari e modificarne il contenuto",
+        "icon": "fa-copy",
+        "builtin": false,
+        "only_su": false
+      },
       {"name":"special::separator", "builtin":true},
       {"name":"contents", "label": "Gestione contenuti", "description":"Permette di gestire manualmente i contenuti e modificarli. Si consiglia di consentirne l'accesso a tutti gli utenti", "icon":"fa-cubes", "builtin":true, "only_su":false},
       {"name":"alerts", "label": "Avvisi", "description":"Permette di creare avvisi globali visualizzati in cima alle pagine del sito", "icon":"fa-bullhorn", "builtin":true, "only_su":false},

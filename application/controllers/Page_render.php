@@ -85,10 +85,10 @@ class Page_render extends MX_Controller
             $data['container_class'].=' with-footer';
         }
         $data['alerts'] = $this->render_alerts($page_data->container, $page_data->page_name);
-        $data['content']=Modules::run('components/render_section',$page_data->elements);
+        $data['content'] = $this->render_section($page_data->elements);
         if(isset($page_data->sidebar_elements))
         {
-            $data['sidebar_content']=Modules::run('components/render_section',$page_data->sidebar_elements);
+            $data['sidebar_content'] = $this->render_section($page_data->sidebar_elements);
         }
         return $this->load->view('frontend/'.$page_view,$data,true);
     }
@@ -117,5 +117,40 @@ class Page_render extends MX_Controller
         //Load the final view and render the page
         $this->load->view('frontend/base', $base_data);
         $this->output->set_status_header('404');
+    }
+
+    protected function render_section($structure)
+    {
+        $html = "";
+        foreach ($structure as $element) {
+            if ($element->type === 'content') {
+                $html .= Modules::run('components/render_component', $element->id);
+            } elseif ($element->type === 'menu') {
+                $html .= Modules::run('components/render_sec_menu', $element->id);
+            } elseif ($element->type === 'plugin') {
+                $html .= $this->render_plugin($element->name, $element->command);
+            } elseif (in_array($element->type, $this->modules_handler->installed_structures)) {
+                $structure_data = [];
+                foreach ($element->views as $view) {
+                    $view_data = [];
+                    $view_data['id'] = $view->id;
+                    $view_data['title'] = $view->title;
+                    $view_data['content'] = $this->render_section($view->elements);
+                    $structure_data[] = $view_data;
+                }
+                $class = isset($element->class) ? $element->class : null;
+                $html .= Modules::run('components/load_structure_view', $element->type, $structure_data, $class);
+            };
+        }
+        return $html;
+    }
+
+    function render_plugin($name, $command)
+    {
+        if ($this->modules_handler->get_plugin_data($name)['type'] === 'full') {
+            return Modules::run('mod_plugins/' . $name . '/render', $command);
+        } else {
+            return false;
+        }
     }
 }

@@ -38,7 +38,8 @@
             <td>
                 <span class="label label-default f-type"><?=$content['type'] ?></span>
                 <a href="<?=base_url('admin/contents/edit/'.$content['id']) ?>"><?=$content['preview'] ?></a>
-                <a href="#" class="delete-content lmbnc pull-right tooltipped" data-toggle="tooltip" title="Elimina"><i class="fa fa-trash"></i></a>
+                <a class="delete-content lmbnc pull-right tooltipped" data-toggle="tooltip" title="Elimina"><i
+                        class="fa fa-trash"></i></a>
             </td>
             <td>
                 <?php $i=0; ?>

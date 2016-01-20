@@ -32,52 +32,9 @@ class Components extends MX_Controller
         return $this->load->view('frontend/sec_menu',$menu_data,true);
     }
 
-    function render_section($structure)
+    function load_structure_view($name, $data, $class)
     {
-        $html="";
-        foreach($structure as $element)
-        {
-            if($element->type==='content')
-            {
-                $html.=$this->render_component($element->id);
-            }
-            elseif($element->type==='menu')
-            {
-                $html.=$this->render_sec_menu($element->id);
-            } elseif ($element->type === 'menu') {
-                $html .= $this->render_plugin($element->name, $element->command);
-            }
-            else
-            {
-                if(in_array($element->type,$this->modules_handler->installed_structures))
-                {
-                    $structure_data=[];
-                    foreach($element->views as $view)
-                    {
-                        $view_data=[];
-                        $view_data['id']=$view->id;
-                        $view_data['title']=$view->title;
-                        $view_data['content']=$this->render_section($view->elements);
-                        $structure_data[]=$view_data;
-                    }
-                    $class = isset($element->class) ? $element->class : null;
-                    $html.=$this->load->view(str_replace('-','_',$element->type), array( 'structure_data' => $structure_data, 'class' => $class), true);
-                }
-            }
-        }
-        return $html;
-    }
-
-    function render_plugin($name, $command)
-    {
-        if($this->modules_handler->get_plugin_data($name)['type']==='full')
-        {
-            return Modules::run('plugins/' . $name . '/render', $command);
-        }
-        else
-        {
-            return false;
-        }
+        return $this->load->view(str_replace('-', '_', $name), array('structure_data' => $data, 'class' => $class), true);
     }
 
     protected function get_content_type($id)

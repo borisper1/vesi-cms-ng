@@ -60,6 +60,10 @@ $route['page_render/display_404'] = 'page_render/display_404';
 $route['services/(:any)'] =  'services/execute_service/$1';
 $route['services/(:any)/(:any)'] =  'services/execute_service/$1/$2';
 
+//Routes for plugins system
+$route['plugins/(:any)'] = 'plugins/execute_plugin/$1';
+$route['plugins/(:any)/(:any)'] = 'plugins/execute_plugin/$1/$2';
+
 //Routes for administration interface (page + ajax)
 $route['admin'] = 'administration';
 $route['admin/login'] = 'administration/login';

@@ -3,9 +3,9 @@
 <div class="row">
     <div class="col-md-3" id="main-list">
         <ul class="fa-ul" id="circolari-list">
-            <?php foreach ($circolari as $circolare): ?>
-                <li><i class="fa-li fa fa-file-o"></i><a href="#<?= $id ?>" class="circolari-link"
-                                                         data-id="<?= $id ?>"><?= $number ?> &mdash; <?= $title ?></a>
+            <?php foreach ($list as $circolare): ?>
+                <li><i class="fa-li fa fa-file-o"></i><a href="#<?= $circolare['id'] ?>" class="circolari-link"
+                                                         data-id="<?= $circolare['id'] ?>"><?= $circolare['number'] . $circolare['suffix'] ?> &mdash; <?= $circolare['title'] ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>

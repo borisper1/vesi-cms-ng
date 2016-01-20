@@ -2,7 +2,6 @@
 
 class Validation
 {
-
     function filter_html($data, $allow_iframe)
     {
         $htmLawed_settings = array(
@@ -18,7 +17,7 @@ class Validation
     function check_json($code)
     {
         json_decode($code);
-        return (json_last_error() == JSON_ERROR_NONE);
+        return (json_last_error() === JSON_ERROR_NONE);
     }
 
     function check_path($path)
