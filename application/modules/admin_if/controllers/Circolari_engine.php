@@ -8,4 +8,12 @@ class Circolari_engine extends MX_Controller
         $data['categories'] = $this->circolari_engine_model->get_categories_list();
         $this->load->view('circolari_engine/index', $data);
     }
+
+    function list_cats($category)
+    {
+        $this->load->model('circolari_engine_model');
+        $data['list'] = $this->circolari_engine_model->get_circolari_list($category);
+        $data['category'] = $category;
+        $this->load->view('circolari_engine/list', $data);
+    }
 }

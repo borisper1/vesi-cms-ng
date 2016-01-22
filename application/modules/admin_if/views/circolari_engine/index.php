@@ -16,7 +16,7 @@
         <tr>
             <td>
                 <i class="fa fa-copy"></i> <a
-                    href="<?= base_url('admin/circolari_engine/list/' . $category['name']) ?>"><?= $category['name'] ?></a>
+                    href="<?= base_url('admin/circolari_engine/list_cats/' . $category['name']) ?>"><?= $category['name'] ?></a>
                 <a class="delete-category lmbnc pull-right tooltipped" data-toggle="tooltip" title="Elimina"><i
                         class="fa fa-trash"></i></a>
             </td>
