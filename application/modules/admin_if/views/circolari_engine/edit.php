@@ -27,4 +27,36 @@
     <input type="text" class="form-control form-inline" id="input-numer" placeholder="Numero" value="<?= $suffix ?>">
 </div>
 
+<div class="btn-group spaced" id="editor-actions">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-upload"></i> Importa da file <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#" class="import-document" data-format="docx"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
+            <li><a href="#" class="import-document" data-format="odt"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-download"></i> Esporta <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#" class="export-document" data-format="docx"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
+            <li><a href="#" class="export-document" data-format="odt"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
+            <li><a href="#" class="export-document" data-format="latex"><i class="fa fa-fw fa-file-pdf-o"></i> File PDF</a></li>
+        </ul>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-pencil-square-o"></i> Inserisci layout <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#" id="insert-2-columns"><i class="fa fa-fw fa-columns"></i> Layout a due colonne</a></li>
+            <li><a href="#" id="insert-3-columns"><i class="fa fa-fw fa-columns"></i> Layout a tre colonne</a></li>
+        </ul>
+    </div>
+</div>
+<br>
+
 <textarea class="textarea-standard" id="gui_editor"><?= $content ?></textarea>

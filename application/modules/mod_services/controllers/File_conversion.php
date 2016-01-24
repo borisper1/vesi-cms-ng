@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class File_conversion extends MX_Controller
 {
     protected $extension_array = array('docx' => '.docx', 'html' => '.html', 'html5' => '.html', 'latex' => '.pdf', 'odt' => '.odt');
+    private $debug = false;
 
     function export_from_text(){
         if(!$this->check_enabled())
@@ -137,7 +138,11 @@ class File_conversion extends MX_Controller
         {
             $output = false;
         }
-        unlink($input);
+        if(!$this->debug)
+        {
+            unlink($input);
+        }
+
         return $output;
     }
 
