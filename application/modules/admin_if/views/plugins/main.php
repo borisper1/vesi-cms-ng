@@ -13,9 +13,10 @@
     <tbody>
         <tr>
             <td>
-                Gestione circolari <span class="label label-info">circolari_engine</span>
+                Gestione circolari <span class="label label-info f-name">circolari_engine</span>
                 <div class="btn-group btn-group-xs">
-                    <button type="button" class="btn btn-default"><i class="fa fa-eye"> Visualizza componenti</i></button>
+                    <button type="button" class="btn btn-default view-plugin-components"><i class="fa fa-eye">
+                            Visualizza componenti</i></button>
                     <button type="button" class="btn btn-default"><i class="fa fa-wrench"></i> Ripara</button>
                     <button type="button" class="btn btn-default"><i class="fa fa-trash"></i> Disinstalla</button>
                 </div>
@@ -26,3 +27,20 @@
         </tr>
     </tbody>
 </table>
+
+<div class="modal fade" id="view-components-modal" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><i class="fa fa-eye"></i> Visualizza componenti componente aggiuntivo</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Chiudi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

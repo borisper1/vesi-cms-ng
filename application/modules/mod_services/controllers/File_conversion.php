@@ -82,8 +82,6 @@ class File_conversion extends MX_Controller
         {
             return;
         }
-        $to = $this->type_remapping_array_to[$to];
-        $from = $this->type_remapping_array_from[$from];
         if($input_mode === 'text')
         {
             $temp_input = APPPATH.'tmp/'.uniqid().$this->extension_array[$from];
@@ -101,7 +99,6 @@ class File_conversion extends MX_Controller
         {
             return false;
         }
-
         if($this->db_config->get('file_conversion', 'execute_on_remote'))
         {
             $output_file = $this->execute_pandoc_remote($input, $from, $to);
@@ -135,6 +132,8 @@ class File_conversion extends MX_Controller
     protected function execute_pandoc($input, $from, $to)
     {
         $output = APPPATH.'tmp/'.uniqid().$this->extension_array[$to];
+        $to = $this->type_remapping_array_to[$to];
+        $from = $this->type_remapping_array_from[$from];
         $command = 'pandoc -f '.escapeshellarg($from).' -t '.escapeshellarg($to).' -o '.escapeshellarg($output).' -i '.escapeshellarg($input);
         exec($command);
         if(!file_exists($output))
@@ -147,7 +146,7 @@ class File_conversion extends MX_Controller
 
     protected function execute_pandoc_remote($input, $from, $to)
     {
-        $transaction_id = bin2hex(openssl_random_pseudo_bytes(32));
+        $transaction_id = base64_encode($this->security->get_random_bytes(32));
         $url = $this->db_config->get('file_conversion', 'remote_server_url');
         $token = $this->db_config->get('file_conversion', 'remote_server_token');
         $hmac_key = base64_decode($this->db_config->get('file_conversion', 'hmac_key'));

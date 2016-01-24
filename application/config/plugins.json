@@ -28,13 +28,13 @@
       "files": [
         "assets/plugins/circolari_engine/admin_interface.js",
         "assets/plugins/circolari_engine/frontend.js",
-        "modules/mod_plugins/controllers/Circolari_engine.php",
-        "modules/mod_plugins/models/Circolari_engine_model.php",
-        "modules/mod_plugins/views/circolari_engine/admin_edit.php",
-        "modules/mod_plugins/views/circolari_engine/admin_index.php",
-        "modules/mod_plugins/views/circolari_engine/admin_list.php",
-        "modules/mod_plugins/views/circolari_engine/frontend_render_main.php",
-        "modules/mod_plugins/views/circolari_engine/frontend_render_page.php"
+        "application/modules/mod_plugins/controllers/Circolari_engine.php",
+        "application/modules/mod_plugins/models/Circolari_engine_model.php",
+        "application/modules/mod_plugins/views/circolari_engine/admin_edit.php",
+        "application/modules/mod_plugins/views/circolari_engine/admin_index.php",
+        "application/modules/mod_plugins/views/circolari_engine/admin_list.php",
+        "application/modules/mod_plugins/views/circolari_engine/frontend_render_main.php",
+        "application/modules/mod_plugins/views/circolari_engine/frontend_render_page.php"
       ],
       "enabled": true
     }
