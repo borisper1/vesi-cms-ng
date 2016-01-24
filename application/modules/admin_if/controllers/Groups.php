@@ -12,7 +12,6 @@ class Groups extends MX_Controller
 
     function edit($id)
     {
-        $this->load->library('interfaces_handler');
         $this->load->model('page_handler');
         if($id=='new')
         {
@@ -31,7 +30,7 @@ class Groups extends MX_Controller
             $data['group_name']=$id;
             $data['is_new']=false;
         }
-        $data['permission_groups'] = $this->interfaces_handler->get_raw_array();
+        $data['permission_groups'] = $this->modules_handler->get_interfaces_raw_array();
         $data['containers']=$this->page_handler->get_containers_list();
         $this->load->view('groups/edit',$data);
     }

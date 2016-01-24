@@ -147,7 +147,8 @@ class Page_render extends MX_Controller
 
     function render_plugin($name, $command)
     {
-        if ($this->modules_handler->get_plugin_data($name)['type'] === 'full') {
+        $plugin_info = $this->modules_handler->get_plugin_data($name);
+        if ($plugin_info['type'] === 'full' and $plugin_info['enabled']) {
             return Modules::run('mod_plugins/' . $name . '/render', $command);
         } else {
             return false;

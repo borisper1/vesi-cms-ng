@@ -4,8 +4,7 @@ class Config extends MX_Controller
 {
     function load_interface($name)
     {
-        $this->load->library('interfaces_handler');
-        $base_data['interfaces'] = $this->interfaces_handler->get_config_interfaces();
+        $base_data['interfaces'] = $this->modules_handler->get_config_interfaces_array();
         $base_data['active_interface'] = $name;
         $model_name = $name.'_model';
         $this->load->model('config/'.$model_name);

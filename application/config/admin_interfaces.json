@@ -30,7 +30,8 @@
         "description": "Permette di gestire le circolari e modificarne il contenuto",
         "icon": "fa-copy",
         "builtin": false,
-        "only_su": false
+        "only_su": false,
+        "location": "full_plugin"
       },
       {"name":"special::separator", "builtin":true},
       {"name":"contents", "label": "Gestione contenuti", "description":"Permette di gestire manualmente i contenuti e modificarli. Si consiglia di consentirne l'accesso a tutti gli utenti", "icon":"fa-cubes", "builtin":true, "only_su":false},

@@ -1,3 +1,8 @@
+!function () {
+    //TODO: remove hack for in-folder execution
+    window.vbcknd = {};
+    window.vbcknd.base_url = location.protocol + '//' + location.host + '/vesi-cms-ng/';
+}();
 $(document).ready(function(e) {
     // Enables direct link to tabs (see issue #28)
     var url = document.location.toString();

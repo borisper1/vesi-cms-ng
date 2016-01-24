@@ -8,7 +8,7 @@ class Plugins extends MX_Controller
     {
         $option = $option === null ? '' : '/' . $option;
         if ($this->modules_handler->check_plugin(strtolower($name))) {
-            Modules::run('mod_plugins/' . $name . $option);
+            echo Modules::run('mod_plugins/' . $name . $option);
         } else {
             $this->output->set_status_header(500);
             $this->output->set_output('The called plugin does not exists or is disabled');

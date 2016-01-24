@@ -7,9 +7,8 @@ class Administration extends MX_Controller
     {
         $this->redirect_if_no_login();
         $this->load->model('user_handler');
-        $this->load->library('interfaces_handler');
         $menu_data['user_fname'] = $this->user_handler->get_admin_full_name();
-        $menu_data['structure'] = $this->interfaces_handler->get_admin_menu_structure();
+        $menu_data['structure'] = $this->modules_handler->get_interfaces_menu_structure();
         $base_data['menu']= $this->load->view('administration/main_menu',$menu_data , TRUE);
 
         $base_data['content'] = null;
@@ -23,16 +22,17 @@ class Administration extends MX_Controller
         $this->load->view('administration/base', $base_data);
     }
 
-    public function load_interface($interface,$method,$arguments=null)
+    public function load_interface($interface, $method = 'index', $arguments = null)
     {
         $this->redirect_if_no_login();
         $this->load->model('user_handler');
-        $this->load->library('interfaces_handler');
         $menu_data['user_fname'] = $this->user_handler->get_admin_full_name();
-        $menu_data['structure'] = $this->interfaces_handler->get_admin_menu_structure();
+        $menu_data['structure'] = $this->modules_handler->get_interfaces_menu_structure();
         $base_data['menu']= $this->load->view('administration/main_menu',$menu_data , TRUE);
+
         if($this->user_handler->check_interface_permissions($interface)){
-            $base_data['content'] = Modules::run('admin_if/'.$interface.'/'.$method,$arguments);
+            $if_data = $this->execute_load_interface($interface, $method, $arguments);
+            $base_data['content'] = $if_data['content'];
         }
         else
         {
@@ -41,11 +41,11 @@ class Administration extends MX_Controller
         $base_data['system_dom'] = $this->load->view('administration/system_reauth', null , TRUE);
         $base_data['system_dom'] .= $this->load->view('administration/code_editor', null, TRUE);
         $base_data['system_dom'] .= $this->load->view('file_conversion_service', null , TRUE);
-
         $base_data['title']='Amministrazione - Vesi-CMS';
         $base_data['urls']=$this->resources->get_administration_urls();
-        //Load js file (same name as interface):
-        $base_data['urls']['aux_js_loader'][]=base_url('assets/administration/interfaces/'.$interface.'.js');
+        if (isset($if_data)) {
+            $base_data['urls']['aux_js_loader'][] = base_url($if_data['js_path']);
+        }
         $this->load->view('administration/base', $base_data);
     }
 
@@ -54,10 +54,40 @@ class Administration extends MX_Controller
         $this->load->model('user_handler');
         if(!$this->user_handler->check_admin_session())
         {
-            echo 'failed - 403';
+            echo 'failed - 403: User not authenticated';
             return;
         }
-        echo Modules::run('admin_if/'.$interface.'/'.$method);
+        if ($this->user_handler->check_interface_permissions($interface)) {
+            echo $this->execute_load_interface($interface, $method)['content'];
+        } else {
+            echo 'failed - 403: The user does not have permissions to access this interface';
+        }
+    }
+
+    protected function execute_load_interface($interface, $method = 'index', $arguments = null)
+    {
+        $interface_data = $this->modules_handler->get_interface_data($interface);
+        if ($interface_data['builtin'] === true) {
+            return array('content' => Modules::run('admin_if/' . $interface . '/' . $method, $arguments),
+                'js_path' => 'assets/administration/interfaces/' . $interface . '.js',);
+
+        } else {
+            if ($interface_data['location'] === 'full_plugin') {
+                $plugin_data = $this->modules_handler->get_plugin_data($interface);
+                if ($plugin_data['type'] === 'full' and $plugin_data['enabled'] === true) {
+                    $method = ($method === '') ? 'index' : $method;
+                    return array('content' => Modules::run('mod_plugins/' . $interface . '/admin_' . $method, $arguments),
+                        'js_path' => 'assets/plugins/' . $interface . '/admin_interface.js',);
+                }
+            } elseif ($interface_data['location'] === 'admin_interface_plugin') {
+                $plugin_data = $this->modules_handler->get_plugin_data($interface);
+                if ($plugin_data['type'] === 'admin_interface' and $plugin_data['enabled'] === 'true') {
+                    return array('content' => Modules::run('admin_if/' . $interface . '/' . $method, $arguments),
+                        'js_path' => 'assets/administration/interfaces/' . $interface . '.js',);
+                }
+            }
+        }
+        return false;
     }
 
     public function login()

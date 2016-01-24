@@ -6,7 +6,7 @@
 
 <span id="editor-name" class="hidden">html-text</span>
 
-<div class="btn-group" id="editor-actions">
+<div class="btn-group spaced" id="editor-actions">
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-upload"></i> Importa da file <span class="caret"></span>
@@ -23,7 +23,8 @@
         <ul class="dropdown-menu">
             <li><a href="#" class="export-document" data-format="docx"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
             <li><a href="#" class="export-document" data-format="odt"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
-            <li><a href="#" class="export-document" data-format="latex"><i class="fa fa-fw fa-file-pdf-o"></i> File PDF</a></li>
+            <li><a href="#" class="export-document" data-format="pdf"><i class="fa fa-fw fa-file-pdf-o"></i> File
+                    PDF</a></li>
         </ul>
     </div>
     <div class="btn-group">
@@ -36,6 +37,6 @@
         </ul>
     </div>
 </div>
-<br><br>
+<br>
 
 <textarea class="textarea-standard" id="gui_editor"><?=$content ?></textarea>

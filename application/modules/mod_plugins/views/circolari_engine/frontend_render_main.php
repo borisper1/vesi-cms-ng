@@ -1,5 +1,12 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<style type="text/css">
+    .circolari-active {
+        pointer-events: none;
+        color: #1F1F1B;
+        font-weight: bold;
+    }
+</style>
 <div class="row">
     <div class="col-md-3" id="main-list">
         <ul class="fa-ul" id="circolari-list">

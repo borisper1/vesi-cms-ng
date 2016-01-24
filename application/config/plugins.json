@@ -8,12 +8,34 @@
       "description": "Plugin per la gestione e la visualizzazione (anche in  frontend) delle circolari",
       "author": "Boris Pertot",
       "components": [],
-      "admin_interfaces": [],
+      "admin_interfaces": [
+        {
+          "name": "circolari_engine",
+          "label": "Circolari",
+          "description": "Permette di gestire le circolari e modificarne il contenuto",
+          "icon": "fa-copy",
+          "builtin": false,
+          "only_su": false,
+          "location": "full_plugin",
+          "install_path": "contents|0"
+        }
+      ],
+      "config_interfaces": [],
       "services": [],
       "has_db_tables": true,
-      "db_install_file": "",
-      "db_remove_file": "",
-      "files": [],
+      "db_install_file": "install_db_tables.sql",
+      "db_remove_file": "remove_db_tables.sql",
+      "files": [
+        "assets/plugins/circolari_engine/admin_interface.js",
+        "assets/plugins/circolari_engine/frontend.js",
+        "modules/mod_plugins/controllers/Circolari_engine.php",
+        "modules/mod_plugins/models/Circolari_engine_model.php",
+        "modules/mod_plugins/views/circolari_engine/admin_edit.php",
+        "modules/mod_plugins/views/circolari_engine/admin_index.php",
+        "modules/mod_plugins/views/circolari_engine/admin_list.php",
+        "modules/mod_plugins/views/circolari_engine/frontend_render_main.php",
+        "modules/mod_plugins/views/circolari_engine/frontend_render_page.php"
+      ],
       "enabled": true
     }
   ]

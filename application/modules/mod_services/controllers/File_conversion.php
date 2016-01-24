@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class File_conversion extends MX_Controller
 {
     protected $extension_array = array('docx' => '.docx', 'html' => '.html', 'html5' => '.html', 'latex' => '.pdf', 'odt' => '.odt');
+    protected $type_remapping_array_to = array('docx' => 'docx', 'html' => 'html5', 'pdf' => 'latex', 'odt' => 'odt');
+    protected $type_remapping_array_from = array('docx' => 'docx', 'html' => 'html', 'odt' => 'odt');
 
     function export_from_text(){
         if(!$this->check_enabled())
@@ -54,7 +56,7 @@ class File_conversion extends MX_Controller
         }
         $file_input = APPPATH.'tmp/'.uniqid().$this->extension_array[$extension];
         if (move_uploaded_file($_FILES['to_convert']['tmp_name'], $file_input)) {
-            $output = $this->convert_document('file', $file_input, null, $extension, 'html5');
+            $output = $this->convert_document('file', $file_input, null, $extension, 'html');
             if($output)
             {
                 $this->output->set_status_header(200);
@@ -80,6 +82,8 @@ class File_conversion extends MX_Controller
         {
             return;
         }
+        $to = $this->type_remapping_array_to[$to];
+        $from = $this->type_remapping_array_from[$from];
         if($input_mode === 'text')
         {
             $temp_input = APPPATH.'tmp/'.uniqid().$this->extension_array[$from];
