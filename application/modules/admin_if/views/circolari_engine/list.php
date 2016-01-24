@@ -22,6 +22,7 @@
                 <span class="label label-info"><?=$circolare['id'] ?></span>
                 <a class="delete-article lmbnc pull-right tooltipped" data-toggle="tooltip" title="Elimina"><i class="fa fa-trash"></i></a>
             </td>
+            <td><?= $circolare['preview'] ?></td>
         </tr>
     <?php endforeach; ?>
     </tbody>

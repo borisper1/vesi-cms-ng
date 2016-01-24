@@ -16,4 +16,13 @@ class Circolari_engine extends MX_Controller
         $data['category'] = $category;
         $this->load->view('circolari_engine/list', $data);
     }
+
+    function edit($id)
+    {
+        $this->load->model('circolari_engine_model');
+        $data = $this->circolari_engine_model->get_circolare_data($id);
+        $data['is_new'] = false;
+        $this->resources->load_aux_js_file('assets/third_party/ckeditor/ckeditor.js');
+        $this->load->view('circolari_engine/edit', $data);
+    }
 }

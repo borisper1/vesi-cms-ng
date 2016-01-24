@@ -14,11 +14,11 @@ class Content_handler extends CI_Model
             $data['type']=$row->type;
             if($row->type !=='html-field')
             {
-                $data['preview']=$row->displayname!='' ? $row->displayname : substr(strip_tags($row->content), 0, 30).'&hellip;';
+                $data['preview'] = $row->displayname != '' ? $row->displayname : substr(strip_tags($row->content), 0, 35) . '&hellip;';
             }
             else
             {
-                $data['preview']=substr(htmlspecialchars($row->content), 0, 30).'...';
+                $data['preview'] = substr(htmlspecialchars($row->content), 0, 35) . '&hellip;';
             }
         }
         else

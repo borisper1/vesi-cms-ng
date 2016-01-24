@@ -32,9 +32,17 @@ class Circolari_engine_model extends CI_Model
                 'number' => $row->number,
                 'suffix' => $row->suffix,
                 'title' => $row->title,
+                'preview' => substr(strip_tags($row->content), 0, 45) . '&hellip;'
             );
         }
         return $circolari;
+    }
+
+    function get_circolare_data($id)
+    {
+        $query = $this->db->get_where('plugin_circolari_engine_articles', array('id' => $id));
+        $row = $query->row();
+        return (array)$row;
     }
 
 }
