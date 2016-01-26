@@ -22,16 +22,5 @@
 	"services": [],
 	"has_db_tables": true,
 	"db_install_file": "install_db_tables.sql",
-	"db_remove_file": "remove_db_tables.sql",
-	"files": [
-		"assets/plugins/circolari_engine/admin_interface.js",
-		"assets/plugins/circolari_engine/frontend.js",
-		"application/modules/mod_plugins/controllers/Circolari_engine.php",
-		"application/modules/mod_plugins/models/Circolari_engine_model.php",
-		"application/modules/mod_plugins/views/circolari_engine/admin_edit.php",
-		"application/modules/mod_plugins/views/circolari_engine/admin_index.php",
-		"application/modules/mod_plugins/views/circolari_engine/admin_list.php",
-		"application/modules/mod_plugins/views/circolari_engine/frontend_render_main.php",
-		"application/modules/mod_plugins/views/circolari_engine/frontend_render_page.php"
-	]
+	"db_remove_file": "remove_db_tables.sql"
 }

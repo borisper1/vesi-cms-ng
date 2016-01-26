@@ -19,6 +19,9 @@ $(document).ready(function () {
     $('#install-plugin-modal-next').click(function(){
         if(CurrentState==='welcome'){
             ChangePluginInstallState('choosefile');
+        } else if (CurrentState === 'rtinstall') {
+            //TODO: Launch install procedure
+            ChangePluginInstallState('installing');
         }
     });
 
@@ -40,7 +43,7 @@ $(document).ready(function () {
         var form_data = new FormData($('#install-plugin-upload-form')[0]);
         $.ajax({
             type: 'POST',
-            url: window.vbcknd.base_url + 'ajax/admin/plugins/install_zip_plugin',
+            url: window.vbcknd.base_url + 'ajax/admin/plugins/unpack_zip_plugin',
             dataType: 'json',
             xhr: function() {
                 var myXhr = $.ajaxSettings.xhr();
@@ -68,7 +71,7 @@ $(document).ready(function () {
             $('#install-plugin-modal-next').removeClass('hidden');
         }
         var no_actions_array = ['uploading', 'preparing'];
-        if(no_next_array.indexOf(state)!==-1){
+        if (no_actions_array.indexOf(state) !== -1) {
             $('#plugin-install-modal-footer').addClass('hidden');
         }else{
             $('#plugin-install-modal-footer').removeClass('hidden');
@@ -91,12 +94,21 @@ $(document).ready(function () {
     function PluginZIPUploadDone(data){
         $('.rtinstall-name').text(data.name);
         $('#rtinstall-title').text(data.title);
-        $('#rtinstall-version').text(data.version);
+        $('.rtinstall-version').text(data.version);
         $('#rtinstall-author').text(data.author);
         $('#rtinstall-description').text(data.description);
         $('#rtinstall-md5').text(data.md5);
         $('#rtinstall-sha1').text(data.sha1);
-        CurrentItem = data.folder_id;
+        CurrentItem = {};
+        if (data.update) {
+            $('#rtinstall-update').removeClass('hidden');
+            $('#rtinstall-oldversion').text(data.installed_version);
+            CurrentItem.update = true;
+        } else {
+            $('#rtinstall-update').addClass('hidden');
+            CurrentItem.update = false;
+        }
+        CurrentItem.folder_id = data.folder_id;
         ChangePluginInstallState('rtinstall');
     }
 

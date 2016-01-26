@@ -85,12 +85,22 @@
                     <p>Il plugin <code class="rtinstall-name"></code> è pronto per l'installazione</p>
                     <table class="table">
                         <tr><th>Nome</th><td><span id="rtinstall-title"></span> <span class="rtinstall-name label label-info"></span></td></tr>
-                        <tr><th>Versione</th><td id="rtinstall-version"></td></tr>
+                        <tr>
+                            <th>Versione</th>
+                            <td class="rtinstall-version"></td>
+                        </tr>
                         <tr><th>Autore</th><td id="rtinstall-author"></td></tr>
                         <tr><th>Descrizione</th><td id="rtinstall-description"></td></tr>
                         <tr><th>Checksum MD5</th><td><code id="rtinstall-md5"></code></td></tr>
                         <tr><th>Hash SHA1</th><td><code id="rtinstall-sha1"></code></td></tr>
                     </table>
+                    <div class="alert alert-info" id="rtinstall-update" role="alert"><i class="fa fa-info-circle"></i>
+                        <b>Questo componente aggiuntivo è già installato</b>. Se si continua il componente
+                        aggiuntivo verrà aggiornato dalla versione <code id="rtinstall-oldversion"></code> alla versione
+                        <code class="rtinstall-version"></code>. Verificare che il passaggio automatico tra queste
+                        versioni
+                        sia supportato (per più informazioni consultare la documentazione del componente aggiuntivo).
+                    </div>
                     <div class="alert alert-warning" role="alert"><i class="fa fa-shield"></i> <b>Installare solo componenti aggiuntivi da autori fidati</b>. I componenti aggiuntivi installati
                         saranno eseguiti con lo stesso livello di autenticazione del codice principale (avranno accesso a tutto il sistema). Pertanto componenti aggiuntivi malevoli possono causare
                         danni ingenti al sistema, inclusa la perdita o il furto di dati.</div>

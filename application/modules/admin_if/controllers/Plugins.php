@@ -47,7 +47,8 @@ class Plugins extends MX_Controller
         $this->load->view('plugins/components_modal', $view_data);
     }
 
-    function install_zip_plugin(){
+    function unpack_zip_plugin()
+    {
         if($_FILES['zip_install']['name'] == ''){
             $this->output->set_status_header(400);
             $this->output->set_output('Expected a file upload');
@@ -76,10 +77,11 @@ class Plugins extends MX_Controller
                 unlink($file_input);
                 return;
             }
-            if(!file_exists(APPPATH.'tmp/'.$folder_id.'/descriptor.json')){
+            if (!file_exists(APPPATH . 'tmp/' . $folder_id . '/descriptor.json')) {
                 $this->output->set_status_header(500);
                 $this->output->set_output('Can\'t find plugin descriptor, terminating');
                 $this->file_handler->delete_path('application/tmp/'.$folder_id);
+                unlink($file_input);
                 return;
             }
             $descriptor_data = json_decode(file_get_contents(APPPATH.'tmp/'.$folder_id.'/descriptor.json'));
@@ -91,6 +93,13 @@ class Plugins extends MX_Controller
             $json_data['md5'] = md5_file($file_input);
             $json_data['sha1'] = sha1_file($file_input);
             $json_data['folder_id'] = $folder_id;
+            $is_upgrade = $this->modules_handler->get_plugin_data($descriptor_data->name);
+            if ($is_upgrade) {
+                $json_data['update'] = true;
+                $json_data['installed_version'] = $is_upgrade['version'];
+            } else {
+                $json_data['update'] = false;
+            }
             $this->output->set_status_header(200);
             $this->output->set_output(json_encode($json_data,  JSON_FORCE_OBJECT));
             unlink($file_input);
@@ -100,5 +109,25 @@ class Plugins extends MX_Controller
             $this->output->set_status_header(403);
             $this->output->set_output('The uploaded file can\'t be processed for security reasons');
         }
+    }
+
+    function install_uploaded_plugin()
+    {
+        $folder_id = $this->input->post('folder_id');
+        if (!file_exists(APPPATH . 'tmp/' . $folder_id . '/descriptor.json')) {
+            $this->output->set_status_header(500);
+            $this->output->set_output('Can\'t find plugin descriptor, terminating');
+            return;
+        }
+        $descriptor_data = json_decode(file_get_contents(APPPATH . 'tmp/' . $folder_id . '/descriptor.json'));
+        //Update the install store
+        $this->load->library('file_handler');
+        if (file_exists(APPPATH . 'plugins/' . $descriptor_data->name)) {
+            //TODO: Uninstall (no data removal) the previous version
+            $this->file_handler->delete_path('application/plugins/' . $descriptor_data->name);
+        }
+        rename(APPPATH . 'tmp/' . $folder_id, APPPATH . 'plugins/' . $descriptor_data->name);
+        //Execute the install procedure
+        $this->modules_handler->install_plugin($descriptor_data->name);
     }
 }
