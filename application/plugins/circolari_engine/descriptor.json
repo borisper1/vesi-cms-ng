@@ -15,7 +15,7 @@
 			"builtin": false,
 			"only_su": false,
 			"location": "full_plugin",
-			"install_path": "contents|0"
+			"install_path": "content|0"
 		}
 	],
 	"config_interfaces": [],

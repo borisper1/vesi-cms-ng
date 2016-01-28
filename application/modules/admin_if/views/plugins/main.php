@@ -106,6 +106,18 @@
                         danni ingenti al sistema, inclusa la perdita o il furto di dati.</div>
                     <p>Per installare il plugin premere su <i class="fa fa-chevron-right"></i> <i>Avanti</i>. Se non ci si fida dell'autore del plugin premere su <i class="fa fa-remove"></i> <i>Anullla</i>.</p>
                 </div>
+                <div id="install-plugin-installing" class="install-plugin-screens">
+                    <p>Installazione del componente aggiuntivo... Attendere.</p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped active" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div id="install-plugin-success" class="install-plugin-screens">
+                    <h4 class="text-success"><i class="fa fa fa-exclamation-circle"></i> Componente aggiuntivo
+                        installato correttamente</h4>
+                    <p>Il componente aggiuntivo è pronto per essere usato. Se si usa un motore di database diverso da
+                        MySQL verificare che l'installazione delle strutture dati sia stata eseguita correttamente.</p>
+                </div>
                 <div id="install-plugin-syserror" class="install-plugin-screens">
                     <h4 class="text-danger"><i class="fa fa fa-exclamation-circle"></i> Si è verificato un errore</h4>
                     <p>Non è stato possibile installare il componente aggiuntivo.</p>

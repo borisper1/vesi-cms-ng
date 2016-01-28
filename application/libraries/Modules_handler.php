@@ -61,7 +61,7 @@ class Modules_handler
     {
         $this->schema = json_decode(file_get_contents(APPPATH . "config/modules.json"));
         $this->schema->components[] = $object;
-        file_put_contents(APPPATH . "config/modules.json", json_encode($this->schema, JSON_PRETTY_PRINT));
+        file_put_contents(APPPATH . "config/modules.json", json_encode($this->schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
     function check_service($name)
@@ -81,7 +81,7 @@ class Modules_handler
     {
         $schema = json_decode(file_get_contents(APPPATH . "config/services.json"));
         $schema->services[] = $object;
-        file_put_contents(APPPATH . "config/services.json", json_encode($schema, JSON_PRETTY_PRINT));
+        file_put_contents(APPPATH . "config/services.json", json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
     protected function update_plugin_cache()
@@ -139,7 +139,7 @@ class Modules_handler
             $this->update_plugin_cache();
         }
         $this->plugin_cache->plugins[] = $object;
-        file_put_contents(APPPATH . "config/plugins.json", json_encode($this->plugin_cache, JSON_PRETTY_PRINT));
+        file_put_contents(APPPATH . "config/plugins.json", json_encode($this->plugin_cache, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
     protected function update_interfaces_cache()
@@ -183,15 +183,17 @@ class Modules_handler
         $count = 0;
         $insert_key = null;
         foreach ($this->interfaces_cache->$tree->items as $index => $item) {
-            if ($item->name === 'special::separator' and $count === $insert_index) {
-                $insert_key = $index;
+            if ($item->name === 'special::separator') {
+                if ($count === $insert_index) {
+                    $insert_key = $index;
+                    break;
+                }
                 $count += 1;
-                break;
             }
         }
         $insert_array = array($object);
         array_splice($this->interfaces_cache->$tree->items, $insert_key, 0, $insert_array);
-        file_put_contents(APPPATH . "config/admin_interfaces.json", json_encode($this->interfaces_cache, JSON_PRETTY_PRINT));
+        file_put_contents(APPPATH . "config/admin_interfaces.json", json_encode($this->interfaces_cache, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
     function get_interface_data($name)
@@ -219,29 +221,30 @@ class Modules_handler
     {
         $schema = json_decode(file_get_contents(APPPATH . "config/config_interfaces.json"), true);
         $schema->interfaces[] = $object;
-        file_put_contents(APPPATH . "config/config_interfaces.json", json_encode($schema, JSON_PRETTY_PRINT));
+        file_put_contents(APPPATH . "config/config_interfaces.json", json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
 
-    function install_plugin($store_name, $repair = false)
+    function install_plugin($store_name)
     {
         $this->CI->load->library('file_handler');
         $store_path = APPPATH . 'plugins/' . $store_name;
         if (!file_exists($store_path . '/descriptor.json')) {
             return array('result' => false, 'error' => 'The given install store is invalid (Can\'t find descriptor.json)');
         }
-        $descriptor_data = json_decode(file_get_contents(APPPATH . 'tmp/' . $store_name . '/descriptor.json'));
+        $descriptor_data = json_decode(file_get_contents($store_path . '/descriptor.json'));
         $descriptor_data->files = [];
         //Copy plugin files
+        //TODO: The current Iterator/File copying structure does not work ([while] works to generate files array, but does not include directories for copying).
         if (file_exists($store_path . '/mod_plugins')) {
-            $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($store_path . '/mod_plugins', FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS));
-            $it->rewind();
-            while ($it->valid()) {
-                if ($it->getSubPath() == '') {
-                    $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/mod_plugins/' . $it->getSubPathName(), 'application/modules/mod_plugins');
+            $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($store_path . '/mod_plugins', FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS), RecursiveIteratorIterator::SELF_FIRST);
+            foreach ($it as $name => $object) {
+                if ($object->getSubPath() == '') {
+                    $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/mod_plugins/' . $name, 'application/modules/mod_plugins');
                 }
-                $descriptor_data->files[] = 'application/modules/mod_plugins/' . $it->getSubPathName();
-                $it->next();
+                if (!$object->isDir()) {
+                    $descriptor_data->files[] = 'application/modules/mod_plugins/' . $name;
+                }
             }
         }
         if (file_exists($store_path . '/admin_if')) {
@@ -278,6 +281,9 @@ class Modules_handler
             }
         }
         if (file_exists($store_path . '/assets')) {
+            if (!file_exists(FCPATH . 'assets/plugins/' . $store_name)) {
+                mkdir(FCPATH . 'assets/plugins/' . $store_name, 0777, true);
+            }
             $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($store_path . '/assets', FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS));
             $it->rewind();
             while ($it->valid()) {
@@ -304,7 +310,16 @@ class Modules_handler
         //Register the plugin descriptor
         $descriptor_data->enabled = true;
         $this->register_new_plugin($descriptor_data);
-        //TODO: Update the database
+        //Update the database
+        $this->ExecuteSQLFile($store_path . '/' . $descriptor_data->db_install_file);
+    }
 
+    protected function ExecuteSQLFile($file)
+    {
+        $sqls = explode(';', file_get_contents($file));
+        array_pop($sqls);
+        foreach ($sqls as $statement) {
+            $this->CI->db->query($statement . ';');
+        }
     }
 }

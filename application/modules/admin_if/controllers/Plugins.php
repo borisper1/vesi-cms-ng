@@ -129,5 +129,12 @@ class Plugins extends MX_Controller
         rename(APPPATH . 'tmp/' . $folder_id, APPPATH . 'plugins/' . $descriptor_data->name);
         //Execute the install procedure
         $this->modules_handler->install_plugin($descriptor_data->name);
+        if ($this->modules_handler->check_plugin($descriptor_data->name)) {
+            $this->output->set_status_header(200);
+            $this->output->set_output('success');
+        } else {
+            $this->output->set_status_header(500);
+            $this->output->set_output('Unknown error during installation - (failed post installation check)');
+        }
     }
 }

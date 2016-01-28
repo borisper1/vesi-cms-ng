@@ -20,7 +20,7 @@ $(document).ready(function () {
         if(CurrentState==='welcome'){
             ChangePluginInstallState('choosefile');
         } else if (CurrentState === 'rtinstall') {
-            //TODO: Launch install procedure
+            StartInstall();
             ChangePluginInstallState('installing');
         }
     });
@@ -64,17 +64,23 @@ $(document).ready(function () {
         $('.install-plugin-screens').addClass('hidden');
         CurrentState=state;
         $('#install-plugin-'+CurrentState).removeClass('hidden');
-        var no_next_array = ['choosefile', 'syserror'];
+        var no_next_array = ['choosefile', 'syserror', 'success'];
         if(no_next_array.indexOf(state)!==-1){
             $('#install-plugin-modal-next').addClass('hidden');
         }else{
             $('#install-plugin-modal-next').removeClass('hidden');
         }
-        var no_actions_array = ['uploading', 'preparing'];
+        var no_actions_array = ['uploading', 'preparing', 'installing'];
         if (no_actions_array.indexOf(state) !== -1) {
             $('#plugin-install-modal-footer').addClass('hidden');
         }else{
             $('#plugin-install-modal-footer').removeClass('hidden');
+        }
+        var close_array = ['syserror', 'success'];
+        if (close_array.indexOf(state) !== -1) {
+            $('#install-plugin-modal-cancel').html('<i class="fa fa-remove"></i> Chiudi');
+        } else {
+            $('#install-plugin-modal-cancel').html('<i class="fa fa-remove"></i> Annulla');
         }
     }
 
@@ -99,16 +105,13 @@ $(document).ready(function () {
         $('#rtinstall-description').text(data.description);
         $('#rtinstall-md5').text(data.md5);
         $('#rtinstall-sha1').text(data.sha1);
-        CurrentItem = {};
         if (data.update) {
             $('#rtinstall-update').removeClass('hidden');
             $('#rtinstall-oldversion').text(data.installed_version);
-            CurrentItem.update = true;
         } else {
             $('#rtinstall-update').addClass('hidden');
-            CurrentItem.update = false;
         }
-        CurrentItem.folder_id = data.folder_id;
+        CurrentItem = data.folder_id;
         ChangePluginInstallState('rtinstall');
     }
 
@@ -116,5 +119,25 @@ $(document).ready(function () {
         var html = '<p>Il server ha inviato la risposta <code>'+jqXHR.status+' '+jqXHR.statusText+'</code>. I dati inviati dal server sono:</p>'+'<div class="well">'+jqXHR.responseText+'</div>';
         $('#install-error-box').collapse('hide').html(html);
         ChangePluginInstallState('syserror');
+    }
+
+    function StartInstall() {
+        $.ajax({
+            type: 'POST',
+            url: window.vbcknd.base_url + 'ajax/admin/plugins/install_uploaded_plugin',
+            data: {folder_id: CurrentItem},
+            success: PluginZIPInstallSuccess,
+            error: PluginZIPInstallFailed
+        });
+    }
+
+    function PluginZIPInstallSuccess(data) {
+        if (data === 'success') {
+            ChangePluginInstallState('success');
+        } else {
+            var html = '<p>Il server ha inviato la risposta <code>200 OK</code>. I dati inviati dal server sono (expected [string]"success"):</p>' + '<div class="well">' + data + '</div>';
+            $('#install-error-box').collapse('hide').html(html);
+            ChangePluginInstallState('syserror');
+        }
     }
 });
