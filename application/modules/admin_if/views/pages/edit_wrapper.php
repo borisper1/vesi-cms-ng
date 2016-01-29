@@ -264,7 +264,8 @@
                 <div class="form-group">
                     <select class="form-control selectpicker" id="i-link-plugin-name">
                         <?php foreach($plugins as $plugin): ?>
-                            <option data-content="<span class='label label-info'><?=$plugin->name ?></span> <?=$plugin->title ?>"><?=$plugin->name ?></option>
+                            <option
+                                data-content="<span class='label label-info'><?= $plugin['name'] ?></span> <?= $plugin['title'] ?>"><?= $plugin['name'] ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>

@@ -317,4 +317,13 @@ class File_handler
         }
         closedir($dir);
     }
+
+    function remove_empty_subfolders($path, $root = true)
+    {
+        $empty = true;
+        foreach (glob($path . DIRECTORY_SEPARATOR . '*') as $file) {
+            $empty &= is_dir($file) && $this->remove_empty_subfolders($file, false);
+        }
+        return $empty && (!$root) && rmdir($path);
+    }
 }

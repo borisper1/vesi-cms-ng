@@ -12,6 +12,7 @@ class Modal_model extends CI_Model
             return false;
         }
         $data=[];
+        $data['id'] = $id;
         $data['content']=$row->content;
         $data['title']=htmlspecialchars($row->displayname);
         $settings = json_decode($row->settings);

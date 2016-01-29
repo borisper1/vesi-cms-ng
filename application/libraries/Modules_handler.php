@@ -64,6 +64,18 @@ class Modules_handler
         file_put_contents(APPPATH . "config/modules.json", json_encode($this->schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
+    protected function unregister_component($object)
+    {
+        $this->schema = json_decode(file_get_contents(APPPATH . "config/modules.json"));
+        foreach ($this->schema->components as &$component) {
+            if ($component->name === $object->name) {
+                unset($component);
+                break;
+            }
+        }
+        file_put_contents(APPPATH . "config/modules.json", json_encode($this->schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+
     function check_service($name)
     {
         $schema=json_decode(file_get_contents(APPPATH."config/services.json"));
@@ -81,6 +93,18 @@ class Modules_handler
     {
         $schema = json_decode(file_get_contents(APPPATH . "config/services.json"));
         $schema->services[] = $object;
+        file_put_contents(APPPATH . "config/services.json", json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+
+    protected function unregister_service($object)
+    {
+        $schema = json_decode(file_get_contents(APPPATH . "config/services.json"));
+        foreach ($schema->services as &$service) {
+            if ($service->name === $object->name) {
+                unset($service);
+                break;
+            }
+        }
         file_put_contents(APPPATH . "config/services.json", json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
@@ -116,7 +140,7 @@ class Modules_handler
         $output = [];
         foreach ($plugins as $plugin) {
             if ($plugin->type === 'full') {
-                $output[] = $plugin;
+                $output[] = (array)$plugin;
             }
         }
         return $output;
@@ -139,6 +163,41 @@ class Modules_handler
             $this->update_plugin_cache();
         }
         $this->plugin_cache->plugins[] = $object;
+        $this->save_plugin_cache();
+    }
+
+    protected function unregister_plugin($object)
+    {
+        if ($this->plugin_cache === null) {
+            $this->update_plugin_cache();
+        }
+        foreach ($this->plugin_cache->plugins as &$plugin) {
+            if ($plugin->name === $object->name) {
+                unset($plugin);
+                break;
+            }
+        }
+        $this->save_plugin_cache();
+    }
+
+    public function change_plugin_state($name, $enable)
+    {
+        if ($this->plugin_cache === null) {
+            $this->update_plugin_cache();
+        }
+        $result = false;
+        foreach ($this->plugin_cache->plugins as &$plugin) {
+            if ($plugin->name === $name) {
+                $plugin->enabled = $enable;
+                $result = true;
+            }
+        }
+        $this->save_plugin_cache();
+        return $result;
+    }
+
+    protected function save_plugin_cache()
+    {
         file_put_contents(APPPATH . "config/plugins.json", json_encode($this->plugin_cache, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
@@ -179,7 +238,7 @@ class Modules_handler
         $position_array = explode('|', $object->install_path);
         unset($object->install_path);
         $tree = $position_array[0];
-        $insert_index = $position_array[1];
+        $insert_index = (int)$position_array[1];
         $count = 0;
         $insert_key = null;
         foreach ($this->interfaces_cache->$tree->items as $index => $item) {
@@ -191,8 +250,29 @@ class Modules_handler
                 $count += 1;
             }
         }
-        $insert_array = array($object);
-        array_splice($this->interfaces_cache->$tree->items, $insert_key, 0, $insert_array);
+        $insert_key = $insert_key !== null ? $insert_key : count($this->interfaces_cache->$tree->items) - 1;
+        array_splice($this->interfaces_cache->$tree->items, $insert_key, 0, array($object));
+        $this->save_interface_cache();
+    }
+
+    protected function unregister_interface($object)
+    {
+        if ($this->interfaces_cache === null) {
+            $this->update_interfaces_cache();
+        }
+        foreach ($this->interfaces_cache as &$tree) {
+            foreach ($tree->items as &$item) {
+                if ($item->name === $object->name) {
+                    unset($item);
+                    break;
+                }
+            }
+        }
+        $this->save_interface_cache();
+    }
+
+    protected function save_interface_cache()
+    {
         file_put_contents(APPPATH . "config/admin_interfaces.json", json_encode($this->interfaces_cache, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
@@ -221,6 +301,18 @@ class Modules_handler
     {
         $schema = json_decode(file_get_contents(APPPATH . "config/config_interfaces.json"), true);
         $schema->interfaces[] = $object;
+        file_put_contents(APPPATH . "config/config_interfaces.json", json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+
+    protected function unregister_config_interface($object)
+    {
+        $schema = json_decode(file_get_contents(APPPATH . "config/config_interfaces.json"), true);
+        foreach ($schema->interfaces as &$interface) {
+            if ($interface->name === $object->name) {
+                unset($interface);
+                break;
+            }
+        }
         file_put_contents(APPPATH . "config/config_interfaces.json", json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
@@ -307,7 +399,7 @@ class Modules_handler
                 $descriptor_data->files[] = 'assets/plugins/' . $store_name . '/' . $it->getSubPathName();
                 $it->next();
             }
-            $copy_items = array_diff(scandir($store_path . '/components'), array('..', '.'));
+            $copy_items = array_diff(scandir($store_path . '/assets'), array('..', '.'));
             foreach($copy_items as $item)
             {
                 $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/assets/' . $item, 'assets/plugins/' . $store_name);
@@ -331,6 +423,7 @@ class Modules_handler
         $this->register_new_plugin($descriptor_data);
         //Update the database
         $this->ExecuteSQLFile($store_path . '/' . $descriptor_data->db_install_file);
+        return array('result' => true, 'error' => '');
     }
 
     protected function ExecuteSQLFile($file)
@@ -340,5 +433,60 @@ class Modules_handler
         foreach ($sqls as $statement) {
             $this->CI->db->query($statement . ';');
         }
+    }
+
+    function remove_plugin($name, $remove_install_store = false, $remove_data = false)
+    {
+        $this->CI->load->library('file_handler');
+        $plugin_data = $this->get_plugin_data($name);
+        if (!$plugin_data) {
+            return array('result' => false, 'error' => 'The given plugin name is not an installed plugin');
+        }
+        //Delete plugin files
+        foreach ($plugin_data['files'] as $file) {
+            $this->CI->file_handler->delete_path($file);
+        }
+        //Unregister installed components
+        foreach ($plugin_data['components'] as $component) {
+            $this->unregister_component($component);
+        }
+        foreach ($plugin_data['admin_interfaces'] as $admin_interface) {
+            $this->unregister_interface($admin_interface);
+        }
+        foreach ($plugin_data['config_interfaces'] as $config_interface) {
+            $this->unregister_config_interface($config_interface);
+        }
+        foreach ($plugin_data['services'] as $service) {
+            $this->unregister_service($service);
+        }
+        //Clean up plugin files folders
+        $this->CI->file_handler->remove_empty_subfolders(APPPATH . 'modules/mod_plugins');
+        $this->CI->file_handler->remove_empty_subfolders(APPPATH . 'modules/mod_services');
+        $this->CI->file_handler->remove_empty_subfolders(APPPATH . 'modules/admin_if');
+        $this->CI->file_handler->remove_empty_subfolders(APPPATH . 'modules/components');
+        $this->CI->file_handler->remove_empty_subfolders(FCPATH . 'assets/plugins');
+        $store_path = APPPATH . 'plugins/' . $name;
+        //Delete DB data if required
+        if ($remove_data) {
+            $this->ExecuteSQLFile($store_path . '/' . $plugin_data['db_remove_file']);
+        }
+        //Delete install_store if required
+        if ($remove_install_store) {
+            $this->CI->file_handler->delete_path($store_path);
+        }
+        return array('result' => true, 'error' => '');
+    }
+
+    function repair_plugin($name)
+    {
+        $result = $this->remove_plugin($name);
+        if (!$result['result']) {
+            return false;
+        }
+        $result = $this->install_plugin($name);
+        if (!$result['result']) {
+            return false;
+        }
+        return true;
     }
 }

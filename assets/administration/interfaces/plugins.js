@@ -25,6 +25,12 @@ $(document).ready(function () {
         }
     });
 
+    $('#install-plugin-modal-cancel').click(function () {
+        if (CurrentState === 'success') {
+            window.location.reload();
+        }
+    });
+
     $('#install-plugin-upload-form').submit(function(event){
         event.stopPropagation();
         event.preventDefault();
@@ -138,6 +144,73 @@ $(document).ready(function () {
             var html = '<p>Il server ha inviato la risposta <code>200 OK</code>. I dati inviati dal server sono (expected [string]"success"):</p>' + '<div class="well">' + data + '</div>';
             $('#install-error-box').collapse('hide').html(html);
             ChangePluginInstallState('syserror');
+        }
+    }
+
+    $('.disable-plugin').click(function () {
+        var name = $(this).closest('tr').find('.f-name').text();
+        $.post(window.vbcknd.base_url + 'ajax/admin/plugins/set_plugin_state', {
+            name: name,
+            state: 'disable'
+        }, function () {
+            window.location.reload(true);
+        });
+    });
+
+    $('.enable-plugin').click(function () {
+        var name = $(this).closest('tr').find('.f-name').text();
+        $.post(window.vbcknd.base_url + 'ajax/admin/plugins/set_plugin_state', {
+            name: name,
+            state: 'enable'
+        }, function () {
+            window.location.reload(true);
+        });
+    });
+
+    $('.repair-plugin').click(function () {
+        $('#repair-name').text($(this).closest('tr').find('.f-name').text());
+        $('.repair-plugin-screens').addClass('hidden');
+        $('#repair-plugin-welcome').removeClass('hidden');
+        $('#repair-plugin-modal-next').removeClass('hidden');
+        $('#repair-plugin-modal').modal();
+    });
+
+    $('#repair-plugin-modal-next').click(function () {
+        $('#repair-plugin-modal-footer').addClass('hidden');
+        $('.repair-plugin-screens').addClass('hidden');
+        $('#repair-plugin-executing').removeClass('hidden');
+        $.ajax({
+            type: 'POST',
+            url: window.vbcknd.base_url + 'ajax/admin/plugins/repair_installed_plugin',
+            data: {name: $('#repair-name').text()},
+            success: PluginRepairSuccess,
+            error: PluginRepairFailed
+        });
+    });
+
+    function PluginRepairFailed(jqXHR) {
+        var html = '<p>Il server ha inviato la risposta <code>' + jqXHR.status + ' ' + jqXHR.statusText + '</code>. I dati inviati dal server sono:</p>' + '<div class="well">' + jqXHR.responseText + '</div>';
+        $('#repair-error-box').collapse('hide').html(html);
+        $('#repair-plugin-modal-next').addClass('hidden');
+        $('#repair-plugin-modal-footer').removeClass('hidden');
+        $('.repair-plugin-screens').addClass('hidden');
+        $('#repair-plugin-syserror').removeClass('hidden');
+    }
+
+    function PluginRepairSuccess(data) {
+        if (data === 'success') {
+            ChangePluginInstallState('success');
+            $('#repair-plugin-modal-next').addClass('hidden');
+            $('#repair-plugin-modal-footer').removeClass('hidden');
+            $('.repair-plugin-screens').addClass('hidden');
+            $('#repair-plugin-success').removeClass('hidden')
+        } else {
+            var html = '<p>Il server ha inviato la risposta <code>200 OK</code>. I dati inviati dal server sono (expected [string]"success"):</p>' + '<div class="well">' + data + '</div>';
+            $('#repair-error-box').collapse('hide').html(html);
+            $('#repair-plugin-modal-next').addClass('hidden');
+            $('#repair-plugin-modal-footer').removeClass('hidden');
+            $('.repair-plugin-screens').addClass('hidden');
+            $('#repair-plugin-syserror').removeClass('hidden')
         }
     }
 });

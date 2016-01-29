@@ -4,7 +4,8 @@ class Plugins extends MX_Controller
 {
     function index()
     {
-        $this->load->view('plugins/main');
+        $data['plugins'] = $this->modules_handler->get_full_plugin_list();
+        $this->load->view('plugins/main', $data);
     }
 
     function load_registered_components()
@@ -123,18 +124,41 @@ class Plugins extends MX_Controller
         //Update the install store
         $this->load->library('file_handler');
         if (file_exists(APPPATH . 'plugins/' . $descriptor_data->name)) {
-            //TODO: Uninstall (no data removal) the previous version
-            $this->file_handler->delete_path('application/plugins/' . $descriptor_data->name);
+            $this->modules_handler->remove_plugin($descriptor_data->name, true);
         }
         rename(APPPATH . 'tmp/' . $folder_id, APPPATH . 'plugins/' . $descriptor_data->name);
         //Execute the install procedure
-        $this->modules_handler->install_plugin($descriptor_data->name);
-        if ($this->modules_handler->check_plugin($descriptor_data->name)) {
+        $results = $this->modules_handler->install_plugin($descriptor_data->name);
+        if ($results['result'] and $this->modules_handler->check_plugin($descriptor_data->name)) {
             $this->output->set_status_header(200);
             $this->output->set_output('success');
         } else {
             $this->output->set_status_header(500);
-            $this->output->set_output('Unknown error during installation - (failed post installation check)');
+            $this->output->set_output('Unknown error during installation - (failed post installation check) - ' . $results['error']);
         }
     }
+
+    function set_plugin_state()
+    {
+        $name = $this->input->post('name');
+        $state = $this->input->post('state');
+        $c_array = array('enable' => true, 'disable' => false);
+        $this->modules_handler->change_plugin_state($name, $c_array[$state]);
+        $this->output->set_status_header(200);
+        $this->output->set_output('ok');
+    }
+
+    function repair_installed_plugin()
+    {
+        $name = $this->input->post('name');
+        $results = $this->modules_handler->repair_plugin($name);
+        if ($results['result'] and $this->modules_handler->check_plugin($name)) {
+            $this->output->set_status_header(200);
+            $this->output->set_output('success');
+        } else {
+            $this->output->set_status_header(500);
+            $this->output->set_output('Unknown error during repair - (failed post installation check) - ' . $results['error']);
+        }
+    }
+
 }
