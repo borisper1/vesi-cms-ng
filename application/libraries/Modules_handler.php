@@ -235,63 +235,82 @@ class Modules_handler
         $descriptor_data = json_decode(file_get_contents($store_path . '/descriptor.json'));
         $descriptor_data->files = [];
         //Copy plugin files
-        //TODO: The current Iterator/File copying structure does not work ([while] works to generate files array, but does not include directories for copying).
-        if (file_exists($store_path . '/mod_plugins')) {
-            $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($store_path . '/mod_plugins', FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS), RecursiveIteratorIterator::SELF_FIRST);
-            foreach ($it as $name => $object) {
-                if ($object->getSubPath() == '') {
-                    $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/mod_plugins/' . $name, 'application/modules/mod_plugins');
-                }
-                if (!$object->isDir()) {
-                    $descriptor_data->files[] = 'application/modules/mod_plugins/' . $name;
-                }
+        if (file_exists($store_path . '/mod_plugins'))
+        {
+            $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($store_path . '/mod_plugins', FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS));
+            $it->rewind();
+            while ($it->valid())
+            {
+                $descriptor_data->files[] = 'application/modules/mod_plugins/' . $it->getSubPathName();
+                $it->next();
+            }
+            $copy_items = array_diff(scandir($store_path . '/mod_plugins'), array('..', '.'));
+            foreach($copy_items as $item)
+            {
+                $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/mod_plugins/' . $item, 'application/modules/mod_plugins');
             }
         }
-        if (file_exists($store_path . '/admin_if')) {
+        if (file_exists($store_path . '/admin_if'))
+        {
             $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($store_path . '/admin_if', FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS));
             $it->rewind();
-            while ($it->valid()) {
-                if ($it->getSubPath() == '') {
-                    $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/admin_if/' . $it->getSubPathName(), 'application/modules/admin_if');
-                }
+            while ($it->valid())
+            {
                 $descriptor_data->files[] = 'application/modules/admin_if/' . $it->getSubPathName();
                 $it->next();
             }
+            $copy_items = array_diff(scandir($store_path . '/admin_if'), array('..', '.'));
+            foreach($copy_items as $item)
+            {
+                $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/admin_if/' . $item, 'application/modules/admin_if');
+            }
         }
-        if (file_exists($store_path . '/mod_services')) {
+        if (file_exists($store_path . '/mod_services'))
+        {
             $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($store_path . '/mod_services', FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS));
             $it->rewind();
-            while ($it->valid()) {
-                if ($it->getSubPath() == '') {
-                    $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/mod_services/' . $it->getSubPathName(), 'application/modules/mod_services');
-                }
+            while ($it->valid())
+            {
                 $descriptor_data->files[] = 'application/modules/mod_services/' . $it->getSubPathName();
                 $it->next();
             }
+            $copy_items = array_diff(scandir($store_path . '/mod_services'), array('..', '.'));
+            foreach($copy_items as $item)
+            {
+                $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/mod_services/' . $item, 'application/modules/mod_services');
+            }
         }
-        if (file_exists($store_path . '/components')) {
+        if (file_exists($store_path . '/components'))
+        {
             $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($store_path . '/components', FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS));
             $it->rewind();
-            while ($it->valid()) {
-                if ($it->getSubPath() == '') {
-                    $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/components/' . $it->getSubPathName(), 'application/modules/components');
-                }
+            while ($it->valid())
+            {
                 $descriptor_data->files[] = 'application/modules/components/' . $it->getSubPathName();
                 $it->next();
             }
+            $copy_items = array_diff(scandir($store_path . '/components'), array('..', '.'));
+            foreach($copy_items as $item)
+            {
+                $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/components/' . $item, 'application/modules/components');
+            }
         }
-        if (file_exists($store_path . '/assets')) {
+        if (file_exists($store_path . '/assets'))
+        {
             if (!file_exists(FCPATH . 'assets/plugins/' . $store_name)) {
                 mkdir(FCPATH . 'assets/plugins/' . $store_name, 0777, true);
             }
             $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($store_path . '/assets', FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS));
             $it->rewind();
-            while ($it->valid()) {
-                if ($it->getSubPath() == '') {
-                    $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/assets/' . $it->getSubPathName(), 'assets/plugins/' . $store_name);
-                }
+            while ($it->valid())
+            {
                 $descriptor_data->files[] = 'assets/plugins/' . $store_name . '/' . $it->getSubPathName();
                 $it->next();
+            }
+            $copy_items = array_diff(scandir($store_path . '/components'), array('..', '.'));
+            foreach($copy_items as $item)
+            {
+                $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/assets/' . $item, 'assets/plugins/' . $store_name);
             }
         }
         //Register installed components
