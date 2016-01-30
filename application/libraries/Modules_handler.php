@@ -480,8 +480,8 @@ class Modules_handler
         foreach ($plugin_data['config_interfaces'] as $config_interface) {
             $this->unregister_config_interface($config_interface->name);
         }
-        foreach ($plugin_data['services'] as $service->name) {
-            $this->unregister_service($service);
+        foreach ($plugin_data['services'] as $service) {
+            $this->unregister_service($service->name);
         }
         //Unresister plugin
         $this->unregister_plugin($name);
@@ -491,14 +491,13 @@ class Modules_handler
         $this->CI->file_handler->remove_empty_subfolders(APPPATH . 'modules/admin_if');
         $this->CI->file_handler->remove_empty_subfolders(APPPATH . 'modules/components');
         $this->CI->file_handler->remove_empty_subfolders(FCPATH . 'assets/plugins');
-        $store_path = APPPATH . 'plugins/' . $name;
         //Delete DB data if required
         if ($remove_data) {
-            $this->ExecuteSQLFile($store_path . '/' . $plugin_data['db_remove_file']);
+            $this->ExecuteSQLFile(APPPATH . 'plugins/' . $name . '/' . $plugin_data['db_remove_file']);
         }
         //Delete install_store if required
         if ($remove_install_store) {
-            $this->CI->file_handler->delete_path($store_path);
+            $this->CI->file_handler->delete_path('application/plugins/' . $name);
         }
         return array('result' => true, 'error' => '');
     }

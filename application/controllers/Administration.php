@@ -5,21 +5,7 @@ class Administration extends MX_Controller
 {
     public function index()
     {
-        $this->redirect_if_no_login();
-        $this->load->model('user_handler');
-        $menu_data['user_fname'] = $this->user_handler->get_admin_full_name();
-        $menu_data['structure'] = $this->modules_handler->get_interfaces_menu_structure();
-        $base_data['menu']= $this->load->view('administration/main_menu',$menu_data , TRUE);
-
-        $base_data['content'] = null;
-
-        $base_data['system_dom'] = $this->load->view('administration/system_reauth',null , TRUE);
-        $base_data['system_dom'] .= $this->load->view('administration/code_editor', null, TRUE);
-        $base_data['system_dom'] .= $this->load->view('file_conversion_service', null , TRUE);
-
-        $base_data['title']='Dashboard - Vesi-CMS';
-        $base_data['urls']=$this->resources->get_administration_urls();
-        $this->load->view('administration/base', $base_data);
+        $this->load_interface('dashboard');
     }
 
     public function load_interface($interface, $method = 'index', $arguments = null)
@@ -66,6 +52,10 @@ class Administration extends MX_Controller
 
     protected function execute_load_interface($interface, $method = 'index', $arguments = null)
     {
+        if ($interface === 'dashboard') {
+            return array('content' => Modules::run('admin_if/' . $interface . '/' . $method, $arguments),
+                'js_path' => 'assets/administration/interfaces/' . $interface . '.js',);
+        }
         $interface_data = $this->modules_handler->get_interface_data($interface);
         if ($interface_data['builtin'] === true) {
             return array('content' => Modules::run('admin_if/' . $interface . '/' . $method, $arguments),

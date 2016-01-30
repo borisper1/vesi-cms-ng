@@ -44,8 +44,6 @@
             <span class="help-block">Scegliere lo spazio sui disco da assegnare ai file convertiti in MiB (<span
                     id="output-current-max-size"><?= $output_folder_max_size ?></span>MiB)</span>
         </div>
-
-
     </div>
 </div>
 
