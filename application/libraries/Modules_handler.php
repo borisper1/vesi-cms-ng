@@ -64,14 +64,18 @@ class Modules_handler
         file_put_contents(APPPATH . "config/modules.json", json_encode($this->schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
-    protected function unregister_component($object)
+    protected function unregister_component($name)
     {
         $this->schema = json_decode(file_get_contents(APPPATH . "config/modules.json"));
-        foreach ($this->schema->components as &$component) {
-            if ($component->name === $object->name) {
-                unset($component);
-                break;
+        $rem_index = null;
+        foreach ($this->schema->components as $index => $component) {
+            if ($component->name === $name) {
+                $rem_index = $index;
             }
+        }
+        if($rem_index!==null)
+        {
+            array_splice($this->schema->components, $rem_index, 1);
         }
         file_put_contents(APPPATH . "config/modules.json", json_encode($this->schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
@@ -96,14 +100,18 @@ class Modules_handler
         file_put_contents(APPPATH . "config/services.json", json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
-    protected function unregister_service($object)
+    protected function unregister_service($name)
     {
         $schema = json_decode(file_get_contents(APPPATH . "config/services.json"));
-        foreach ($schema->services as &$service) {
-            if ($service->name === $object->name) {
-                unset($service);
-                break;
+        $rem_index = null;
+        foreach ($schema->services as $index =>$service) {
+            if ($service->name === $name) {
+                $rem_index = $index;
             }
+        }
+        if($rem_index!==null)
+        {
+            array_splice($schema->services, $rem_index, 1);
         }
         file_put_contents(APPPATH . "config/services.json", json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
@@ -166,16 +174,21 @@ class Modules_handler
         $this->save_plugin_cache();
     }
 
-    protected function unregister_plugin($object)
+    protected function unregister_plugin($name)
     {
         if ($this->plugin_cache === null) {
             $this->update_plugin_cache();
         }
-        foreach ($this->plugin_cache->plugins as &$plugin) {
-            if ($plugin->name === $object->name) {
-                unset($plugin);
+        $rem_index = null;
+        foreach ($this->plugin_cache->plugins as $index => $plugin) {
+            if ($plugin->name === $name) {
+                $rem_index = $index;
                 break;
             }
+        }
+        if($rem_index!==null)
+        {
+            array_splice($this->plugin_cache->plugins, $rem_index, 1);
         }
         $this->save_plugin_cache();
     }
@@ -255,18 +268,25 @@ class Modules_handler
         $this->save_interface_cache();
     }
 
-    protected function unregister_interface($object)
+    protected function unregister_interface($name)
     {
         if ($this->interfaces_cache === null) {
             $this->update_interfaces_cache();
         }
-        foreach ($this->interfaces_cache as &$tree) {
-            foreach ($tree->items as &$item) {
-                if ($item->name === $object->name) {
-                    unset($item);
+        $tree = null;
+        $rem_index = null;
+        foreach ($this->interfaces_cache as $key=>$tree) {
+            foreach ($tree->items as $index=>$item) {
+                if ($item->name === $name) {
+                    $tree = $key;
+                    $rem_index = $index;
                     break;
                 }
             }
+        }
+        if($tree!==null and $rem_index!==null)
+        {
+            array_splice($this->interfaces_cache->$tree->items, $rem_index, 1);
         }
         $this->save_interface_cache();
     }
@@ -304,14 +324,18 @@ class Modules_handler
         file_put_contents(APPPATH . "config/config_interfaces.json", json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
-    protected function unregister_config_interface($object)
+    protected function unregister_config_interface($name)
     {
         $schema = json_decode(file_get_contents(APPPATH . "config/config_interfaces.json"), true);
-        foreach ($schema->interfaces as &$interface) {
-            if ($interface->name === $object->name) {
-                unset($interface);
-                break;
+        $rem_index = null;
+        foreach ($schema->interfaces as $index => $interface) {
+            if ($interface->name === $name) {
+                $rem_index = $index;
             }
+        }
+        if($rem_index!==null)
+        {
+            array_splice($schema->interfaces, $rem_index, 1);
         }
         file_put_contents(APPPATH . "config/config_interfaces.json", json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
@@ -448,17 +472,19 @@ class Modules_handler
         }
         //Unregister installed components
         foreach ($plugin_data['components'] as $component) {
-            $this->unregister_component($component);
+            $this->unregister_component($component->name);
         }
         foreach ($plugin_data['admin_interfaces'] as $admin_interface) {
-            $this->unregister_interface($admin_interface);
+            $this->unregister_interface($admin_interface->name);
         }
         foreach ($plugin_data['config_interfaces'] as $config_interface) {
-            $this->unregister_config_interface($config_interface);
+            $this->unregister_config_interface($config_interface->name);
         }
-        foreach ($plugin_data['services'] as $service) {
+        foreach ($plugin_data['services'] as $service->name) {
             $this->unregister_service($service);
         }
+        //Unresister plugin
+        $this->unregister_plugin($name);
         //Clean up plugin files folders
         $this->CI->file_handler->remove_empty_subfolders(APPPATH . 'modules/mod_plugins');
         $this->CI->file_handler->remove_empty_subfolders(APPPATH . 'modules/mod_services');

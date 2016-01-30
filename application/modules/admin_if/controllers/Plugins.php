@@ -152,12 +152,26 @@ class Plugins extends MX_Controller
     {
         $name = $this->input->post('name');
         $results = $this->modules_handler->repair_plugin($name);
-        if ($results['result'] and $this->modules_handler->check_plugin($name)) {
+        if ($results and $this->modules_handler->check_plugin($name)) {
             $this->output->set_status_header(200);
             $this->output->set_output('success');
         } else {
             $this->output->set_status_header(500);
             $this->output->set_output('Unknown error during repair - (failed post installation check) - ' . $results['error']);
+        }
+    }
+
+    function remove_plugin()
+    {
+        $name = $this->input->post('name');
+        $remove_data= $this->input->post('remove_data')==='true';
+        $results = $this->modules_handler->remove_plugin($name, true, $remove_data);
+        if ($results['result']) {
+            $this->output->set_status_header(200);
+            $this->output->set_output('success');
+        } else {
+            $this->output->set_status_header(500);
+            $this->output->set_output('Unknown error during removal - ' . $results['error']);
         }
     }
 

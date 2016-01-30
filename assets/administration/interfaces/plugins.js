@@ -213,4 +213,54 @@ $(document).ready(function () {
             $('#repair-plugin-syserror').removeClass('hidden')
         }
     }
+
+    $('#i-remove-data').bootstrapSwitch();
+
+    $('.remove-plugin').click(function () {
+        $('#remove-name').text($(this).closest('tr').find('.f-name').text());
+        $('#i-remove-data').prop('checked', false);
+        $('.remove-plugin-screens').addClass('hidden');
+        $('#remove-plugin-welcome').removeClass('hidden');
+        $('#remove-plugin-modal-next').removeClass('hidden');
+        $('#remove-plugin-modal').modal();
+    });
+
+    $('#remove-plugin-modal-next').click(function () {
+        $('#remove-plugin-modal-footer').addClass('hidden');
+        $('.remove-plugin-screens').addClass('hidden');
+        $('#remove-plugin-executing').removeClass('hidden');
+        $.ajax({
+            type: 'POST',
+            url: window.vbcknd.base_url + 'ajax/admin/plugins/remove_plugin',
+            data: {name: $('#remove-name').text(), remove_data: $('#i-remove-data').prop('checked') },
+            success: PluginRemoveSuccess,
+            error: PluginRemoveFailed
+        });
+    });
+    function PluginRemoveFailed(jqXHR) {
+        var html = '<p>Il server ha inviato la risposta <code>' + jqXHR.status + ' ' + jqXHR.statusText + '</code>. I dati inviati dal server sono:</p>' + '<div class="well">' + jqXHR.responseText + '</div>';
+        $('#remove-error-box').collapse('hide').html(html);
+        $('#remove-plugin-modal-next').addClass('hidden');
+        $('#remove-plugin-modal-footer').removeClass('hidden');
+        $('.remove-plugin-screens').addClass('hidden');
+        $('#remove-plugin-syserror').removeClass('hidden');
+    }
+
+    function PluginRemoveSuccess(data) {
+        if (data === 'success') {
+            ChangePluginInstallState('success');
+            $('#remove-plugin-modal-next').addClass('hidden');
+            $('#remove-plugin-modal-footer').removeClass('hidden');
+            $('.remove-plugin-screens').addClass('hidden');
+            $('#remove-plugin-success').removeClass('hidden')
+        } else {
+            var html = '<p>Il server ha inviato la risposta <code>200 OK</code>. I dati inviati dal server sono (expected [string]"success"):</p>' + '<div class="well">' + data + '</div>';
+            $('#remove-error-box').collapse('hide').html(html);
+            $('#remove-plugin-modal-next').addClass('hidden');
+            $('#remove-plugin-modal-footer').removeClass('hidden');
+            $('.remove-plugin-screens').addClass('hidden');
+            $('#remove-plugin-syserror').removeClass('hidden')
+        }
+    }
+
 });
