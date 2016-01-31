@@ -174,5 +174,4 @@ class Plugins extends MX_Controller
             $this->output->set_output('Unknown error during removal - ' . $results['error']);
         }
     }
-
 }

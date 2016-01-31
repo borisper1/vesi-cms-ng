@@ -45,3 +45,51 @@
         </div>
     </div>
 </div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Utilizzo disco file temporanei</h3>
+    </div>
+    <div class="panel-body">
+        <p>Usati <?= $current_temp_size ?> di <?= $current_temp_max_size ?>MiB</p>
+        <div class="progress">
+            <div class="progress-bar"
+                 style="min-width: 2em; width: <?=$current_temp_size_percent ?>%;"><?= $current_temp_size_percent ?>%
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox toggle">
+                <label>
+                    <input type="checkbox" id="i-limit-temp-folder" <?= $limit_temp_folder ? 'checked' : '' ?>>
+                    &nbsp;Limita lo spazio per i file temporanei
+                </label>
+            </div>
+            <span class="help-block">I file temporanei saranno eliminati quando lo spazio occupato supera il limite massimo (il servizio di manutenzione automatica deve essere abilitato)</span>
+        </div>
+        <div class="form-group">
+            <label for="i-temp-folder-max-size">Dimensione massima dei file temporanei:</label>
+            <input type="range" min="24" max="512" step="2" placeholder="Spazio da assegnare in MiB"
+                   id="i-temp-folder-max-size" value="<?= $current_temp_max_size ?>">
+            <span class="help-block">Scegliere lo spazio sui disco da assegnare ai file temporanei in MiB (<span
+                    id="temp-current-max-size"><?= $current_temp_max_size ?></span>MiB)</span>
+        </div>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Servizio di manutenzione automatica</h3>
+    </div>
+    <div class="panel-body">
+        <p>Il servizio di manutenzione viene eseguito automaticamente per eliminare file temporanei e assicurare il funzionamento del sistema</p>
+        <div class="form-group">
+            <div class="checkbox toggle">
+                <label>
+                    <input type="checkbox" id="i-enable-auto-maint" <?=$enable_automatic_maint ? 'checked' : '' ?>> &nbsp;Abilita il servizio di manutenzione automatica
+                </label>
+            </div>
+        </div>
+        <p>Per eseguire il servizio impostare una pianificazione che esegua lo script all'URL <code><?=base_url('services/maintenance/execute') ?></code> ogni settimana.
+        Se il server non supporta <code>cron</code> o <code>Task Scheduler</code> è possibile utilizzare un sevizio esterno o il server di conversione documenti per impostare
+        la pianificazione.</p>
+    </div>
+</div>
