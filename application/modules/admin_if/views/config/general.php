@@ -80,7 +80,8 @@
         <h3 class="panel-title">Servizio di manutenzione automatica</h3>
     </div>
     <div class="panel-body">
-        <p>Il servizio di manutenzione viene eseguito automaticamente per eliminare file temporanei e assicurare il funzionamento del sistema</p>
+        <p>Il servizio di manutenzione viene eseguito automaticamente per eliminare file temporanei e assicurare il
+            corretto funzionamento del sistema</p>
         <div class="form-group">
             <div class="checkbox toggle">
                 <label>

@@ -6,9 +6,11 @@ class Components extends MX_Controller
 
     function render_component($id)
     {
-        //TODO: Ensure survival if the model/view does not exist (ERR_CORRUPT_INSTALL)
         $type = $this->get_content_type($id);
-        //TODO: Add error checking
+        if ($type === false) {
+            return $this->load->view('frontend/errors/content_not_found', array('id' => $id), true);
+            //TODO: Log error in syserrors_log
+        }
         if(in_array($type,$this->modules_handler->installed_components))
         {
             $model_cname=str_replace('-','_',$type).'_model';
@@ -18,16 +20,19 @@ class Components extends MX_Controller
         }
         else
         {
-            //TODO: Desired component is not installed (ERR_COMPONENT_NOT_FOUND)
-            return false;
+            return $this->load->view('frontend/errors/component_not_found', array('id' => $id, 'component' => $type), true);
+            //TODO: Log error in syserrors_log
         }
     }
 
     function render_sec_menu($id)
     {
         $this->load->model('menu_handler');
-        //Load the main menu (evaluate whether to make this a HMVC module)
         $menu_data = $this->menu_handler->get_menu_array($id,$GLOBALS['p_container'],$GLOBALS['p_name']);
+        if ($menu_data === false) {
+            return $this->load->view('frontend/errors/content_not_found', array('id' => $id), true);
+            //TODO: Log error in syserrors_log
+        }
         $menu_data = array_merge($menu_data, $this->menu_handler->get_menu_data($id));
         return $this->load->view('frontend/sec_menu',$menu_data,true);
     }
@@ -44,10 +49,8 @@ class Components extends MX_Controller
         $query = $this->db->get('contents');
         if ($query->num_rows() > 0) {
             $row = $query->row();
-
             return $row->type;
         } else {
-            //The id does not exist (ERR_COMPONENT_ID_NOT_FOUND)
             return false;
         }
     }

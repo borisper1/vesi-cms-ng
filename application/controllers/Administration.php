@@ -60,7 +60,6 @@ class Administration extends MX_Controller
         if ($interface_data['builtin'] === true) {
             return array('content' => Modules::run('admin_if/' . $interface . '/' . $method, $arguments),
                 'js_path' => 'assets/administration/interfaces/' . $interface . '.js',);
-
         } else {
             if ($interface_data['location'] === 'full_plugin') {
                 $plugin_data = $this->modules_handler->get_plugin_data($interface);

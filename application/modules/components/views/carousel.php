@@ -29,3 +29,4 @@ defined("BASEPATH") OR exit("No direct script access allowed");
         <span class="sr-only">Successivo</span>
     </a>
 </div>
+<br>

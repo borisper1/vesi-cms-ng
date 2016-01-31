@@ -117,6 +117,7 @@ class Page_render extends MX_Controller
         //Load the final view and render the page
         $this->load->view('frontend/base', $base_data);
         $this->output->set_status_header('404');
+        //TODO: Log error in syserrors_log
     }
 
     protected function render_section($structure)
@@ -151,7 +152,8 @@ class Page_render extends MX_Controller
         if ($plugin_info['type'] === 'full' and $plugin_info['enabled']) {
             return Modules::run('mod_plugins/' . $name . '/render', $command);
         } else {
-            return false;
+            return $this->load->view('frontend/errors/plugin_not_found', array('name' => $name), true);
+            //TODO: Log error in syserrors_log
         }
     }
 }
