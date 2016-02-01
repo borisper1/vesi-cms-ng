@@ -29,7 +29,7 @@ class Administration extends MX_Controller
         $base_data['system_dom'] .= $this->load->view('file_conversion_service', null , TRUE);
         $base_data['title']='Amministrazione - Vesi-CMS';
         $base_data['urls']=$this->resources->get_administration_urls();
-        if (isset($if_data)) {
+        if (isset($if_data) and file_exists(FCPATH . $if_data['js_path'])) {
             $base_data['urls']['aux_js_loader'][] = base_url($if_data['js_path']);
         }
         $this->load->view('administration/base', $base_data);
