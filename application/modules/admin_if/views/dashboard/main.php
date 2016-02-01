@@ -10,7 +10,8 @@
                 Circolari</a>
             <a href="<?= base_url('admin/files') ?>" class="list-group-item"><i class="fa fa-upload"></i> File e
                 immagini</a>
-
+            <a href="<?= base_url('admin/sysevents') ?>" class="list-group-item"><i class="fa fa-bell"></i> Avvisi di sistema
+                <span class="badge"><?=$unread_errors==0 ? '' : $unread_errors ?></span></a>
         </div>
     </div>
     <div class="col-md-9">
@@ -61,10 +62,10 @@
             </div>
             <div class="col-sm-2 text-center">
                 <h2 class="ui icon header">
-                    <i class="fa fa-question"></i>
+                    <i class="fa fa-bell"></i>
                     <div class="content">
-                        ---
-                        <div class="sub header">---</div>
+                        <?= $unread_errors ?>
+                        <div class="sub header">Avvisi non letti</div>
                     </div>
                 </h2>
             </div>

@@ -8,8 +8,9 @@ class Components extends MX_Controller
     {
         $type = $this->get_content_type($id);
         if ($type === false) {
+            $this->load->model('error_logger');
+            $this->error_logger->log_no_content_error($id);
             return $this->load->view('frontend/errors/content_not_found', array('id' => $id), true);
-            //TODO: Log error in syserrors_log
         }
         if(in_array($type,$this->modules_handler->installed_components))
         {
@@ -20,8 +21,9 @@ class Components extends MX_Controller
         }
         else
         {
+            $this->load->model('error_logger');
+            $this->error_logger->log_no_component_error($id, $type);
             return $this->load->view('frontend/errors/component_not_found', array('id' => $id, 'component' => $type), true);
-            //TODO: Log error in syserrors_log
         }
     }
 
@@ -30,8 +32,9 @@ class Components extends MX_Controller
         $this->load->model('menu_handler');
         $menu_data = $this->menu_handler->get_menu_array($id,$GLOBALS['p_container'],$GLOBALS['p_name']);
         if ($menu_data === false) {
+            $this->load->model('error_logger');
+            $this->error_logger->log_no_menu_error($id);
             return $this->load->view('frontend/errors/content_not_found', array('id' => $id), true);
-            //TODO: Log error in syserrors_log
         }
         $menu_data = array_merge($menu_data, $this->menu_handler->get_menu_data($id));
         return $this->load->view('frontend/sec_menu',$menu_data,true);

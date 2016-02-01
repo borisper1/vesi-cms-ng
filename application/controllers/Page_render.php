@@ -3,11 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Page_render extends MX_Controller
 {
-    /**
-     * Index Page for this controller.
-     *
-     * Calls Page_render::view() for the page set as home in db_config.
-     */
     public function index()
     {
 
@@ -40,7 +35,8 @@ class Page_render extends MX_Controller
         $page_id = $this->page_handler->get_true_page_id($container, $page);
         if($page_id===false)
         {
-            redirect('page_render/display_404', 'auto', 404);
+            $this->display_404();
+            return;
         }
 
         $page_data = $this->page_handler->get_page_obj($page_id);
@@ -117,7 +113,11 @@ class Page_render extends MX_Controller
         //Load the final view and render the page
         $this->load->view('frontend/base', $base_data);
         $this->output->set_status_header('404');
-        //TODO: Log error in syserrors_log
+
+        //Log the error in syslog
+        $this->load->model('error_logger');
+        $referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+        $this->error_logger->log_404_error($referrer);
     }
 
     protected function render_section($structure)
@@ -152,8 +152,9 @@ class Page_render extends MX_Controller
         if ($plugin_info['type'] === 'full' and $plugin_info['enabled']) {
             return Modules::run('mod_plugins/' . $name . '/render', $command);
         } else {
+            $this->load->model('error_logger');
+            $this->error_logger->log_no_plugin_error($name);
             return $this->load->view('frontend/errors/plugin_not_found', array('name' => $name), true);
-            //TODO: Log error in syserrors_log
         }
     }
 }

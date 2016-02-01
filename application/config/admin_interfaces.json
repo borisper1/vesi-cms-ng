@@ -49,6 +49,7 @@
                 "name": "special::separator",
                 "builtin": true
             },
+            {"name":"sysevents", "label": "Avvisi di sistema", "description":"Visualizza un elenco dei problemi riscontrati dal sistema o eventuali avvisi su errori comuni (come HTTP 404)", "icon":"fa-bell", "builtin":true, "only_su":false},
             {
                 "name": "sysinfo",
                 "label": "Informazioni sul sistema",
