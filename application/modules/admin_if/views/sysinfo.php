@@ -42,7 +42,7 @@
                 </tr></thead>
                 <tr>
                     <td><a href="https://codeigniter.com/" target="_blank">CodeIgniter</a></td>
-                    <td>3.0.3</td>
+                    <td>3.0.4</td>
                 </tr>
                 <tr>
                     <td><a href="https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc" target="_blank">Modular
@@ -51,7 +51,7 @@
                 </tr>
                 <tr>
                     <td><a href="https://jquery.com/" target="_blank">jQuery</a></td>
-                    <td>1.11.3 (modalità di compatibilità) e 2.1.4</td>
+                    <td>1.12.0 (modalità di compatibilità) e 2.2.0</td>
                 </tr>
                 <tr>
                     <td><a href="https://jqueryui.com/" target="_blank">jQuery UI</a></td>
@@ -59,20 +59,20 @@
                 </tr>
                 <tr>
                     <td><a href="http://getbootstrap.com/" target="_blank">Bootstrap</a></td>
-                    <td>3.3.5</td>
+                    <td>3.3.6</td>
                 </tr>
                 <tr>
                     <td><a href="http://fortawesome.github.io/Font-Awesome/" target="_blank">Font Awesome</a></td>
-                    <td>4.4.0</td>
+                    <td>4.5.0</td>
                 </tr>
                 <tr>
                     <td><a href="https://github.com/CWSpear/bootstrap-hover-dropdown/" target="_blank">Bootstrap Hover Dropdown Plugin</a></td>
-                    <td>2.1.3</td>
+                    <td>2.2.1</td>
                 </tr>
                 <tr>
                     <td><a href="https://silviomoreto.github.io/bootstrap-select/" target="_blank">bootstrap-select</a>
                     </td>
-                    <td>1.7.3</td>
+                    <td>1.9.4</td>
                 </tr>
                 <tr>
                     <td><a href="http://www.bootstrap-switch.org" target="_blank">bootstrap-switch</a></td>
@@ -84,7 +84,7 @@
                 </tr>
                 <tr>
                     <td><a href="http://ace.c9.io/" target="_blank">Ace Editor</a></td>
-                    <td>? UNKNOWN VERSION ?</td>
+                    <td>17.01.16</td>
                 </tr>
                 <tr>
                     <td><a href="http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/" target="_blank">htmLawed</a></td>
@@ -104,7 +104,7 @@
                 </tr>
                 <tr>
                     <td><a href="http://semantic-ui.com/" target="_blank">Semantic UI</a></td>
-                    <td>2.0.8</td>
+                    <td>2.1.8</td>
                 </tr>
 
             </table>
