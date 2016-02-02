@@ -411,22 +411,34 @@ class Modules_handler
                 $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/components/' . $item, 'application/modules/components');
             }
         }
-        if (file_exists($store_path . '/assets'))
+        if (file_exists($store_path . '/assets/plugins'))
         {
             if (!file_exists(FCPATH . 'assets/plugins/' . $store_name)) {
                 mkdir(FCPATH . 'assets/plugins/' . $store_name, 0777, true);
             }
-            $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($store_path . '/assets', FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS));
+            $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($store_path . '/assets/plugins', FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS));
             $it->rewind();
             while ($it->valid())
             {
                 $descriptor_data->files[] = 'assets/plugins/' . $store_name . '/' . $it->getSubPathName();
                 $it->next();
             }
-            $copy_items = array_diff(scandir($store_path . '/assets'), array('..', '.'));
+            $copy_items = array_diff(scandir($store_path . '/assets/plugins'), array('..', '.'));
             foreach($copy_items as $item)
             {
-                $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/assets/' . $item, 'assets/plugins/' . $store_name);
+                $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/assets/plugins/' . $item, 'assets/plugins/' . $store_name);
+            }
+        }
+        if (file_exists($store_path . '/assets/administration')) {
+            $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($store_path . '/assets/administration', FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS));
+            $it->rewind();
+            while ($it->valid()) {
+                $descriptor_data->files[] = 'assets/administration/' . $it->getSubPathName();
+                $it->next();
+            }
+            $copy_items = array_diff(scandir($store_path . '/assets/administration'), array('..', '.'));
+            foreach ($copy_items as $item) {
+                $this->CI->file_handler->copy_path('application/plugins/' . $store_name . '/assets/administration/' . $item, 'assets/administration');
             }
         }
         //Register installed components

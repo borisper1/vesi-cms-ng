@@ -3,11 +3,20 @@
         {
             "type": "full",
             "name": "circolari_engine",
-            "version": "1.0.0-alpha",
+            "version": "1.0.0-beta1",
             "title": "Gestione circolari",
             "description": "Plugin per la gestione e la visualizzazione (anche in frontend) delle circolari",
             "author": "Boris Pertot",
-            "components": [],
+            "components": [
+                {
+                    "name": "circolari_engine_feed",
+                    "save_type": "json",
+                    "has_options": true,
+                    "has_displayname": true,
+                    "description": "Vista Ultime notizie per le circolari (da circolari_engine)",
+                    "bultin": false
+                }
+            ],
             "admin_interfaces": [
                 {
                     "name": "circolari_engine",
@@ -32,8 +41,12 @@
                 "application/modules/mod_plugins/views/circolari_engine/admin_list.php",
                 "application/modules/mod_plugins/views/circolari_engine/frontend_render_main.php",
                 "application/modules/mod_plugins/views/circolari_engine/frontend_render_page.php",
+                "application/modules/components/models/Circolari_engine_feed_model.php",
+                "application/modules/components/views/circolari_engine_feed.php",
+                "application/modules/components/views/editors/circolari_engine_feed_editor.php",
                 "assets/plugins/circolari_engine/admin_interface.js",
-                "assets/plugins/circolari_engine/frontend.js"
+                "assets/plugins/circolari_engine/frontend.js",
+                "assets/administration/editors/circolari_engine_feed.js"
             ],
             "enabled": true
         }

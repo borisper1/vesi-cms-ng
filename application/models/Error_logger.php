@@ -91,6 +91,7 @@ class Error_logger extends CI_Model
 
     function get_syserror_data()
     {
+        $this->db->order_by('id', 'DESC');
         $query = $this->db->get('error_log');
         $events = [];
         foreach ($query->result_array() as $row)

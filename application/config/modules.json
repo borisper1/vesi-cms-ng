@@ -1,106 +1,105 @@
 {
-  "components": [
-    {
-      "name": "html-text",
-      "save_type": "html",
-      "has_options": false,
-      "has_displayname": false,
-      "allow_iframe": true,
-      "description": "Campo di testo modificabile con editor grafico",
-      "bultin": true
-    },
-    {
-      "name": "html-field",
-      "save_type": "html",
-      "has_options": false,
-      "has_displayname": false,
-      "allow_iframe": true,
-      "description": "Campo codice HTML personalizzato con supporto JavaScript",
-      "bultin": true
-    },
-    {
-      "name": "address-view",
-      "save_type": "json",
-      "has_options": false,
-      "has_displayname": false,
-      "description": "Vista contatti",
-      "bultin": true
-    },
-    {
-      "name": "carousel",
-      "save_type": "path",
-      "has_options": false,
-      "has_displayname": false,
-      "description": "Galleria immagini interattiva",
-      "bultin": true
-    },
-    {
-      "name": "file-lister",
-      "save_type": "path",
-      "has_options": false,
-      "has_displayname": false,
-      "description": "Elenco di file scaricabili da una cartella",
-      "bultin": true
-    },
-    {
-      "name": "link",
-      "save_type": "url",
-      "has_options": true,
-      "has_displayname": true,
-      "description": "Link personalizzato",
-      "bultin": true
-    },
-    {
-      "name": "modal",
-      "save_type": "html",
-      "has_options": true,
-      "has_displayname": true,
-      "allow_iframe": true,
-      "description": "Finestra di dialogo personalizzata",
-      "bultin": true
-    },
-    {
-      "name": "pdf-view",
-      "save_type": "url",
-      "has_options": false,
-      "has_displayname": false,
-      "description": "Vista file PDF",
-      "bultin": true
-    },
-    {
-      "name": "popover",
-      "save_type": "html",
-      "has_options": true,
-      "has_displayname": true,
-      "allow_iframe": false,
-      "description": "Finestra popover",
-      "bultin": true
-    },
-    {
-      "name": "circolari_engine_feed",
-      "save_type": "json",
-      "has_options": true,
-      "has_displayname": true,
-      "description": "Vista Ultime notizie per le circolari (da circolari_engine)",
-      "bultin": false
-    }
-  ],
-
-  "structures":[
-    {
-      "name": "tabs-block",
-      "editor": "blocks",
-      "bultin": true
-    },
-    {
-      "name": "collapse-block",
-      "editor": "blocks",
-      "bultin": true
-    },
-    {
-      "name": "generic-box",
-      "editor": "view",
-      "bultin": true
-    }
-  ]
+    "components": [
+        {
+            "name": "html-text",
+            "save_type": "html",
+            "has_options": false,
+            "has_displayname": false,
+            "allow_iframe": true,
+            "description": "Campo di testo modificabile con editor grafico",
+            "bultin": true
+        },
+        {
+            "name": "html-field",
+            "save_type": "html",
+            "has_options": false,
+            "has_displayname": false,
+            "allow_iframe": true,
+            "description": "Campo codice HTML personalizzato con supporto JavaScript",
+            "bultin": true
+        },
+        {
+            "name": "address-view",
+            "save_type": "json",
+            "has_options": false,
+            "has_displayname": false,
+            "description": "Vista contatti",
+            "bultin": true
+        },
+        {
+            "name": "carousel",
+            "save_type": "path",
+            "has_options": false,
+            "has_displayname": false,
+            "description": "Galleria immagini interattiva",
+            "bultin": true
+        },
+        {
+            "name": "file-lister",
+            "save_type": "path",
+            "has_options": false,
+            "has_displayname": false,
+            "description": "Elenco di file scaricabili da una cartella",
+            "bultin": true
+        },
+        {
+            "name": "link",
+            "save_type": "url",
+            "has_options": true,
+            "has_displayname": true,
+            "description": "Link personalizzato",
+            "bultin": true
+        },
+        {
+            "name": "modal",
+            "save_type": "html",
+            "has_options": true,
+            "has_displayname": true,
+            "allow_iframe": true,
+            "description": "Finestra di dialogo personalizzata",
+            "bultin": true
+        },
+        {
+            "name": "pdf-view",
+            "save_type": "url",
+            "has_options": false,
+            "has_displayname": false,
+            "description": "Vista file PDF",
+            "bultin": true
+        },
+        {
+            "name": "popover",
+            "save_type": "html",
+            "has_options": true,
+            "has_displayname": true,
+            "allow_iframe": false,
+            "description": "Finestra popover",
+            "bultin": true
+        },
+        {
+            "name": "circolari_engine_feed",
+            "save_type": "json",
+            "has_options": true,
+            "has_displayname": true,
+            "description": "Vista Ultime notizie per le circolari (da circolari_engine)",
+            "bultin": false
+        }
+    ],
+    "structures": [
+        {
+            "name": "tabs-block",
+            "editor": "blocks",
+            "bultin": true
+        },
+        {
+            "name": "collapse-block",
+            "editor": "blocks",
+            "bultin": true
+        },
+        {
+            "name": "generic-box",
+            "editor": "view",
+            "bultin": true
+        }
+    ]
 }

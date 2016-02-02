@@ -279,6 +279,23 @@ class Content_handler extends CI_Model
                     $content['update_result'] = $this->db->update('contents', array('content' => $content['filtered_content']));
                     array_push($contents, $content);
                 }
+            } elseif ($component_info and $component_info->save_type == 'link') {
+                $content['id'] = $row->id;
+                $content['type'] = $row->type;
+                $content['old_digest'] = md5($row->content);
+                $content['filtered_content'] = $row->content;
+                if ($mode === 'after') {
+                    $content['filtered_content'] = str_replace($url, base_url(), $content['filtered_content']);
+                } elseif ($mode === 'before') {
+                    $content['filtered_content'] = str_replace(base_url(), $url, $content['filtered_content']);
+                }
+                $content['digest'] = md5($content['filtered_content']);
+                $content['changed'] = $content['old_digest'] !== $content['digest'];
+                if ($content['changed']) {
+                    $this->db->where('id', $content['id']);
+                    $content['update_result'] = $this->db->update('contents', array('content' => $content['filtered_content']));
+                    array_push($contents, $content);
+                }
             }
         }
         return $contents;

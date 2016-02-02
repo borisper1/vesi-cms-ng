@@ -35,7 +35,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-fw fa-user"></i><?=$user_fname ?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<?=base_url('admin/users/user_messages')?>"><i class="fa fa-fw fa-envelope"></i> Messaggi</a></li>
                         <li><a href="#" class="vcms-elevator" data-href="admin/users/user_profile"><i class="fa fa-fw fa-wrench"></i> Modifica utente</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="<?=base_url('admin/logout') ?>" ><i class="fa fa-fw fa-sign-out"></i> Esci</a></li>
