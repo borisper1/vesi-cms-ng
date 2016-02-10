@@ -13,9 +13,12 @@
 <span id="is-new" class="hidden"><?=$is_new ? 'true' : 'false' ?></span>
 <br>
 
-<div class="alert alert-danger hidden" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile salvare il contenuto:</b><br><span id="error-msg"></span></div>
-<div class="alert alert-success alert-dismissible hidden" id="success-alert">
+<div class="alert alert-danger hidden alert-save" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile
+        salvare il contenuto:</b><br><span id="error-msg"></span></div>
+<div class="alert alert-success alert-dismissible hidden alert-save" id="success-alert">
     <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-check"></i> Contenuto salvato con successo.
 </div>
-<div class="alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Salvataggio del contenuto...</div>
+<div class="alert alert-info hidden alert-save" id="spinner"><i class="fa fa-refresh fa-spin"></i> Salvataggio del
+    contenuto...
+</div>

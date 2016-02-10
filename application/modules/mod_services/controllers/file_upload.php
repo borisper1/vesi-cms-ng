@@ -27,8 +27,8 @@ class File_upload extends MX_Controller
                 'script_url' => base_url('services/file_upload/index'),
                 'upload_dir' => FCPATH . $target . '/',
                 'upload_url' => base_url($target . '/'),
-                'inline_file_types' => '/\.(?!(php|js|pl|cgi|html|css|xml|json|swf|jar|class|py|rb|sh|bat|fcgi|inc|exe)).+$/i', //impedisci l'esecuzione file eseguibili da un browser o da un server web
-                'accept_file_types' => '/\.(?!(php|pl|cgi|sh|fcgi|inc|py|bat|sh)).+$/i', //escludi file eseguibili dal server web in uso (non caricabili)
+                'inline_file_types' => '/\.(?!(php|js|pl|cgi|html|css|xml|json|swf|jar|class|py|rb|sh|bat|fcgi|inc|exe|cmd|dll|ocx)).+$/i', //impedisci l'esecuzione file eseguibili da un browser o da un server web
+                'accept_file_types' => '/\.(?!(php|pl|cgi|sh|fcgi|inc|py|bat|exe|cmd|dll|ocx)).+$/i', //escludi file eseguibili dal server web in uso (non caricabili)
                 'image_versions' => array(),
                 'delete_type' => 'POST',
                 'print_response' => false

@@ -211,7 +211,7 @@ class User_handler extends CI_Model
     function check_interface_permissions($interface)
     {
         $group = $this->get_group();
-        if($group==='super-users' or $group===false)
+        if ($group === 'super-users' or $group === false or $interface === 'dashboard')
         {
             return true;
         }

@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <?php if($title!=""): ?>
         <div class="page-header">
-            <h1><?=$title ?></h1>
+            <h1><?= strip_tags($title) ?></h1>
         </div>
     <?php endif; ?>
 

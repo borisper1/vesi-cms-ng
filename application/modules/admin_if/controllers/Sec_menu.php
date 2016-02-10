@@ -39,7 +39,7 @@ class Sec_menu extends MX_Controller
     {
         $json = rawurldecode($this->input->post('json'));
         $id = $this->input->post('id');
-        $title = rawurldecode($this->input->post('title'));
+        $title = strip_tags(rawurldecode($this->input->post('title')));
         $display_title = $this->input->post('display_title');
         $this->load->model('menu_handler');
         $result = $this->menu_handler->save($id, $json, $title, $display_title);

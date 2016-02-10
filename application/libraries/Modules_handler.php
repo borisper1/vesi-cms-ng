@@ -52,7 +52,7 @@ class Modules_handler
     {
         $output=[];
         foreach ($this->schema->components as $component) {
-            $output[]=array('name' => $component->name, 'description' => $component->description);
+            $output[] = (array)$component;
         }
         return $output;
     }
@@ -91,6 +91,12 @@ class Modules_handler
             }
         }
         return false;
+    }
+
+    function get_services_list()
+    {
+        $schema = json_decode(file_get_contents(APPPATH . "config/services.json"), true);
+        return $schema['services'];
     }
 
     protected function register_new_service($object)

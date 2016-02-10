@@ -13,7 +13,18 @@ $(document).ready(function() {
         height: '250px',
         allowedContent: 'strong em p br ol li ul h4 h5 h6 code kbd u s sub sup pre; a[!href,target];',
         forcePasteAsPlainText: true,
-        enterMode: CKEDITOR.ENTER_P
+        enterMode: CKEDITOR.ENTER_P,
+        on: {
+            instanceReady: function () {
+                this.dataProcessor.htmlFilter.addRules({
+                    elements: {
+                        img: function (el) {
+                            el.addClass('img-responsive');
+                        }
+                    }
+                });
+            }
+        }
     });
 
     function getSettings() {

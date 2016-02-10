@@ -34,13 +34,13 @@ $(document).ready(function() {
         if(displayname != null) {
             data.displayname = displayname;
         }
-        $('.alert').addClass('hidden');
+        $('.alert-save').addClass('hidden');
         $('#spinner').removeClass('hidden');
         $.post(window.vbcknd.base_url+'ajax/admin/contents/save',data, SaveEditDone);
     };
 
     function SaveEditDone(data){
-        $('.alert').addClass('hidden');
+        $('.alert-save').addClass('hidden');
         if(data=="success"){
             if(is_new_unsaved){
                 var id= $('#f-id').text();

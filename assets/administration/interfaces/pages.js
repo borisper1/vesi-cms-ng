@@ -43,6 +43,13 @@ $(document).ready(function() {
         CurrentMode='edit';
         ClearAllValidationErrors();
         $('#redirect-modal').modal();
+    }).on('click', '.remove-redirect', function () {
+        CurrentItem = $(this).closest('tr');
+        $('#redirect-delete-modal').modal();
+    });
+
+    $('#redirect-delete-modal-confirm').click(function () {
+        $.post(window.vbcknd.base_url + 'ajax/admin/pages/delete', 'id=' + CurrentItem.data('id'), DeletePage);
     });
 
     $('#new-redirect').click(function(){
@@ -138,7 +145,7 @@ $(document).ready(function() {
         if(data=="success"){
             CurrentItem.remove();
         }else{
-            $('#error-msg').html("Si è verificato un errore durante l'eliminazione della pagina. (Il token CSRF potrebbe essere scaduto" +
+            $('#error-msg').html("Si è verificato un errore durante l'eliminazione della pagina/reindirizzamento. (Il token CSRF potrebbe essere scaduto" +
                 " se la protezione CSRF è abilitata) - "+data.replace(/(<([^>]+)>)/ig,""));
             $('#deletion-error-alert').removeClass('hidden');
         }

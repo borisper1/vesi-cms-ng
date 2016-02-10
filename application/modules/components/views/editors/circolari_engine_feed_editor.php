@@ -3,25 +3,31 @@
     <div class='col-md-9'>
         <div class="form-group">
             <label for="input-title">Titolo del riquadro notizie:</label>
-            <input type="text" class="form-control" id="input-title" placeholder="Inserisci titolo" value="<?=$title?>">
+            <input type="text" class="form-control" id="input-title" placeholder="Inserisci titolo"
+                   value="<?= $title ?>">
         </div>
         <p><b>Scegliere le categorie da visualizzare:</b></p>
         <div id="category-editor-gui">
             <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-default" id="add-category"> <i class="fa fa-plus-square"></i> Aggiungi categoria</button>
+                <button type="button" class="btn btn-default" id="add-category"><i class="fa fa-plus-square"></i>
+                    Aggiungi categoria
+                </button>
             </div>
             <div class="well" id="gui-editor-area">
-                <?php foreach(array_keys($content) as $category): ?>
+                <?php foreach (array_keys($content) as $category): ?>
                     <span class="label label-default category-element">
-                    <span class="category"><?=$category ?></span>  [<i><span class="remapping-url"><?=$content[$category] ?></span></i>]
-                    <a href="#gui-editor-area" class="delete-element lmb tooltipped" data-toggle="tooltip" title="Elimina"><i class="fa fa-remove"></i></a>
+                    <span class="category"><?= $category ?></span>  [<i><span
+                                class="remapping-url"><?= $content[$category] ?></span></i>]
+                    <a href="#gui-editor-area" class="delete-element lmb tooltipped" data-toggle="tooltip"
+                       title="Elimina"><i class="fa fa-remove"></i></a>
                 </span>&nbsp;
                 <?php endforeach; ?>
             </div>
             <div class="hidden" id="category-template">
                 <span class="label label-default category-element">
                     <span class="category"></span>  [<i><span class="remapping-url"></span></i>]
-                    <a href="#gui-editor-area" class="delete-element lmb tooltipped" data-toggle="tooltip" title="Elimina"><i class="fa fa-remove"></i></a>
+                    <a href="#gui-editor-area" class="delete-element lmb tooltipped" data-toggle="tooltip"
+                       title="Elimina"><i class="fa fa-remove"></i></a>
                 </span>&nbsp;
             </div>
         </div>
@@ -29,11 +35,13 @@
     <div class='col-md-3'>
         <div class="form-group">
             <label for="input-class">Classi da applicare al popover:</label>
-            <input type="text" class="form-control" id="input-class" placeholder="Inserisci classi" value="<?=$class?>">
+            <input type="text" class="form-control" id="input-class" placeholder="Inserisci classi"
+                   value="<?= $class ?>">
         </div>
         <div class="form-group">
             <label for="input-limit">Numero di notizie da visualizzare:</label>
-            <input type="number" class="form-control" id="input-limit" placeholder="Inserisci limite" value="<?=$limit?>">
+            <input type="number" class="form-control" id="input-limit" placeholder="Inserisci limite"
+                   value="<?= $limit ?>">
         </div>
     </div>
 </div>
@@ -56,14 +64,16 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
-                <button type="button" class="btn btn-success" id="link-category-modal-confirm" data-dismiss="modal"><i class="fa fa-plus"></i> Aggiungi catgeoria</button>
+                <button type="button" class="btn btn-success" id="link-category-modal-confirm" data-dismiss="modal"><i
+                        class="fa fa-plus"></i> Aggiungi categoria
+                </button>
             </div>
         </div>
     </div>
 </div>
 
 <datalist id="category-list">
-    <?php foreach($all_cats as $cat): ?>
-        <option><?=$cat ?></option>
+    <?php foreach ($all_cats as $cat): ?>
+        <option><?= $cat ?></option>
     <?php endforeach; ?>
 </datalist>

@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?><div class="page-header"><h1><i class="fa fa-bullhorn"></i> Gestione avvisi</h1></div>
+?>
+<div class="page-header"><h1><i class="fa fa-bullhorn"></i> Avvisi</h1></div>
 <h3 class="pull-left inline"><i class="fa fa-pencil"></i> <span id="f-preview"><?=$preview ?></span>
     <small><span class="label label-info" id="f-id"><?=$id ?></span></small>
 </h3>

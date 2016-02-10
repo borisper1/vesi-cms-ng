@@ -72,7 +72,7 @@ class Contents extends MX_Controller
         $type = $this->input->post('type');
         $data = rawurldecode($this->input->post('data'));
         $settings = rawurldecode($this->input->post('settings'));
-        $displayname = rawurldecode($this->input->post('displayname'));
+        $displayname = strip_tags(rawurldecode($this->input->post('displayname')));
         $this->load->model('content_handler');
         $response = $this->content_handler->save($id, $type, $data, $settings, $displayname);
         if($response===0)

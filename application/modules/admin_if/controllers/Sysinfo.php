@@ -4,6 +4,8 @@ class Sysinfo extends MX_Controller
 {
     function index()
     {
-        $this->load->view('sysinfo');
+        $data['components'] = $this->modules_handler->get_components_list();
+        $data['services'] = $this->modules_handler->get_services_list();
+        $this->load->view('sysinfo', $data);
     }
 }

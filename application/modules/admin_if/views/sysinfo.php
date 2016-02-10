@@ -5,12 +5,15 @@
         <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">Informazioni
                 su</a></li>
         <li role="presentation"><a href="#php" aria-controls="php" role="tab" data-toggle="tab">Interprete PHP</a></li>
+        <li role="presentation"><a href="#setup" aria-controls="php" role="tab" data-toggle="tab">Dettagli
+                installazione</a></li>
     </ul>
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="general">
-            <h3>Vesi CMS 1.2.0-beta1
-                <small>(vesi-cms-ng) <span class="label label-warning">BETA VERSION, NOT FOR RELEASE</span> <span
+            <h3>Vesi CMS 1.2.0-beta2
+                <small>(<a href="https://github.com/borisper1/vesi-cms-ng" target="_blank">vesi-cms-ng</a>) <span
+                        class="label label-warning">BETA VERSION, NOT FOR RELEASE</span> <span
                         class="label label-info">patch level: 43dc23f</span></small>
             </h3>
             <p>Sviluppato da Boris Pertot - Copyright <span class='fa fa-copyright'></span> 2016 Boris Pertot</p>
@@ -115,6 +118,51 @@
                 <iframe class="embed-responsive-item"
                         src="<?= base_url('assets/administration/phpinfo.php?key=3133F459B4F31EAC959BD488A64A5') ?>"></iframe>
             </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="setup">
+            <br>
+            <p>Questa scheda permette di visualizzare i componenti e ei servizi installati. Non sono incluse le
+                interfaccie di amministrazione.</p>
+            <h4><i class="fa fa-cubes"></i> Componenti installati</h4>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrizione</th>
+                    <th>Tipo dati</th>
+                    <th>Origine</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($components as $component): ?>
+                    <tr>
+                        <td><i class="fa fa-cube"></i> <?= $component['name'] ?></td>
+                        <td><?= $component['description'] ?></td>
+                        <td><code><?= $component['save_type'] ?></code></td>
+                        <td><?= $component['builtin'] ? '<i class="fa fa-cubes"></i> Integrato' : '<i class="fa fa-plug"></i> Componente aggiuntivo' ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <h4><i class="fa fa-gears"></i> Servizi installati</h4>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrizione</th>
+                    <th>Origine</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($services as $service): ?>
+                    <tr>
+                        <td><i class="fa <?= $service['icon'] ?>"></i> <?= $service['name'] ?></td>
+                        <td><?= $service['label'] ?></td>
+                        <td><?= $service['builtin'] ? '<i class="fa fa-cubes"></i> Integrato' : '<i class="fa fa-plug"></i> Componente aggiuntivo' ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

@@ -9,7 +9,7 @@
                     <i class="fa fa-bars"></i> Vista a pannelli multipli
                 <?php endif; ?>
                 <a class='new-view lmb pull-right tooltipped' title='Aggiungi scheda/pannello'><i class='fa fa-plus'></i></a>
-                <a class='remove-block lmb pull-right tooltipped' title='Elimina'><i class='fa fa-remove'></i></a>
+                <a class='remove-block lmb pull-right tooltipped' title='Elimina'><i class='fa fa-trash'></i></a>
             </h3>
         </div>
         <div class="panel-body">

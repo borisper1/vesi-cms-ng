@@ -74,6 +74,27 @@ if($cfilter_on){
     </div>
 </div>
 
+<div class="modal fade" id="redirect-delete-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><i class="fa fa-trash"></i> Elimina reindirizzamento</h4>
+            </div>
+            <div class="modal-body">
+                <p>Questo reindirizzamento verrà eliminato definitivamente
+                    <br>Eliminare questo reindirizzamento?</p>
+            </div>
+            <div class="modal-footer" id="page-delete-modal-toolbar">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
+                </button>
+                <button type="button" class="btn btn-danger" id="redirect-delete-modal-confirm" data-dismiss="modal"><i
+                        class="fa fa-trash"></i> Elimina reindirizzamento
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="tags-edit-modal" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">

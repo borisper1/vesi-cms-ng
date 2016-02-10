@@ -20,7 +20,7 @@
                         <li><a href="#" class="new-generic-box"><i class="fa fa-fw fa-square-o"></i> Pannello singolo</a></li>
                     </ul>
                 </div>
-                <a class='remove-view lmb pull-right tooltipped' title='Elimina'><i class='fa fa-remove'></i></a>
+                <a class='remove-view lmb pull-right tooltipped' title='Elimina'><i class='fa fa-trash'></i></a>
                 <a class='edit-view lmb pull-right tooltipped' title='Modifica'><i class='fa fa-edit'></i></a>
             </h3>
         </div>

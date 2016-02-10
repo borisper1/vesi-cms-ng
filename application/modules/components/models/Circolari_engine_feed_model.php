@@ -43,9 +43,9 @@ class Circolari_engine_feed_model extends CI_Model
         $this->db->distinct();
         $this->db->select('category');
         $query = $this->db->get('plugin_circolari_engine_articles');
-        $data['all_cats']=[];
+        $data['all_cats'] = [];
         foreach ($query->result() as $row) {
-            $data['all_cats'][]=$row->category;
+            $data['all_cats'][] = $row->category;
         }
         $query = $this->db->get_where('contents', array('id' => $id));
         if ($query->num_rows() > 0) {

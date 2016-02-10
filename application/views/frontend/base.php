@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title><?php echo $title ?></title>
+        <title><?php echo strip_tags($title) ?></title>
 
         <link href="<?=base_url('assets/third_party/bootstrap/css/bootstrap-custom.min.css')?>" rel="stylesheet">
         <link href="<?=$urls['fontawesome']?>" rel="stylesheet">

@@ -215,7 +215,7 @@ class Pages extends MX_Controller
     function save()
     {
         $id = $this->input->post('id');
-        $title = rawurldecode($this->input->post('title'));
+        $title = strip_tags(rawurldecode($this->input->post('title')));
         $name = $this->input->post('name');
         $container = $this->input->post('container');
         $json = rawurldecode($this->input->post('json'));
