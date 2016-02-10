@@ -60,7 +60,7 @@ $(document).ready(function() {
     });
 
     $('#filemgr-upload-file').click(function(){
-        $('#upload-engine-file-cage').find('.upload-engine-file-indicator').empty();
+        $('#upload-engine-file-cage').empty();
         $('#upload-engine-target-field').val(CurrentPath);
         if(CurrentPath.startsWith('img')){
             $('#upload-engine-image-warning').removeClass('hidden');
