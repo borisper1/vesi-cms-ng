@@ -2,6 +2,17 @@
   "services": [
     {"name":"file_conversion", "label": "Servizio conversione documenti", "icon":"fa-gears", "builtin":true},
     {"name":"file_upload", "label": "Servizio caricamento files", "icon":"fa-cloud-upload", "builtin":true},
-    {"name":"maintenance", "label": "Servizio manutenzione automatica", "icon":"fa-gears", "builtin":true}
+    {
+      "name": "maintenance",
+      "label": "Servizio manutenzione automatica",
+      "icon": "fa-gears",
+      "builtin": true
+    },
+    {
+      "name": "contextual_help",
+      "label": "Servizio di aiuto contestuale",
+      "icon": "fa-question-circle",
+      "builtin": true
+    }
   ]
 }

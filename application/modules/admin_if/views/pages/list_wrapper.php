@@ -1,5 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?><div class="page-header"><h1><i class="fa fa-file"></i> Pagine</h1></div>
+?>
+<div class="page-header">
+    <h1><i class="fa fa-file"></i> Pagine
+        <button type="button" class="btn btn-default pull-right launch-contextual-help tooltipped" title="Aiuto"
+                data-help_path="pages::list"><i class="fa fa-question-circle"></i></button>
+    </h1>
+</div>
 <div class="btn-group">
     <button type="button" class="btn btn-success" id="new-page"><span class="fa fa-plus"></span> Nuova pagina</button>
     <button type="button" class="btn btn-default" id="new-redirect"><span class="fa fa-exchange"></span> Nuovo reindirizzamento</button>

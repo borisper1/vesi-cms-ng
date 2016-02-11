@@ -1,5 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?><div class="page-header"><h1><i class="fa fa-list"></i> Menu secondari</h1></div>
+?>
+<div class="page-header">
+    <h1><i class="fa fa-list"></i> Menu secondari
+        <button type="button" class="btn btn-default pull-right launch-contextual-help tooltipped" title="Aiuto"
+                data-help_path="menu_editor"><i class="fa fa-question-circle"></i></button>
+    </h1>
+</div>
 <h3 class="pull-left inline"><i class="fa fa-pencil"></i> <span id="f-main-title"><?=$title ?></span>
     <small><span class="label label-info<?= $display_title >= 1 ? ' hidden' : '' ?>" id="f-show-title">non mostrare</span></small>
     <small><span class="label label-default" id="f-menu-id"><?=$id ?></span></small>

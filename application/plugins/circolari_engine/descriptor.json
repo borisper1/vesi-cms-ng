@@ -12,7 +12,7 @@
 			"has_options": true,
 			"has_displayname": true,
 			"description": "Vista Ultime notizie per le circolari (da circolari_engine)",
-			"bultin": false
+			"builtin": false
 		}
 	],
 	"admin_interfaces": [

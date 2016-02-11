@@ -1,5 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?><div class="page-header"><h1><i class="fa fa-edit"></i> Modifica pié di pagina</h1></div>
+?>
+<div class="page-header">
+    <h1><i class="fa fa-edit"></i> Modifica piè di pagina
+        <button type="button" class="btn btn-default pull-right launch-contextual-help tooltipped" title="Aiuto"
+                data-help_path="footer"><i class="fa fa-question-circle"></i></button>
+    </h1>
+</div>
 <div class="btn-group" id="footer-actions">
     <button type="button" class="btn btn-default" id="save-footer"><i class="fa fa-save"></i> Salva</button>
     <button type="button" class="btn btn-default" id="refresh"><i class="fa fa-refresh"></i> Aggiorna</button>

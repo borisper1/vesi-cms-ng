@@ -1,0 +1,49 @@
+<h3>Gestione pagine</h3>
+<p>Verrà visualizzata un elenco dei contenitori presenti nel sito. Per visualizzare le pagine contenute nei contenitori
+    fare clic su <i class="fa fa-chevron-right"></i>
+    vicino al nome del contenitore. Per espandere tutti i contenitori fare clic su <i class="fa fa-eye"></i> <i>Mostra
+        tutto</i>, per minimizzare tutti i contenitori fare clic su
+    <i class="fa fa-eye-slash"></i> <i>Nascondi tutto</i>.</p>
+<p>All’interno dei contenitori sono situati pagine (indicate dall’icona <i class="fa fa-file"></i>) e reindirizzamenti
+    (indicati dall’icona <i class="fa fa-exchange"></i>).
+    A ogni elemento può essere associato uno o più tags (etichette) per indicare lo stato di quell’elemento, visibili
+    solo agli amministratori.
+    Per modificare questi tag fare click sull’icona <i class="fa fa-tags"></i> accanto all’elemento. I tag sono
+    semplicemente stringhe a discrezione dell’utente separate da una virgola.</p>
+<h4>Informazioni sui contenitori</h4>
+<p>I contenitori premettono di raggruppare le pagine in categorie coerenti. Per creare un nuovo contenitore basta creare
+    una nuova pagina specificando come contenitore il nuovo contenitore. Il nome di un contenitore deve contenere solo
+    lettere minuscole, numeri e il trattino (-) per separare le parole, non può contenere spazi o caratteri speciali.
+</p><p>Una coppia contenitore – nome pagina permette di identificare univocamente una pagina ed è espressa come <code>
+    &lt;nome_contenitore&gt;::&lt;nome_pagina&gt;</code>. Questa sintassi è utilizzata per vari scopi all’interno del
+    programma.
+</p><p>I contenitori sono mantenuti in maniera dinamica, ovvero esistono solo se hanno una o più pagine al loro interno,
+    altrimenti vengono eliminati automaticamente e non possono essere organizzati gerarchicamente, non è possibile
+    creare un sotto contenitore.
+</p>
+<h4>Pagine</h4>
+<p>Le pagine sono contraddiste dall’icona <i class="fa fa-file"></i> se sono pagine normali oppure dall’icona <i
+        class="fa fa-home"></i> per la pagina inziale.
+    Qualsiasi pagina può essere impostata come pagina iniziale premendo sull’icona <i class="fa fa-home"></i> accanto ad
+    una pagina (questa funzione è disponibile solo per gli utenti con accesso completo ai contenuti).
+</p><p>Per eliminare una pagina premere su <i class="fa fa-trash"></i>, verrà visualizzato l’elenco dei contenuti che
+    rimarranno orfani (non utilizzati da nessuna pagina): selezionare i contenuti che desidera eliminare assieme alla
+    pagina.
+</p><p>Per modificare una pagina fare clic sul titolo della pagina. Si aprirà l’editor di pagina.</p>
+<p>Per aggiungere una nuova pagina premere su <span class="text-success"><i class="fa fa-plus"></i> <i>Nuova pagina</i></span>
+    nella vista delle pagine e dei contenuti: verrà aperto l’editor di pagina con la finestra
+    <i class="fa fa-wrench"></i> <i>Modifica attributi</i> aperta. Inserire le informazioni richieste; la pagina verrà
+    creata appena si clicca su <i class="fa fa-save"></i> <i>Salva</i></p>
+<h4>Reindirizzamenti</h4>
+<p>I reindirizzamenti permettono di inserire in più contenitori una stessa pagina oppure per inserire in un menu a
+    tendina una pagina di un altro contenitore.
+    I reindirizzamenti permettono di visualizzare in un contenitore una pagina di un altro contenitore a condizione che
+    il reindirizzamenti abbia lo stesso nome di sistema della pagina di destinazione.
+</p><p>Per creare un nuovo reindirizzamento premere su <i class="fa fa-exchange"></i> <i>Nuovo reindirizzamento</i> e
+    inserire il contenitore nel quale si vuole creare il reindirizzamento,
+    il contenitore di destinazione del reindirizzamento e il nome di sistema della pagina da collegare.
+</p><p>Per modificare un reindirizzamento premere sull’icona <i class="fa fa-edit"></i> associata al reindirizzamento.
+    Per eliminare un reindirizzamento premere sull’icona <i class="fa fa-trash"></i>.
+    Normalmente viene visualizzato il titolo della pagina di destinazione, se questo pagina non esiste verrà
+    visualizzato <span class="text-danger"><i class="fa fa-warning"></i> <i>Destinazione inesistente</i></span>.
+</p>

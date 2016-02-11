@@ -1,5 +1,12 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?><div class="page-header"><h1><i class="fa fa-list"></i> Menu secondari</h1></div>
+?>
+<div class="page-header">
+    <h1>
+        <i class="fa fa-list"></i> Menu secondari
+        <button type="button" class="btn btn-default pull-right launch-contextual-help tooltipped" title="Aiuto"
+                data-help_path="sec_menu"><i class="fa fa-question-circle"></i></button>
+    </h1>
+</div>
 <button type="button" class="btn btn-success" id="new-menu"><span class="fa fa-plus"></span> Nuovo</button>
 <br><br>
 <div class="alert alert-danger hidden" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile eliminare il menu:</b><br><span id="error-msg"></span></div>

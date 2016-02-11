@@ -1,5 +1,12 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?><div class="page-header"><h1><i class="fa fa-th-list"></i> Menu principale</h1></div>
+?>
+<div class="page-header">
+    <h1>
+        <i class="fa fa-th-list"></i> Menu principale
+        <button type="button" class="btn btn-default pull-right launch-contextual-help tooltipped" title="Aiuto"
+                data-help_path="menu_editor"><i class="fa fa-question-circle"></i></button>
+    </h1>
+</div>
 <div class="btn-group" id="menu-actions">
     <div class="btn-group" role="group">
         <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -6,13 +6,16 @@ class Circolari_engine_feed_model extends CI_Model
     function get_render_data($id)
     {
         $query = $this->db->get_where('contents', array('id' => $id));
-        if ($query->num_rows() > 0) {
+        if ($query->num_rows() > 0)
+        {
             $row = $query->row();
             $content = json_decode($row->content, true);
             $categories = array_keys($content);
             $settings = json_decode($row->settings, true);
             $display_name = $row->displayname;
-        } else {
+        }
+        else
+        {
             return false;
         }
         $this->db->where_in('category', $categories);
@@ -23,8 +26,10 @@ class Circolari_engine_feed_model extends CI_Model
         $data['class'] = $settings['class'];
         $data['list'] = [];
         $data['title'] = $display_name;
-        if ($query->num_rows() > 0) {
-            foreach ($query->result() as $row) {
+        if ($query->num_rows() > 0)
+        {
+            foreach ($query->result() as $row)
+            {
                 $data['list'][] = array(
                     'id' => $row->id,
                     'full_title' => $row->number . $row->suffix . ' &mdash; ' . $row->title,
@@ -32,7 +37,9 @@ class Circolari_engine_feed_model extends CI_Model
                 );
             }
             return $data;
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
@@ -44,11 +51,13 @@ class Circolari_engine_feed_model extends CI_Model
         $this->db->select('category');
         $query = $this->db->get('plugin_circolari_engine_articles');
         $data['all_cats'] = [];
-        foreach ($query->result() as $row) {
+        foreach ($query->result() as $row)
+        {
             $data['all_cats'][] = $row->category;
         }
         $query = $this->db->get_where('contents', array('id' => $id));
-        if ($query->num_rows() > 0) {
+        if ($query->num_rows() > 0)
+        {
             $row = $query->row();
             $settings = json_decode($row->settings);
             $data['content'] = json_decode($row->content, true);
@@ -56,7 +65,9 @@ class Circolari_engine_feed_model extends CI_Model
             $data['limit'] = $settings->limit;
             $data['class'] = $settings->class;
             return $data;
-        } else {
+        }
+        else
+        {
             return false;
         }
     }

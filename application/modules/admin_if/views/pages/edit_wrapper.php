@@ -1,7 +1,12 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 ?><link rel="stylesheet" href="<?=base_url('assets/third_party/semantic-ui/components/header.min.css') ?>">
 <link rel="stylesheet" href="<?=base_url('assets/third_party/semantic-ui/components/divider.min.css') ?>">
-<div class="page-header"><h1><i class="fa fa-file"></i> Pagine</h1></div>
+<div class="page-header">
+    <h1><i class="fa fa-file"></i> Pagine
+        <button type="button" class="btn btn-default pull-right launch-contextual-help tooltipped" title="Aiuto"
+                data-help_path="pages::edit"><i class="fa fa-question-circle"></i></button>
+    </h1>
+</div>
 <h3 class="pull-left inline"><i class="fa fa-pencil"></i> <span id="f-title"><?=$title ?></span>
     <small><span class="label label-info"><span id="f-container"><?=$container ?></span> <i class="fa fa-ellipsis-v"></i> <span id="f-page-name"><?=$page_name ?></span></span> <span class="label label-default" id="f-id"><?=$id ?></span></small>
 </h3>

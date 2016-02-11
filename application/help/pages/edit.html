@@ -1,0 +1,85 @@
+<h3>Modifica pagina</h3>
+<p>Per modificare il titolo, il layout o la posizione della pagina (contenitore e nome di sistema) premere su <i
+        class="fa fa-wrench"></i> <i>Modifica attributi</i>.
+    Nella finestra sarà possibile inserire il titolo, scegliere il contenitore in cui inserire la pagina e il nome di
+    sistema da assegnare (premendo su <i class="fa fa-asterisk"></i>
+    questo verrà generato automaticamente dal titolo) e modificare il layout. <b>Se si modifica il layout di una pagina
+        le modiche apportate alla pagina verranno salvate in maniera automatica</b>,
+    e inoltre se si decide di rimuovere la barra laterale <b>i contenuti in essa verranno dissociati automaticamente</b>.
+</p><p>Se la pagina contiene una barra laterale verranno visualizzate due sezioni in cui è possibile aggiungere
+    elementi: la sezione del contenuto principale e quella della barra laterale.
+    Ci sono due grandi tipi di elementi che si possono aggiungere a una pagina: <i>contenuti</i> che contengono
+    informazioni e <i>strutture</i> che definiscono come queste informazioni sono visualizzate e divise nella pagina.
+</p>
+<h4>Contenuti</h4>
+<p>Premendo su <span class="text-success"><i class="fa fa-link"></i> <i>Associa</i></span> sarà possibile associare un
+    contenuto in quella sezione.
+    In ogni sezione è possibile associare un contenuto semplice, sia inserendo un contenuto esistente premendo su <i
+            class="fa fa-link"></i> <i>Contenuto esistente</i> e
+    inserendo l’id del contenuto da inserire, sia creando un nuovo contenuto premendo su <i class="fa fa-plus"></i> <i>Nuovo
+        contenuto</i>.
+    In questo caso <b>le modifiche apportate alla pagina verranno salvate automaticamente</b> e verrà aperto l’editor
+    per modificare il contenuto appena inserito, dopo aver scelto il tipo del contenuto da creare.
+</p><p>Premendo su <i class="fa fa-edit"></i> nel rettangolo che rappresenta un contenuto inserito <b>verranno salvate
+    automaticamente tutte le modifiche effettuate nella pagina</b> e verrà aperto l’editor di contenuti per modificare
+    il contenuto.
+</p><p>Dal menu <span class="text-success"><i class="fa fa-link"></i> <i>Associa</i></span> è anche possibile inserire
+    un componente aggiuntivo nella sezione contenuto principale
+    premendo su <i class="fa fa-plug"></i> <i>Componente aggiuntivo</i> e scegliendo il componente aggiuntivo e
+    specificando il comando da passare al componente
+    (per informazioni sui comandi disponibili vedere la guida del componente aggiuntivo). Se si desidera cambiare il
+    comando che viene eseguito fare clic sull’icona
+    <i class="fa fa-terminal"></i> nel rettangolo che rappresenta il componente aggiuntivo.
+    Sempre dallo stesso menu è possibile inserire un menu secondario nella barra laterale (se presente) premendo su <i
+            class="fa fa-list"></i> <i>Menu secondario</i> e inserendo l’id del menu da associare.
+</p><p>Ogni contenuto, componente aggiuntivo e menu secondario può essere trascinato per variarne l’ordine e dissociato
+    dalla pagina premendo su <i class="fa fa-unlink"></i> nel rettangolo
+    che lo rappresenta. Se si dissocia un contenuto che non è usato da nessun’altra pagina verrà richiesto se si vuole
+    eliminare anche quel contenuto.
+    <b>Attenzione: i contenuti appena aggiunti alla pagina potrebbero essere segnalati erroneamente come contenuti
+        orfani; pertanto prima di dissociare un contenuto si consiglia di salvare la pagina</b>.
+</p>
+<h4>Strutture</h4>
+<p>Premendo su <i class="fa fa-plus"></i> <i>Nuovo</i> sarà possibile aggiungere una struttura in quella sezione. Una
+    struttura permette di organizzare i contenuti in maniera logica e realizzare pagine con una gerarchia complessa. Le
+    strutture disponibili sono:</p>
+<ul>
+    <li><i class="fa fa-clone"></i> <b>Vista a schede multiple</b>: permette di organizzare i contenuti in più schede
+    </li>
+    <li><i class="fa fa-bars"></i> <b>Vista a pannelli multipli</b>: permette di organizzare i contenuti in più pannelli
+        dinamici
+    </li>
+    <li><i class="fa fa-square-o"></i> <b>Pannello singolo</b>: permette di racchiudere più contenuti (e strutture) in
+        un riquadro
+    </li>
+</ul>
+<p>Per inserire una struttura premere su <i class="fa fa-plus"></i> <i>Nuovo</i> e scegliere il tipo di struttura da
+    inserire. La struttura verrà inserita immediatamente.</p>
+<p>Per creare le schede e pannelli nelle strutture <i class="fa fa-clone"></i> <i>Vista a schede multiple</i> o <i
+        class="fa fa-bars"></i> <i>Vista a pannelli multipli</i> premere sull’icona
+    <i class="fa fa-plus"></i> nel rettangolo blu che le rappresenta e inserire il titolo della scheda/pannello che si
+    vuole inserire e l’id (premendo su <i class="fa fa-asterisk"></i>
+    questo verrà generato automaticamente dal titolo). Per modificare il titolo di una scheda/pannello premere
+    sull’icona <i class="fa fa-edit"></i> nel riquadro azzurro che la rappresenta,
+    per eliminarla premere sull’icona <i class="fa fa-trash"></i> (<b>tutti gli elementi inclusa in essa verranno
+        dissociati</b>).</p>
+<p>È possibile aggiungere contenuti o strutture a una scheda con la stessa procedura utilizzata per la pagina, premendo
+    sull’icona
+    <i class="fa fa-link"></i> (apre il menu <i>Associa</i>) e l’icona <i class="fa fa-plus"></i> (utilizzata per il
+    menu <i>Nuovo</i>).</p>
+<p>La struttura <i class="fa fa-square-o"></i> <i>Pannello singolo</i> funziona in maniera molto simile a una
+    scheda/pannello delle strutture trattate in precedenza,
+    tranne per il fatto che assieme al titolo e all’id è necessario specificare lo stile da utilizzare per la
+    visualizzazione del riquadro
+    (gli stili sono gli stili derivati dal framework Bootstrap e variano il colore del riquadro).</p>
+<p>Per eliminare una struttura da una pagina premere l’icona <i class="fa fa-trash"></i> nel rettangolo blu che la
+    rappresenta (<b>tutti gli elementi inclusa in essa verranno dissociati</b>).</p>
+<p>Una volta terminate le modifiche fare click su <i class="fa fa-save"></i> <i>Salva</i> per salvare i cambiamenti
+    effettuati.
+    Dopo aver salvato le modifiche <b>è consigliato aggiornare la pagina</b> per ricaricare le informazioni sullo stato
+    dei contenuti (in caso contrario potrebbero essere presenti indicazioni erronee).
+    Per annullare le ultime modifiche effettuate aggiornare la pagina o premere su <i class="fa fa-refresh"></i> <i>Aggiorna</i>.
+</p>
+<p>Per tornare alla lista delle pagine e dei contenuti premere su <i class="fa fa-remove"></i> <i>Chiudi</i>.</p>
+<p>È anche possibile modificare il codice JSON della pagina facendo clic su <i class="fa fa-code"></i> <i>Modifica
+    codice</i>; per più informazioni sulla sintassi utilizzati vedere la guida sviluppatori.</p>

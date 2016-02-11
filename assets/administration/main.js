@@ -65,6 +65,28 @@ $(document).ready(function() {
         code_editor_callback(window.vbcknd.code_editor.getValue());
         $('#code-editor-modal').modal('hide');
     });
+
+    $('.launch-contextual-help').click(function () {
+        var path = $(this).data('help_path');
+        $.ajax({
+            type: 'POST',
+            url: window.vbcknd.base_url + 'services/contextual_help/load_help',
+            data: {path: path},
+            success: loadHelp,
+            error: loadHelpError
+        });
+    });
+
+    function loadHelp(data) {
+        $('#contextual-help-modal-body').html(data);
+        $('#contextual-help-modal').modal();
+    }
+
+    function loadHelpError(jqXHR) {
+        var html = '<p>Il server ha inviato la risposta <code>' + jqXHR.status + ' ' + jqXHR.statusText + '</code>. I dati inviati dal server sono:</p>' + '<div class="well">' + jqXHR.responseText + '</div>';
+        $('#help-error-box').collapse('hide').html(html);
+        $('#help-error-modal').modal()
+    }
 });
 
 $(document).ready(function() {

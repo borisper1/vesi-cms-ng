@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?><div class='row'>
+?>
+<div class='row'>
     <div class='col-md-9'>
         <div class="form-group">
             <label for="input-title">Titolo del riquadro notizie:</label>
@@ -46,16 +47,19 @@
     </div>
 </div>
 
-<div class="modal fade" id="link-category-modal" tabindex="-1" role="dialog" aria-labelledby="link-catgeory-modal-label" aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="link-category-modal" tabindex="-1" role="dialog" aria-labelledby="link-catgeory-modal-label"
+     aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="link-category-modal-label"><i class="fa fa-plus"></i> Aggiungi categoria</h4>
+                <h4 class="modal-title" id="link-category-modal-label"><i class="fa fa-plus"></i> Aggiungi categoria
+                </h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <label for="i-category">Inserire il nome della categoria da collegare</label>
-                    <input type="text" class="form-control" id="i-category" placeholder="Catgeoria" list="category-list">
+                    <input type="text" class="form-control" id="i-category" placeholder="Catgeoria"
+                           list="category-list">
                 </div>
                 <div class="form-group">
                     <label for="i-remapping">Inserire l'URL relativo alla base del sito a cui rimandare i link</label>
@@ -63,9 +67,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
+                </button>
                 <button type="button" class="btn btn-success" id="link-category-modal-confirm" data-dismiss="modal"><i
-                        class="fa fa-plus"></i> Aggiungi categoria
+                        class="fa fa-plus"></i> Aggiungi catgeoria
                 </button>
             </div>
         </div>

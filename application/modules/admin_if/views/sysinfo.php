@@ -163,6 +163,25 @@
                 <?php endforeach; ?>
                 </tbody>
             </table>
+            <h4><i class="fa fa-wrench"></i> Interfacce di configurazione installate</h4>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrizione</th>
+                    <th>Origine</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($config_interfaces as $config_interface): ?>
+                    <tr>
+                        <td><i class="fa <?= $config_interface['icon'] ?>"></i> <?= $config_interface['name'] ?></td>
+                        <td><?= $config_interface['label'] ?></td>
+                        <td><?= $config_interface['builtin'] ? '<i class="fa fa-cubes"></i> Integrato' : '<i class="fa fa-plug"></i> Componente aggiuntivo' ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

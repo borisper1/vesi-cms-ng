@@ -26,6 +26,7 @@ class Administration extends MX_Controller
         }
         $base_data['system_dom'] = $this->load->view('administration/system_reauth', null , TRUE);
         $base_data['system_dom'] .= $this->load->view('administration/code_editor', null, TRUE);
+        $base_data['system_dom'] .= $this->load->view('administration/contextual_help_service', null, TRUE);
         $base_data['system_dom'] .= $this->load->view('file_conversion_service', null , TRUE);
         $base_data['title']='Amministrazione - Vesi-CMS';
         $base_data['urls']=$this->resources->get_administration_urls();

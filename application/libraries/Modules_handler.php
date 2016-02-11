@@ -69,7 +69,8 @@ class Modules_handler
         $this->schema = json_decode(file_get_contents(APPPATH . "config/modules.json"));
         $rem_index = null;
         foreach ($this->schema->components as $index => $component) {
-            if ($component->name === $name) {
+            if ($component->name === $name and $component->builtin === false)
+            {
                 $rem_index = $index;
             }
         }
@@ -111,7 +112,8 @@ class Modules_handler
         $schema = json_decode(file_get_contents(APPPATH . "config/services.json"));
         $rem_index = null;
         foreach ($schema->services as $index =>$service) {
-            if ($service->name === $name) {
+            if ($service->name === $name and $service->builtin === false)
+            {
                 $rem_index = $index;
             }
         }
@@ -283,7 +285,8 @@ class Modules_handler
         $rem_index = null;
         foreach ($this->interfaces_cache as $key=>$tree) {
             foreach ($tree->items as $index=>$item) {
-                if ($item->name === $name) {
+                if ($item->name === $name and $item->builtin === false)
+                {
                     $tree = $key;
                     $rem_index = $index;
                     break;
@@ -335,7 +338,8 @@ class Modules_handler
         $schema = json_decode(file_get_contents(APPPATH . "config/config_interfaces.json"), true);
         $rem_index = null;
         foreach ($schema->interfaces as $index => $interface) {
-            if ($interface->name === $name) {
+            if ($interface->name === $name and $interface->builtin === false)
+            {
                 $rem_index = $index;
             }
         }
