@@ -1,5 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?><div class="page-header"><h1><i class="fa fa-cubes"></i> Gestione contenuti</h1></div>
+?>
+<div class="page-header">
+    <h1><i class="fa fa-cubes"></i> Gestione contenuti
+        <button type="button" class="btn btn-default pull-right launch-contextual-help tooltipped" title="Aiuto"
+                data-help_path="contents::editors::<?= $type ?>"><i class="fa fa-question-circle"></i></button>
+    </h1>
+</div>
 <h3 class="pull-left inline"><i class="fa fa-pencil"></i> <span id="f-preview"><?=$preview ?></span>
     <small><span class="label label-info"><span id="f-type"><?=$type ?></span> <i class="fa fa-ellipsis-v"></i> <span id="f-id"><?=$id ?></span></span></small>
 </h3>

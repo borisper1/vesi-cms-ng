@@ -22,8 +22,9 @@
                         class="fa fa-lg fa-exclamation-circle"></i> Errore caricamento aiuto</h4>
             </div>
             <div class="modal-body">
-                <p>il servizio di aiuto contestuale ha riscontrato un errore e non ha potuto completare
-                    l'operazione.</p>
+                <p>Il servizio di aiuto contestuale ha riscontrato un errore e non ha potuto completare
+                    l'operazione. La pagina di aiuto cercata potrebbe essere non disponibile (può verificarsi con alcuni
+                    componenti aggiuntivi).</p>
                 <a role="button" data-toggle="collapse" href="#help-error-box" aria-expanded="false"
                    aria-controls="collapseExample">Mostra dettagli</a>
                 <div class="collapse" id="help-error-box"></div>
