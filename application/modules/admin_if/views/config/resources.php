@@ -74,7 +74,8 @@
     </div>
     <div class="panel-body">
         <p>La modalità di compatibilità permette di visualizzare il sito utilizzando browser obsoleti (Internet Explorer 8 e Firefox 3.6). Questa modalità deve essere attivata solo
-            quando si ha la necessità esplicita di supportare browser obsoleti in quanto rallenta il caricamento delle pagine per tutti gli utenti. In caso si tenti di accedere al sito
+            quando si ha la necessità esplicita di supportare browser obsoleti in quanto rallenta il caricamento delle
+            pagine per tutti gli utenti. In caso si prova ad accedere al sito
             con un browser non supportato verrà visualizzato un invito ad aggiornare il browser.
             <br>La modalità di compatibilità si basa su <code>Respond.js</code> e <code>html5shiv</code>.
         </p>

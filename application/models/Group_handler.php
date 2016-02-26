@@ -61,6 +61,11 @@ class Group_handler extends CI_Model
 
     function save($group, $description, $code)
     {
+        $this->load->library('validation');
+        if (!$this->validation->check_json($code))
+        {
+            return false;
+        }
         $data = array(
             'fullname' => $description,
             'code' => $code

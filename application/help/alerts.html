@@ -1,0 +1,76 @@
+<h3>Gestione avvisi</h3>
+<p>Gli avvisi sono piccoli messaggi che possono essere visualizzati in alto su una pagina o su tutto il sito.
+    Possono essere usati per segnalare giorni di chiusura, ricevimento, possibili scioperi e altre informazioni
+    utili.</p>
+<p>Nella pagina principale è visualizzato l'elenco degli avvisi creati nel sito. Un avviso contrassegnato con <span
+        class="label label-default">[D]</span> è un avviso che può essere chiuso dall’utente.
+    Accanto all’anteprima del contenuto è indicato il tipo di avviso e le pagine in cui verrà visualizzato. Per
+    eliminare un avviso premere sull’icona <i class="fa fa-trash"></i>.
+    Per modificare un avviso fare clic sull’anteprima del contenuto</p>
+<p>L’editor dell’avviso permette di scegliere in quali pagine verrà mostrato (inserendo <code>all</code> per mostrare in
+    tutte le pagine,
+    o inserendo un elenco di identificativi composti da <code>&lt;nome contenitore&gt;::&lt;nome pagina&gt;</code>) e lo
+    stile con cui verrà mostrato l’avviso.</p>
+<p>Per ottenere i migliori risultati e una formattazione consistente in tutto il sito si raccomanda di:</p>
+<ol>
+    <li><b>Non incollare contenuto copiato da un altro sito o da Word direttamente, se è necessario incollare un
+        contenuto formattato usare la funzione “Incolla da Word”</b>
+        che rimuove la formattazione indesiderata (sfondi, carattere) ma mantiene la maggior parte della formattazione
+        corretta.
+    </li>
+    <li><b>Non utilizzare le tabelle per definire la struttura della pagina</b>, è possibile inserire una struttura a
+        più colonne facendo clic su <i>Inserisci layout</i>
+        e scegliendo il numero di colonne da inserire. Per creare layout ancora più complessi è possibile utilizzare
+        codice HTML personalizzato cambiando il tipo di contenuto in un contenuto <code>html-field</code>.
+    </li>
+    <li><b>Non applicare formattazione personalizzata alle tabelle create</b>: la larghezza predefinita delle tabelle è
+        100% (tutta la pagina),
+        per ridimensionare le tabelle usare le larghezze in percentuale (es 75% per occupare ¾ della pagina). Per
+        personalizzare la tabella (e inserire i bordi) è
+        possibile scegliere tra gli stili <i>Standard table</i>, <i>Bordered table (con bordi)</i>, <i>Striped table</i>
+        e <i>Striped bordered table</i> (con righe a colori alterni, sia con bordi che senza bordi) dal menu degli
+        stili.
+    </li>
+    <li><b>Non usare dimensioni fisse (in px) per le immagini</b>: idealmente le immagini dovrebbero essere sempre
+        larghe quanto la pagina, qualora ciò non fosse possibile specificare
+        le dimensioni tramite percentuale (o non specificarle). Specificare le dimensioni in pixel causa problemi per la
+        visualizzazione da cellulare. In alcuni casi particolari può essere
+        necessario specificare manualmente le dimensioni di una immagine come 100% se l’immagine è inserita in una
+        colonna
+    </li>
+    <li><b>I link a risorse interne e esterne al sito vanno specificati come link assoluti</b>: i link interni vanno
+        specificati con l’URL completo (http://www.liceo-oberdan.gov.it/...).
+        Il sistema tenterà di correggere automaticamente link non inseriti in questo modo, ma si raccomanda di
+        rispettare questa regola che permette di assicurare il buon funzionamento dei link.
+    </li>
+    <li><b>Per inserire titoli utilizzare gli stili predisposti</b>: non inserire titoli semplicemente aumentando la
+        dimensione del carattere o utilizzando stili in linea (grassetto e sottolineato), utilizzare le funzioni
+        appropriate per inserire titoli
+    </li>
+    <li><b>Per formattare il testo usare il menu degli stili</b>: il menu degli stili offre varie opzioni per formattare
+        il testo non incluse nella barra degli strumenti (apice, pedice, evidenza, citazione …), usare questi stili
+        invece di copiare testo formattato da Word o programmi simili.
+    </li>
+    <li><b>Usare i punti elenco per gli elenchi</b>: non specificare elenchi senza strutturali, ad esempio inserendo
+        solo un trattino (-) e poi spazi, questo potrebbe rendere la pagina illeggibile in alcune situazioni.
+    </li>
+</ol>
+<p>Negli avvisi è anche possibile inserire le icone di Font Awesome, per un elenco completo vedere <a
+        href="https://fortawesome.github.io/Font-Awesome/icons/" target="_blank">https://fortawesome.github.io/Font-Awesome/icons/</a>,
+    il sistema usa la versione 4.5.</p>
+<p>Per importare testo da un documento fare clic su <i class="fa fa-upload"></i> <i>Importa da file</i> e scegliere il
+    tipo di file che si vuole importare (dimensione massima: 25 MiB).
+    Per esportare il contenuto un file fare clic su <i class="fa fa-download"></i> <i>Esporta</i> e scegliere il tipo di
+    file che si vuole creare.
+    <b>Attenzione: salvare il contenuto prima di esportare in un file, in quanto se si verifica un errore grave durante
+        l’esportazione verranno perse le modifiche non salvate.</b></p>
+<p>Per le funzionalità di esportazione/importazione è necessario che il <i class="fa fa-gears"></i> <i>Servizio di
+    conversione documenti</i> sia abilitato e configurato correttamente. <b>L’esportazione dei file in formato PDF è
+    ancora sperimentale e potrebbe non funzionare su tutti i server</b>; per più informazioni vedere il capitolo
+    relativo al servizio di conversione documenti della guida per sviluppatori.</p>
+<p>È anche possibile modificare il codice HTML del contenuto, premendo su <i class="fa fa-code"></i> <i>Modifica
+    codice</i>.</p>
+<p>Una volta terminate le modifiche fare click su <i class="fa fa-save"></i> <i>Salva</i> per salvare i cambiamenti
+    effettuati. Per annullare le ultime modifiche effettuate aggiornare la pagina
+    o premere su <i class="fa fa-refresh"></i> <i>Aggiorna</i>.
+</p><p>Per tornare alla lista degli avvisi premere su <i class="fa fa-close"></i> <i>Chiudi</i>.</p>

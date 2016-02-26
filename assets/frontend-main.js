@@ -22,4 +22,9 @@ $(document).ready(function(e) {
     if(jQuery.fn.dropdownHover){
         $('.dropdown-hover').dropdownHover();
     }
+    //solve bug #6, show correct footer size on mobile devices
+    var f_height = $('div.footer').height();
+    if (f_height > 60) {
+        $('#page-wrapper>.container.with-footer, #page-wrapper>.container-fluid.with-footer').css('padding-bottom', f_height.toString() + 'px');
+    }
 });

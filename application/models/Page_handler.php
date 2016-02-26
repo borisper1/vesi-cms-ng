@@ -113,6 +113,11 @@ class Page_handler extends CI_Model
 
     public function save($id, $name, $container, $title, $json)
     {
+        $this->load->library('validation');
+        if (!$this->validation->check_json($json))
+        {
+            return false;
+        }
         $data=array(
             'name' => $name,
             'container' => $container,

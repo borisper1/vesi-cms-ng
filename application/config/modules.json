@@ -77,7 +77,7 @@
             "builtin": true
         },
         {
-            "name": "circolari_engine_feed",
+            "name": "circolari-engine-feed",
             "save_type": "json",
             "has_options": true,
             "has_displayname": true,

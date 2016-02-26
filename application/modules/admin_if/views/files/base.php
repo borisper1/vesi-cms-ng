@@ -1,5 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?><div class="page-header"><h1><i class="fa fa-upload"></i> File e immagini</h1></div>
+?>
+<div class="page-header">
+    <h1><i class="fa fa-upload"></i> File e immagini
+        <button type="button" class="btn btn-default pull-right launch-contextual-help tooltipped" title="Aiuto"
+                data-help_path="files"><i class="fa fa-question-circle"></i></button>
+    </h1>
+</div>
 <div class="btn-group spaced">
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-plus"></i> Nuovo <span class="caret"></span>

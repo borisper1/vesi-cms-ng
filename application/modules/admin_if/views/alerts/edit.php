@@ -1,6 +1,11 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<div class="page-header"><h1><i class="fa fa-bullhorn"></i> Avvisi</h1></div>
+<div class="page-header">
+    <h1><i class="fa fa-bullhorn"></i> Avvisi
+        <button type="button" class="btn btn-default pull-right launch-contextual-help tooltipped" title="Aiuto"
+                data-help_path="alerts"><i class="fa fa-question-circle"></i></button>
+    </h1>
+</div>
 <h3 class="pull-left inline"><i class="fa fa-pencil"></i> <span id="f-preview"><?=$preview ?></span>
     <small><span class="label label-info" id="f-id"><?=$id ?></span></small>
 </h3>

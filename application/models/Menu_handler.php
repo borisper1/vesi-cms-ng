@@ -108,6 +108,11 @@ class Menu_handler extends CI_Model
     }
 
     function save($id, $json, $title = null, $display_title = null){
+        $this->load->library('validation');
+        if (!$this->validation->check_json($json))
+        {
+            return false;
+        }
         $data=array(
             'title' => $title,
             'content' => $json,
