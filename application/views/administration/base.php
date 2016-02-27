@@ -36,6 +36,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?=base_url('assets/third_party/bootstrap-select/js/bootstrap-select.min.js')?>"></script>
         <script src="<?=base_url('assets/third_party/bootstrap-select/js/i18n/defaults-it_IT.min.js')?>"></script>
         <script src="<?=base_url('assets/third_party/ace/ace.js')?>"></script>
+        <script>
+            !function () {
+                window.vbcknd = {};
+                window.vbcknd.base_url = "<?=base_url() ?>";
+                window.vbcknd.services = {};
+                window.vbcknd.config = {};
+                window.vbcknd.auto_name_format = function (title) {
+                    return title.replace(/[^A-Za-z0-9 ]+/, '').replace(/\s+/g, '-').toLowerCase().substr(0, 40);
+                };
+                window.vbcknd.auto_file_size_format = function (size) {
+                    var i = -1;
+                    var byteUnits = [' kiB', ' MiB', ' GiB', ' TiB'];
+                    do {
+                        size = size / 1024;
+                        i++;
+                    } while (size > 1024);
+                    return Math.max(size, 0.01).toFixed(2) + byteUnits[i];
+                };
+            }();
+        </script>
         <script src="<?=base_url('assets/administration/main.js')?>"></script>
         <script src="<?=base_url('assets/file_conversion_service.js')?>"></script>
         <?php foreach($urls['aux_js_loader'] as $aux_url): ?>

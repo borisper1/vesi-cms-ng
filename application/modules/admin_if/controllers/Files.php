@@ -187,37 +187,4 @@ class Files extends MX_Controller
         $path_array =explode('/', $path);
         return (!in_array($path_array[0], array('files', 'img'))) or in_array('..', $path_array);
     }
-
-    function get_path_picker_table()
-    {
-        $path = rawurldecode($this->input->post('path'));
-        $mode = $this->input->post('mode');
-        $this->load->library('file_handler');
-        if($path === '/')
-        {
-            $data = array('files' => $this->file_handler->get_root_path_array());
-        }
-        else
-        {
-            if($this->is_path_unsafe($path))
-            {
-                $this->output->set_status_header(403);
-                $this->output->set_output('The path indicated is reserved to the system');
-                return;
-            }
-            $data = array('files' => $this->file_handler->get_path_array($path));
-            if($mode==='only_folders')
-            {
-                foreach ($data['files'] as $key=> $item)
-                {
-                    if($item['type']!=='folder')
-                    {
-                        unset($data['files'][$key]);
-                    }
-                }
-            }
-        }
-        $this->load->view('files/file_picker_table', $data);
-    }
-
 }

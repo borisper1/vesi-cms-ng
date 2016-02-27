@@ -28,7 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <footer class="footer">
     <div class="container">
-        <p><i class="fa fa-cubes"></i> Vesi-CMS 1.2 (ng), Copyright © 2015 Boris Pertot</p>
+        <p><i class="fa fa-cubes"></i> Vesi-CMS 1.2 (ng), Copyright © 2016 Boris Pertot</p>
     </div>
 </footer>
 

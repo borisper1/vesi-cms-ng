@@ -42,6 +42,7 @@ CKEDITOR.editorConfig = function( config ) {
 	//config.allowedContent = true; //Disables all content filtering, not recommended only emergency fix
 	config.extraPlugins = 'fontawesome,confighelper';
 	config.extraAllowedContent = 'span(fa,fa-*)';
+	//config.disallowedContent = 'img{width,height};';
 
     config.removeDialogFields='table:info:txtBorder;table:info:txtCellSpace;table:info:txtCellPad;table:info:txtHeight;table:info:txtCaption;table:info:txtSummary;table:advanced:advLangDir;table:info:cmbAlign;'+
         'tableProperties:info:txtBorder;tableProperties:info:txtCellSpace;tableProperties:info:txtCellPad;tableProperties:info:txtHeight;tableProperties:info:txtCaption;tableProperties:info:txtSummary;tableProperties:advanced:advLangDir;tableProperties:info:cmbAlign;'+
@@ -61,4 +62,8 @@ CKEDITOR.editorConfig = function( config ) {
         }
     };
 
+	config.image_prefillDimensions = false;
+	config.filebrowserBrowseUrl = window.vbcknd.base_url + 'services/file_browser/index/';
+	config.filebrowserWindowWidth = '640';
+	config.filebrowserWindowHeight = '480';
 };

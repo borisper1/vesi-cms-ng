@@ -9,7 +9,7 @@ class Services extends MX_Controller
         $option = $option===null ? '' : '/'.$option;
         if($this->modules_handler->check_service(strtolower($name)))
         {
-            Modules::run('mod_services/'.$name.$option);
+            echo Modules::run('mod_services/' . $name . $option);
         }
         else
         {

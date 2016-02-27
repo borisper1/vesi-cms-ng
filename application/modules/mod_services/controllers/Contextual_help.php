@@ -8,8 +8,8 @@ class Contextual_help extends MX_Controller
         $path = rawurldecode($this->input->post('path'));
         $items = explode('::', $path);
         $interface = $items[0];
-        $sub_heading = $items[1];
-        $sub_category = $items[2];
+        $sub_heading = isset($items[1]) ? $items[1] : '';
+        $sub_category = isset($items[2]) ? $items[2] : '';
         $path = $interface . ($sub_heading != '' ? '/' . $sub_heading : '') . ($sub_category != '' ? '/' . $sub_category : '') . '.html';
         if (file_exists(APPPATH . 'help/' . $path))
         {

@@ -13,8 +13,8 @@ class File_conversion extends MX_Controller
             return;
         }
         $input = rawurldecode($this->input->post('text'));
-        $from = $this->input->post('text_format');
-        $to = $this->input->post('output_format');
+        $from = $this->type_remapping_array_from[$this->input->post('text_format')];
+        $to = $this->type_remapping_array_to[$this->input->post('output_format')];
         $out_name = $this->input->post('output_name');
         if(!isset($this->extension_array[$from]) or !isset($this->extension_array[$to]))
         {
@@ -132,8 +132,6 @@ class File_conversion extends MX_Controller
     protected function execute_pandoc($input, $from, $to)
     {
         $output = APPPATH.'tmp/'.uniqid().$this->extension_array[$to];
-        $to = $this->type_remapping_array_to[$to];
-        $from = $this->type_remapping_array_from[$from];
         $command = 'pandoc -f '.escapeshellarg($from).' -t '.escapeshellarg($to).' -o '.escapeshellarg($output).' -i '.escapeshellarg($input);
         exec($command);
         if(!file_exists($output))

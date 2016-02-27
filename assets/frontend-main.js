@@ -1,13 +1,8 @@
-!function () {
-    //TODO: remove hack for in-folder execution
-    window.vbcknd = {};
-    window.vbcknd.base_url = location.protocol + '//' + location.host + '/vesi-cms-ng/';
-}();
 $(document).ready(function(e) {
     // Enables direct link to tabs (see issue #28)
     var url = document.location.toString();
     if (url.match('#')) {
-        $('.nav-tabs a[href=#'+url.split('#')[1]+']').tab('show');
+        $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
     }
     $('.nav-tabs a').on('shown.bs.tab', function (e) {
         if(history.pushState) {

@@ -114,7 +114,7 @@ $(document).ready(function() {
     function LoadPathSelector(){
         $.ajax({
             type: "POST",
-            url: window.vbcknd.base_url+'ajax/admin/files/get_path_picker_table',
+            url: window.vbcknd.base_url + 'services/file_browser/get_path_picker_table',
             data: {'path': CurrentItem.target},
             success: LoadPathInModal,
             error: LoadPathInModalError
@@ -134,7 +134,7 @@ $(document).ready(function() {
     function UpdatePathSelector(path){
         $.ajax({
             type: "POST",
-            url: window.vbcknd.base_url+'ajax/admin/files/get_path_picker_table',
+            url: window.vbcknd.base_url + 'services/file_browser/get_path_picker_table',
             data: {'path': path, 'mode': 'only_folders'},
             success: LoadPathInModal,
             error: LoadPathInModalError
