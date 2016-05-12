@@ -75,14 +75,6 @@
             "allow_iframe": false,
             "description": "Finestra popover",
             "builtin": true
-        },
-        {
-            "name": "circolari-engine-feed",
-            "save_type": "json",
-            "has_options": true,
-            "has_displayname": true,
-            "description": "Vista Ultime notizie per le circolari (da circolari_engine)",
-            "builtin": false
         }
     ],
     "structures": [

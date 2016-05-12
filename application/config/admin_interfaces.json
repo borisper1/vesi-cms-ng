@@ -118,15 +118,6 @@
                 "only_su": false
             },
             {
-                "name": "circolari_engine",
-                "label": "Circolari",
-                "description": "Permette di gestire le circolari e modificarne il contenuto",
-                "icon": "fa-copy",
-                "builtin": false,
-                "only_su": false,
-                "location": "full_plugin"
-            },
-            {
                 "name": "special::separator",
                 "builtin": true
             },
