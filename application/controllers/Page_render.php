@@ -146,27 +146,9 @@ class Page_render extends MX_Controller
 
     public function display_404()
     {
-        $this->load->model('menu_handler');
-        //Load the main menu (evaluate whether to make this a HMVC module)
-        $id=$this->menu_handler->get_main_menu_id();
-        $menu_data = $this->menu_handler->get_menu_array($id,'','');
-        $menu_data['home_active'] = false;
-        $menu_data['logo_image_path'] = $this->db_config->get('general', 'logo_image_path');
-        $base_data['menu']=$this->load->view('frontend/main_menu',$menu_data,true);
-
-        $base_data['title']='404 - Page not found';
-        $base_data['content']=$this->load->view('frontend/404', null, true);
-
-        //Load basic system data
-        $base_data['use_cdn']=$this->resources->use_cdn;
-        $base_data['legacy_support']=$this->resources->legacy_support;
-        $base_data['urls']=$this->resources->urls;
-        $base_data['urls']['aux_js_loader']=[];
-        $base_data['fallback_urls']=$this->resources->fallback_urls;
-        $base_data['hover_menus']=(boolean)$this->db_config->get('style','menu_hover');
-
-        //Load the final view and render the page
-        $this->load->view('frontend/base', $base_data);
+        $content = $this->load->view('frontend/404', null, true);
+        $title = '404 - Page not found';
+        $this->output_page($content, $title);
         $this->output->set_status_header('404');
 
         //Log the error in syslog
@@ -183,7 +165,7 @@ class Page_render extends MX_Controller
     function logout()
     {
         $this->session->sess_destroy();
-        $redirect_to = $this->input->post("originating_page");
+        $redirect_to = $this->input->post("origin_page");
         echo "<script>window.location.href = \"$redirect_to\"</script>";
     }
 }

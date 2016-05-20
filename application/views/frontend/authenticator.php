@@ -1,17 +1,20 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 $form="<form id='frontend-authenticator' method='POST'>
+         <div class='form-group'>
             <div class='input-group'>
                 <span class='input-group-addon'><span class='fa fa-user'></span></span>
                 <input type='text' class='form-control' placeholder='Nome utente' name='username'>
             </div>
-            <br>
-            <div class='input-group'>
+         </div>
+         <div class='form-group'>
+             <div class='input-group'>
                 <span class='input-group-addon'><span class='fa fa-lock'></span></span>
                 <input type='password' class='form-control' placeholder='Password' name='password'>
-            </div>
-            <br>
-            <input type='submit' class='btn btn-default' value='Accedi'>
-        </form>";
+             </div>
+             <a href='" . base_url("system/users/forgot") . "'>Password dimenticata?</a>
+         </div>
+         <input type='submit' class='btn btn-default' value='Accedi'>
+         </form>";
 ?><ul class="nav navbar-nav navbar-right">
     <?php if($frontend_logged_in): ?>
         <li class="dropdown">
