@@ -91,7 +91,8 @@ class Administration extends MX_Controller
         $login_data=[];
         if($username!==null){
             $result = $this->user_handler->check_admin_login($username,$this->input->post('password'));
-            if($result[0]){
+            if($result[0])
+            {
                 $this->session->type='administrative';
                 $this->session->username = $result[1];
                 redirect('admin');
@@ -110,7 +111,7 @@ class Administration extends MX_Controller
             $login_data['error_message']='';
         }
         $base_data=[];
-        $login_data['csrf']=array('name' => $this->security->get_csrf_token_name(), 'hash' => $this->security->get_csrf_hash());
+        $login_data['csrf'] = array('name' => $this->security->get_csrf_token_name(), 'hash' => $this->security->get_csrf_hash());
         $base_data['menu']=null;
         $base_data['system_dom']=null;
         $base_data['content']= $this->load->view('administration/login',$login_data , TRUE);

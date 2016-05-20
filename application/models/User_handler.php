@@ -249,6 +249,4 @@ class User_handler extends CI_Model
 
         }
     }
-
-
 }

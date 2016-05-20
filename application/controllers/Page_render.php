@@ -1,13 +1,12 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Page_render extends MX_Controller
 {
     public function index()
     {
 
-        $page_info=explode('::',$this->db_config->get('general','home_page'));
-        $this->view($page_info[0],$page_info[1]);
+        $page_info = explode('::', $this->db_config->get('general', 'home_page'));
+        $this->view($page_info[0], $page_info[1]);
     }
 
     public function view($container,$page)
@@ -20,15 +19,6 @@ class Page_render extends MX_Controller
         $base_data=[];
         $GLOBALS['p_container']=$container;
         $GLOBALS['p_name']=$page;
-        $this->load->model('menu_handler');
-        //Load the main menu (evaluate whether to make this a HMVC module)
-        $id=$this->menu_handler->get_main_menu_id();
-        $menu_data = $this->menu_handler->get_menu_array($id,$container,$page);
-        $menu_data['home_active'] = ($container==='home' and $page==='home');
-        $menu_data['class'] = $this->db_config->get('style', 'menu_class');
-        $menu_data['logo_image_path'] = $this->db_config->get('general', 'logo_image_path');
-        $base_data['menu']=$this->load->view('frontend/main_menu',$menu_data,true);
-
         //Get page data
         $this->load->model('page_handler');
         //Get the true page id, taking into account container redirection.
@@ -40,8 +30,35 @@ class Page_render extends MX_Controller
         }
 
         $page_data = $this->page_handler->get_page_obj($page_id);
-        $base_data['title']=strip_tags($page_data->title).' | '.$this->db_config->get('general','website_name');
-        $base_data['content'] =$this->display_layout($page_data);
+        $title=strip_tags($page_data->title).' | '.$this->db_config->get('general','website_name');
+        $content =$this->display_layout($page_data);
+        $this->output_page($content,$title);
+    }
+
+    protected function output_page($content, $title = null,$container = "",$page = "")
+    {
+        $this->load->model('menu_handler');
+        $id=$this->menu_handler->get_main_menu_id();
+        $menu_data = $this->menu_handler->get_menu_array($id,$container,$page);
+        $menu_data['home_active'] = ($container==='home' and $page==='home');
+        $menu_data['class'] = $this->db_config->get('style', 'menu_class');
+        $menu_data['logo_image_path'] = $this->db_config->get('general', 'logo_image_path');
+
+        $menu_data['enable_frontend_auth'] = $this->db_config->get('users', 'enable_frontend_authentication');
+        if($menu_data['enable_frontend_auth'])
+        {
+            $authenticator_data['frontend_logged_in'] = false;
+            $menu_data['frontend_authenticator_rendered'] = $this->load->view('frontend/authenticator', $authenticator_data, true);
+        }
+
+        $base_data['menu']=$this->load->view('frontend/main_menu',$menu_data,true);
+
+        if($title == null)
+        {
+            $title = $this->db_config->get('general','website_name');
+        }
+        
+        $base_data['content']=$content;
         if($this->db_config->get('content','display_footer')){
             $base_data['content'].=$this->db_config->get('content','footer_html');
         }
@@ -52,8 +69,7 @@ class Page_render extends MX_Controller
         $base_data['urls']=$this->resources->urls;
         $base_data['urls']['aux_js_loader']=$this->resources->get_aux_js_urls();
         $base_data['fallback_urls']=$this->resources->fallback_urls;
-        $base_data['hover_menus']=(boolean)$this->db_config->get('style','menu_hover');
-
+        
         //Load the final view and render the page
         $this->load->view('frontend/base', $base_data);
     }
@@ -89,6 +105,45 @@ class Page_render extends MX_Controller
         return $this->load->view('frontend/'.$page_view,$data,true);
     }
 
+    protected function render_section($structure)
+    {
+        $html = "";
+        foreach ($structure as $element) {
+            if ($element->type === 'content') {
+                $html .= Modules::run('components/render_component', $element->id);
+            } elseif ($element->type === 'menu') {
+                $html .= Modules::run('components/render_sec_menu', $element->id);
+            } elseif ($element->type === 'plugin') {
+                $html .= $this->render_plugin($element->name, $element->command);
+            } elseif (in_array($element->type, $this->modules_handler->installed_structures)) {
+                $structure_data = [];
+                foreach ($element->views as $view) {
+                    $view_data = [];
+                    $view_data['id'] = $view->id;
+                    $view_data['title'] = $view->title;
+                    $view_data['content'] = $this->render_section($view->elements);
+                    $structure_data[] = $view_data;
+                }
+                $class = isset($element->class) ? $element->class : null;
+                $html .= Modules::run('components/load_structure_view', $element->type, $structure_data, $class);
+            };
+        }
+        return $html;
+    }
+
+    protected function render_plugin($name, $command)
+    {
+        $plugin_info = $this->modules_handler->get_plugin_data($name);
+        if ($plugin_info['type'] === 'full' and $plugin_info['enabled']) {
+            return Modules::run('mod_plugins/' . $name . '/render', $command);
+        } else {
+            $this->load->model('error_logger');
+            $this->error_logger->log_no_plugin_error($name);
+            return $this->load->view('frontend/errors/plugin_not_found', array('name' => $name), true);
+        }
+    }
+
+
     public function display_404()
     {
         $this->load->model('menu_handler');
@@ -120,41 +175,15 @@ class Page_render extends MX_Controller
         $this->error_logger->log_404_error($referrer);
     }
 
-    protected function render_section($structure)
+    function login()
     {
-        $html = "";
-        foreach ($structure as $element) {
-            if ($element->type === 'content') {
-                $html .= Modules::run('components/render_component', $element->id);
-            } elseif ($element->type === 'menu') {
-                $html .= Modules::run('components/render_sec_menu', $element->id);
-            } elseif ($element->type === 'plugin') {
-                $html .= $this->render_plugin($element->name, $element->command);
-            } elseif (in_array($element->type, $this->modules_handler->installed_structures)) {
-                $structure_data = [];
-                foreach ($element->views as $view) {
-                    $view_data = [];
-                    $view_data['id'] = $view->id;
-                    $view_data['title'] = $view->title;
-                    $view_data['content'] = $this->render_section($view->elements);
-                    $structure_data[] = $view_data;
-                }
-                $class = isset($element->class) ? $element->class : null;
-                $html .= Modules::run('components/load_structure_view', $element->type, $structure_data, $class);
-            };
-        }
-        return $html;
+        
     }
-
-    function render_plugin($name, $command)
+    
+    function logout()
     {
-        $plugin_info = $this->modules_handler->get_plugin_data($name);
-        if ($plugin_info['type'] === 'full' and $plugin_info['enabled']) {
-            return Modules::run('mod_plugins/' . $name . '/render', $command);
-        } else {
-            $this->load->model('error_logger');
-            $this->error_logger->log_no_plugin_error($name);
-            return $this->load->view('frontend/errors/plugin_not_found', array('name' => $name), true);
-        }
+        $this->session->sess_destroy();
+        $redirect_to = $this->input->post("originating_page");
+        echo "<script>window.location.href = \"$redirect_to\"</script>";
     }
 }

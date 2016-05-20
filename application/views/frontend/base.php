@@ -41,9 +41,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php if($use_cdn['bootstrap.js']): ?>
             <script>(typeof $().emulateTransitionEnd == 'function') || document.write('<script src="<?=$fallback_urls['bootstrap.js']?>">\x3C/script>')</script>
         <?php endif; ?>
-        <?php if($hover_menus): ?>
-            <script src="<?=base_url('assets/third_party/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js')?>"></script>
-        <?php endif; ?>
         <script>
             !function () {
                 window.vbcknd = {};

@@ -25,13 +25,6 @@
         <div class="form-group">
             <div class="checkbox toggle">
                 <label>
-                    <input type="checkbox" id="i-menu-hover" <?=$menu_hover ? 'checked' : '' ?>> &nbsp;Abilita menu a sfioramento (bootstrap-hover-dropdown)
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="checkbox toggle">
-                <label>
                     <input type="checkbox" id="i-use-fluid-containers" <?=$use_fluid_containers ? 'checked' : '' ?>> &nbsp;Abilita layout fluido (il contenuto riempie lo schermo senza margini, sconsigliato)
                 </label>
             </div>

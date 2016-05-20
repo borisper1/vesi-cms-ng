@@ -4,12 +4,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
+                <span class="sr-only">Attiva/Disattiva Navigazione</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="<?= base_url(); ?>"><img src="<?= base_url($logo_image_path); ?>"></a>
+            <a class="navbar-brand" href="<?= base_url(); ?>"><img src="<?= base_url($logo_image_path); ?>" alt="Logo del sito"></a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -36,6 +36,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <?php endif; ?>
                 <?php endforeach; ?>
             </ul>
+            <?php if($enable_frontend_auth): ?>
+                <?=$frontend_authenticator_rendered ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>
