@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-    $('#i-use-fluid-containers, #i-display-home-page-title, #i-limit-temp-folder, #i-enable-auto-maint').bootstrapSwitch();
     $('#i-menu-class').selectpicker('val', $('#c-menu-class').text());
 
     window.vbcknd.config.get_data = function (){

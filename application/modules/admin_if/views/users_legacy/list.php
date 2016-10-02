@@ -20,7 +20,9 @@
     <tbody>
         <?php foreach($userlist as $user): ?>
             <tr>
-                <td><input type="checkbox" class="vcms-select-user" value="<?=$user['username'] ?>"> <a href="<?=base_url('admin/users/edit/'.$user['username']) ?>"><?=$user['username'] ?></a></td>
+                <td><input type="checkbox" class="vcms-select-user" value="<?= $user['username'] ?>"> <a
+                        href="<?= base_url('admin/users_legacy/edit/' . $user['username']) ?>"><?= $user['username'] ?></a>
+                </td>
                 <td>
                     <?php if($user['status']===0): ?>
                         <i class="fa fa-ban"></i> Revocato

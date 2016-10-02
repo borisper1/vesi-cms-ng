@@ -25,14 +25,18 @@
         <div class="form-group">
             <div class="checkbox toggle">
                 <label>
-                    <input type="checkbox" id="i-use-fluid-containers" <?=$use_fluid_containers ? 'checked' : '' ?>> &nbsp;Abilita layout fluido (il contenuto riempie lo schermo senza margini, sconsigliato)
+                    <input type="checkbox" class="checkbox-sw"
+                           id="i-use-fluid-containers" <?= $use_fluid_containers ? 'checked' : '' ?>> &nbsp;Abilita
+                    layout fluido (il contenuto riempie lo schermo senza margini, sconsigliato)
                 </label>
             </div>
         </div>
         <div class="form-group">
             <div class="checkbox toggle">
                 <label>
-                    <input type="checkbox" id="i-display-home-page-title" <?=$display_home_page_title ? 'checked' : '' ?>> &nbsp;Mostra il titolo per la pagina iniziale (sconsigliato)
+                    <input type="checkbox" class="checkbox-sw"
+                           id="i-display-home-page-title" <?= $display_home_page_title ? 'checked' : '' ?>> &nbsp;Mostra
+                    il titolo per la pagina iniziale (sconsigliato)
                 </label>
             </div>
         </div>
@@ -53,7 +57,8 @@
         <div class="form-group">
             <div class="checkbox toggle">
                 <label>
-                    <input type="checkbox" id="i-limit-temp-folder" <?= $limit_temp_folder ? 'checked' : '' ?>>
+                    <input type="checkbox" class="checkbox-sw"
+                           id="i-limit-temp-folder" <?= $limit_temp_folder ? 'checked' : '' ?>>
                     &nbsp;Limita lo spazio per i file temporanei
                 </label>
             </div>
@@ -78,7 +83,9 @@
         <div class="form-group">
             <div class="checkbox toggle">
                 <label>
-                    <input type="checkbox" id="i-enable-auto-maint" <?=$enable_automatic_maint ? 'checked' : '' ?>> &nbsp;Abilita il servizio di manutenzione automatica
+                    <input type="checkbox" class="checkbox-sw"
+                           id="i-enable-auto-maint" <?= $enable_automatic_maint ? 'checked' : '' ?>> &nbsp;Abilita il
+                    servizio di manutenzione automatica
                 </label>
             </div>
         </div>

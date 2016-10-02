@@ -34,7 +34,8 @@
 <div class="alert alert-info hidden" id="loading-spinner"><i class="fa fa-refresh fa-spin"></i> Caricamento del percorso...</div>
 <div class="alert alert-danger hidden" id="error-warning">
     <i class="fa fa-exclamation-circle"></i> <b>Si è verificato un errore imprevisto nel caricamento del percorso.</b>
-    Il server potrebbe esser non disponibile oppure non si dispone delle autorizzazioni necessarie per accedere al percorso. <a href="<?=base_url('admin/files') ?>" class="alert-link">Ricaricare</a> la pagina per riprovare
+    Il server potrebbe essere non disponibile oppure non si dispone delle autorizzazioni necessarie per accedere al
+    percorso. <a href="<?= base_url('admin/files') ?>" class="alert-link">Ricaricare</a> la pagina per riprovare
 </div>
 <div class="alert alert-info hidden" id="operation-spinner"><i class="fa fa-refresh fa-spin"></i> Operazione su file in corso...</div>
 <div class="alert alert-danger alert-dismissible hidden" id="operation-error">

@@ -2,7 +2,9 @@
 ?><div class="form-group">
     <div class="checkbox toggle">
         <label>
-            <input type="checkbox" id="i-enable-file-conversion" <?=$enable_file_conversion ? 'checked' : '' ?>> &nbsp;Attiva il servizio di conversione documenti
+            <input type="checkbox" class="checkbox-sw"
+                   id="i-enable-file-conversion" <?= $enable_file_conversion ? 'checked' : '' ?>> &nbsp;Attiva il
+            servizio di conversione documenti
         </label>
     </div>
     <span class="help-block">Questo servzio è richiesto per l'importazione o l'esportazione di documenti non in formato HTML. Alcuni componenti aggiuntivi potrebbero richiedere questo servzio</span>
@@ -11,7 +13,9 @@
 <div class="form-group">
     <div class="checkbox toggle">
         <label>
-            <input type="checkbox" id="i-execute-on-remote" <?=$execute_on_remote ? 'checked' : '' ?>> &nbsp;Utilizza un server remoto al posto di quello locale per la conversione di documenti
+            <input type="checkbox" class="checkbox-sw"
+                   id="i-execute-on-remote" <?= $execute_on_remote ? 'checked' : '' ?>> &nbsp;Utilizza un server remoto
+            al posto di quello locale per la conversione di documenti
         </label>
     </div>
     <span class="help-block">Utilizzare questa opzione solo se il server locale non supporta <code>pandoc</code> oppure non consente l'esecuzione di comandi shell da PHP</span>

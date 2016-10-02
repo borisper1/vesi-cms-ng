@@ -3,8 +3,6 @@
  */
 $(document).ready(function() {
 
-    $('#i-execute-on-remote, #i-enable-file-conversion').bootstrapSwitch();
-
     /*$('#check-temp-folder-permissions').click(function()
     {
         $('#temp-folder-permissions-ok, #temp-folder-permissions-failed').addClass('hidden');

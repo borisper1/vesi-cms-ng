@@ -11,7 +11,9 @@
         <div class="form-group">
             <div class="checkbox toggle">
                 <label>
-                    <input type="checkbox" id="i-jquery1-usecdn" <?=$jquery1_usecdn ? 'checked' : '' ?>> &nbsp;Usa un CDN per jQuery 1.x (utilizzato solo se la modalità di compatibilità è attiva)
+                    <input type="checkbox" class="checkbox-sw"
+                           id="i-jquery1-usecdn" <?= $jquery1_usecdn ? 'checked' : '' ?>> &nbsp;Usa un CDN per jQuery
+                    1.x (utilizzato solo se la modalità di compatibilità è attiva)
                 </label>
             </div>
         </div>
@@ -25,7 +27,9 @@
         <div class="form-group">
             <div class="checkbox toggle">
                 <label>
-                    <input type="checkbox" id="i-jquery2-usecdn" <?=$jquery2_usecdn ? 'checked' : '' ?>> &nbsp;Usa un CDN per jQuery 2.x
+                    <input type="checkbox" class="checkbox-sw"
+                           id="i-jquery2-usecdn" <?= $jquery2_usecdn ? 'checked' : '' ?>> &nbsp;Usa un CDN per jQuery
+                    2.x
                 </label>
             </div>
         </div>
@@ -40,7 +44,9 @@
         <div class="form-group">
             <div class="checkbox toggle">
                 <label>
-                    <input type="checkbox" id="i-bootstrap-usecdn" <?=$bootstrap_js_usecdn ? 'checked' : '' ?>> &nbsp;Usa un CDN per il codice JavaScript di Bootstrap
+                    <input type="checkbox" class="checkbox-sw"
+                           id="i-bootstrap-usecdn" <?= $bootstrap_js_usecdn ? 'checked' : '' ?>> &nbsp;Usa un CDN per il
+                    codice JavaScript di Bootstrap
                 </label>
             </div>
         </div>
@@ -55,7 +61,9 @@
         <div class="form-group">
             <div class="checkbox toggle">
                 <label>
-                    <input type="checkbox" id="i-fontawesome-usecdn" <?=$fontawesome_usecdn ? 'checked' : '' ?>> &nbsp;Usa un CDN per Font Awesome
+                    <input type="checkbox" class="checkbox-sw"
+                           id="i-fontawesome-usecdn" <?= $fontawesome_usecdn ? 'checked' : '' ?>> &nbsp;Usa un CDN per
+                    Font Awesome
                 </label>
             </div>
         </div>
@@ -82,7 +90,9 @@
         <div class="form-group">
             <div class="checkbox toggle">
                 <label>
-                    <input type="checkbox" id="i-enable-legacy-support" <?=$enable_legacy_support ? 'checked' : '' ?>> &nbsp;Abilita la modalità di compatibilità (renderà il sito più lento per tutti gli utenti)
+                    <input type="checkbox" class="checkbox-sw"
+                           id="i-enable-legacy-support" <?= $enable_legacy_support ? 'checked' : '' ?>> &nbsp;Abilita la
+                    modalità di compatibilità (renderà il sito più lento per tutti gli utenti)
                 </label>
             </div>
         </div>

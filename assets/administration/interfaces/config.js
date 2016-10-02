@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    $('.checkbox-sw').bootstrapSwitch();
+
     $('.cdn-reqssl-url').each(function(){
         var object = $(this).closest('.form-group');
         if($(this).val().match(/^https:\/\//)!=null){

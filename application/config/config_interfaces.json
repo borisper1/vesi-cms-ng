@@ -2,6 +2,18 @@
   "interfaces":[
       {"name":"general", "label": "Generali", "icon":"fa-sliders", "builtin":true},
       {"name":"resources", "label": "Risorse esterne e compatibilità", "icon":"fa-cubes", "builtin":true},
+    {
+      "name": "authentication",
+      "label": "Autenticazione",
+      "icon": "fa-key",
+      "builtin": true
+    },
+    {
+      "name": "e-mail",
+      "label": "E-Mail",
+      "icon": "fa-envelope",
+      "builtin": true
+    },
       {"name":"file_conversion", "label": "Servizio conversione documenti", "icon":"fa-gears", "builtin":true}
     ]
 }

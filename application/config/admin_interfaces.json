@@ -38,6 +38,14 @@
                 "only_su": true
             },
             {
+              "name": "users_legacy",
+              "label": "Account utente (legacy)",
+              "description": "Permette di creare, modificare e eliminare gli account utente",
+              "icon": "fa-users",
+              "builtin": true,
+              "only_su": true
+            },
+          {
                 "name": "groups",
                 "label": "Gruppi e permessi",
                 "description": "Permette di creare e modificare i gruppi per il controllo dei permessi",
