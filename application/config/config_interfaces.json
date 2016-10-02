@@ -9,7 +9,7 @@
       "builtin": true
     },
     {
-      "name": "e-mail",
+      "name": "email",
       "label": "E-Mail",
       "icon": "fa-envelope",
       "builtin": true
