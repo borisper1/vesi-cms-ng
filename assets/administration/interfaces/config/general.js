@@ -17,6 +17,7 @@ $(document).ready(function() {
         data.resources.max_temp_folder_size = $('#i-temp-folder-max-size').val();
         return data;
     };
+
     $('#i-temp-folder-max-size').change(function () {
         $('#temp-current-max-size').text($(this).val());
     })

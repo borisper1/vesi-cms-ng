@@ -7,9 +7,9 @@ class Pages extends MX_Controller
 
     function index()
     {
-        $this->load->model('user_handler');
+        $this->load->model('group_handler');
         $this->load->model('page_handler');
-        $cfilter = $this->user_handler->check_content_filter();
+        $cfilter = $this->group_handler->check_content_filter($this->session->admin_group);
         $data['cfilter_on'] = $cfilter!==false;
         $data['rendered_elements']=$this->render_interactive_list($cfilter);
         $data['containers']=$this->page_handler->get_containers_list();

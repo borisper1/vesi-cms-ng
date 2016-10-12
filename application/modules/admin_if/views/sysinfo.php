@@ -109,6 +109,10 @@
                     <td><a href="http://semantic-ui.com/" target="_blank">Semantic UI</a></td>
                     <td>2.1.8</td>
                 </tr>
+                <tr>
+                    <td><a href="https://github.com/PHPMailer/PHPMailer" target="_blank">PHPMailer</a></td>
+                    <td>5.2.16</td>
+                </tr>
 
             </table>
         </div>

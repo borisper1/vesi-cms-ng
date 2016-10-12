@@ -17,6 +17,11 @@ class Local_user_handler extends CI_Model
         }
     }
 
+    function get_auth_type()
+    {
+        return intval($this->database_structure->auth_method);
+    }
+
     function check_credentials($password)
     {
         if (password_verify($password, $this->database_structure->password)) {
@@ -37,13 +42,34 @@ class Local_user_handler extends CI_Model
 
     function is_active()
     {
-        if (intval($this->database_structure->active) !== 1) {
+        if (intval($this->database_structure->active) != 1) {
             return 1;
         }
         if (intval($this->database_structure->failed_access) >= 5) {
             return 2;
         }
         return 0;
+    }
+
+    function get_full_name()
+    {
+        return $this->database_structure->full_name;
+    }
+
+    function get_admin_group()
+    {
+        return (strpos($this->database_structure->admin_group, 'ldap::') === 0) ? substr($this->database_structure->admin_group, 6) : $this->database_structure->admin_group;
+    }
+
+    function get_full_user_data()
+    {
+        return $this->database_structure;
+    }
+
+    function get_full_user_db_list()
+    {
+        $query = $this->db->get('users');
+        return $query->result();
     }
 
 

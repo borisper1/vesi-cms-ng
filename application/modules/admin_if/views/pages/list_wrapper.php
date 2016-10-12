@@ -7,8 +7,10 @@
     </h1>
 </div>
 <div class="btn-group">
-    <button type="button" class="btn btn-success" id="new-page"><span class="fa fa-plus"></span> Nuova pagina</button>
-    <button type="button" class="btn btn-default" id="new-redirect"><span class="fa fa-exchange"></span> Nuovo reindirizzamento</button>
+    <button type="button" class="btn btn-success" id="new-page"><i class="fa fa-plus"></i> Nuova pagina</button>
+    <button type="button" class="btn btn-default" id="new-redirect"><i class="fa fa-exchange"></i> Nuovo
+        reindirizzamento
+    </button>
 </div>
 <div class="btn-group pull-right">
     <button type="button" class="btn btn-default" id="show-all"><i class="fa fa-eye"></i> Mostra tutto</button>

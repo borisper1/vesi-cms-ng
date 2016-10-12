@@ -11,12 +11,13 @@ class Administration extends MX_Controller
     public function load_interface($interface, $method = 'index', $arguments = null)
     {
         $this->redirect_if_no_login();
-        $this->load->model('user_handler');
-        $menu_data['user_fname'] = $this->user_handler->get_admin_full_name();
+        $this->load->model('group_handler');
+        $this->load->model('authentication_handler');
+        $menu_data['user_fname'] = $this->authentication_handler->get_full_name($this->session->username);
         $menu_data['structure'] = $this->modules_handler->get_interfaces_menu_structure();
         $base_data['menu']= $this->load->view('administration/main_menu',$menu_data , TRUE);
 
-        if($this->user_handler->check_interface_permissions($interface)){
+        if ($this->group_handler->check_interface_permissions($this->session->admin_group, $interface)) {
             $if_data = $this->execute_load_interface($interface, $method, $arguments);
             $base_data['content'] = $if_data['content'];
         }
@@ -37,13 +38,14 @@ class Administration extends MX_Controller
 
     public function ajax_interface($interface,$method)
     {
-        $this->load->model('user_handler');
-        if(!$this->user_handler->check_admin_session())
+        $this->load->model('group_handler');
+        $this->load->model('authentication_handler');
+        if (!$this->authentication_handler->check_admin_session())
         {
             echo 'failed - 403: User not authenticated';
             return;
         }
-        if ($this->user_handler->check_interface_permissions($interface)) {
+        if ($this->group_handler->check_interface_permissions($this->session->admin_group, $interface)) {
             echo $this->execute_load_interface($interface, $method)['content'];
         } else {
             echo 'failed - 403: The user does not have permissions to access this interface';
@@ -81,19 +83,20 @@ class Administration extends MX_Controller
 
     public function login()
     {
-        $this->load->model('user_handler');
-        if($this->user_handler->check_admin_session())
+        $this->load->model('authentication_handler');
+        if ($this->authentication_handler->check_admin_session())
         {
-            redirect('admin/index');
+            redirect('admin');
         }
         $username=$this->input->post('username');
         $login_data=[];
         if($username!==null){
-            $result = $this->user_handler->check_admin_login($username,$this->input->post('password'));
+            $result = $this->authentication_handler->authenticate_admin($username, $this->input->post('password'));
             if($result[0])
             {
                 $this->session->type='administrative';
                 $this->session->username = $result[1];
+                $this->session->admin_group = $result[2];
                 redirect('admin');
             }
             else
@@ -123,8 +126,8 @@ class Administration extends MX_Controller
 
     protected function redirect_if_no_login()
     {
-        $this->load->model('user_handler');
-        if(!$this->user_handler->check_admin_session())
+        $this->load->model('authentication_handler');
+        if (!$this->authentication_handler->check_admin_session())
         {
             redirect('admin/login');
         }

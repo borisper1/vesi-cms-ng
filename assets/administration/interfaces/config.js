@@ -30,7 +30,7 @@ $(document).ready(function() {
     });
 
     $('#save-config').click(function(){
-        $('.alert').addClass('hidden');
+        $('.alert-config').addClass('hidden');
         $('#spinner').removeClass('hidden');
         $.post(window.vbcknd.base_url+'ajax/admin/config/save', 'code='+encodeURIComponent(JSON.stringify(window.vbcknd.config.get_data())), ConfigSaveDone);
     });
@@ -40,7 +40,7 @@ $(document).ready(function() {
     });
 
     function ConfigSaveDone(data){
-        $('.alert').addClass('hidden');
+        $('.alert-config').addClass('hidden');
         if(data=="success"){
             $('#success-alert').removeClass('hidden')
         }else{

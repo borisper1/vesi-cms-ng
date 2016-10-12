@@ -6,9 +6,9 @@ class Contents extends MX_Controller
 
     function index()
     {
-        $this->load->model('user_handler');
         $this->load->model('content_handler');
-        $cfilter = $this->user_handler->check_content_filter();
+        $this->load->model('group_handler');
+        $cfilter = $this->group_handler->check_content_filter($this->session->admin_group);
         $data['cfilter_on'] = $cfilter!==false;
         $data['content_list'] = $this->content_handler->get_contents_list_with_usages($cfilter);
         $data['components_list'] = $this->modules_handler->get_components_list();

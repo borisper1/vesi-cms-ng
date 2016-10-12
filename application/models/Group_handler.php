@@ -86,18 +86,63 @@ class Group_handler extends CI_Model
     }
 
 
-    function delete_groups($groups){
+    function delete_groups($groups)
+    {
         $this->db->where_in('name',$groups);
         return $this->db->delete('admin_groups');
     }
 
-    function enable_groups($groups){
+    function enable_groups($groups)
+    {
         $this->db->where_in('name',$groups);
         return $this->db->update('admin_groups', array('active' => 1));
     }
 
-    function disable_groups($groups){
+    function disable_groups($groups)
+    {
         $this->db->where_in('name',$groups);
         return $this->db->update('admin_groups', array('active' => 0));
+    }
+
+    private function parse_group($group)
+    {
+        $query = $this->db->get_where('admin_groups', array('name' => $group));
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            if ($row->active == 1) {
+                return json_decode($row->code);
+            }
+        }
+        return false;
+    }
+
+    function check_interface_permissions($group, $interface)
+    {
+        if ($group === 'super-users' or $interface === 'dashboard') {
+            return true;
+        } else {
+            $group = $this->parse_group($group);
+            if ($group === false) {
+                return false;
+            }
+            return in_array($interface, $group->allowed_interfaces);
+        }
+    }
+
+    function check_content_filter($group)
+    {
+        if ($group === 'super-users') {
+            return false;
+        } else {
+            $source = $this->parse_group($group);
+            if ($source->use_content_filter) {
+                $data['mode'] = $source->content_filter_mode;
+                $data['directives'] = $source->content_filter_directives;
+                return $data;
+            } else {
+                return false;
+            }
+
+        }
     }
 }

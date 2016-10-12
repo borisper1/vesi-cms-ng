@@ -14,12 +14,16 @@
             <button type="button" class="btn btn-default" id="save-config"><i class="fa fa-save"></i> Salva</button>
             <button type="button" class="btn btn-default" id="refresh"><i class="fa fa-refresh"></i> Aggiorna</button>
         </div>
-        <div class="alert alert-danger hidden" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile aggiornare la configurazione</b>: il server non ha terminato l'esecuzione (Errore HTTP 500)</div>
-        <div class="alert alert-success alert-dismissible hidden" id="success-alert">
+        <div class="alert alert-config alert-danger hidden" id="error-alert"><i class="fa fa-exclamation-circle"></i>
+            <b>Impossibile aggiornare la configurazione</b>: il server non ha terminato l'esecuzione (Errore HTTP 500)
+        </div>
+        <div class="alert alert-config alert-success alert-dismissible hidden" id="success-alert">
             <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
             <i class="fa fa-check"></i> Configurazione aggiornata con successo.
         </div>
-        <div class="alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Aggiornamento della configurazione del sistema...</div>
+        <div class="alert alert-config alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i>
+            Aggiornamento della configurazione del sistema...
+        </div>
 
         <?=$rendered_interface ?>
     </div>
