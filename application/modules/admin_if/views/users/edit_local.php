@@ -12,6 +12,17 @@
 </div>
 <div class="clearfix"></div>
 <br>
+
+<?php if ($status == 2): ?>
+    <div class="alert alert-info" id="ldap-user-not-synced">
+        <p><i class="fa fa-info-circle"></i> <b>L'utente è bloccato a causa di troppi accessi falliti.</b></p>
+        <p>
+            <button type="button" class="btn btn-default" id="unlock-account"><i class="fa fa-unlock"></i> Sblocca
+            </button>
+        </p>
+    </div>
+<?php endif; ?>
+
 <form class="form-horizontal">
     <div class="form-group">
         <label for="i-fullname" class="col-sm-3 control-label">Nome completo:</label>
@@ -24,6 +35,12 @@
         <label for="i-email" class="col-sm-3 control-label">Indirizzo email:</label>
         <div class="col-sm-7">
             <input type="email" class="form-control" id="i-email" placeholder="Email" value="<?= $email ?>">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Ultimo acceso:</label>
+        <div class="col-sm-7">
+            <span class="generic-inline pull-left"><?= date("H:i:s d/m/Y", strtotime($last_login)) ?></span>
         </div>
     </div>
     <br>
@@ -44,7 +61,7 @@
     <br>
 
     <div class="form-group">
-        <label for="i-group" class="col-sm-3 control-label">Gruppo permessi amministrativo:</label>
+        <label for="i-admin-group" class="col-sm-3 control-label">Gruppo permessi amministrativo:</label>
         <div class="col-sm-7">
             <span class="hidden" id="current-admin-group"><?= $admin_group == '' ? 'none' : $admin_group ?></span>
             <select class="form-control selectpicker" id="i-admin-group">
@@ -65,7 +82,7 @@
     </div>
 
     <div class="form-group">
-        <label for="i-group" class="col-sm-3 control-label">Gruppo permessi pubblico:</label>
+        <label for="i-frontend-group" class="col-sm-3 control-label">Gruppo permessi pubblico:</label>
         <div class="col-sm-7">
             <span class="hidden"
                   id="current-frontend-group"><?= $frontend_group == '' ? 'none' : $frontend_group ?></span>
@@ -81,7 +98,7 @@
             </select>
         </div>
     </div>
-
+    \
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-7">
             <div class="checkbox toggle">

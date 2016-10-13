@@ -27,6 +27,10 @@ h3.inline{
     font-weight: 700;
 }
 
+.generic-inline {
+    padding: 6px 0;
+}
+
 .lmb{
     padding-left: 0;
     padding-right: 0;

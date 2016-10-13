@@ -33,9 +33,11 @@ class Local_user_handler extends CI_Model
                 $this->db->update('users', array('password' => $newHash));
             }
             $this->db->where('username', $this->username);
-            $this->db->update('users', array('failed_access' => 0));
+            $this->db->update('users', array('failed_access' => 0, 'last_login' => date("Y-m-d H:i:s")));
             return true;
         } else {
+            $this->db->where('username', $this->username);
+            $this->db->update('users', array('failed_access' => $this->database_structure->failed_access + 1));
             return false;
         }
     }

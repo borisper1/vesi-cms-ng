@@ -22,14 +22,14 @@
         <a href="<?= base_url('admin/edit' . $username) ?>" class="alert-link">Ricaricare</a> la pagina per riprovare
     </div>
 <?php endif; ?>
-<?php if ($ldap_user_deleted): ?>
+<?php if ($ldap_error == 3): ?>
     <div class="alert alert-danger" id="ldap-user-deleted">
         <i class="fa fa-exclamation-circle"></i> <b>L'utente è stato eliminato da LDAP.</b><br>
         Questo utente non è stato trovato nella directory LDAP. L'utente non funzionerà se non si ricrea l'utente in
         LDAP
     </div>
 <?php endif; ?>
-<?php if ($ldap_user_obsolete_sync): ?>
+<?php if ($ldap_error == 2): ?>
     <div class="alert alert-info" id="ldap-user-not-synced">
         <i class="fa fa-info-circle"></i> <b>L'utente non è stato sincronizzato recentemente con LDAP.</b><br>
         Le informazioni (Nome, Gruppi derivati da LDAP e indirizzo e-mail) sull'utente potrebbero essere inesatte.
@@ -50,6 +50,12 @@
             <a class="password-inline pull-left" href="mailto:<?= $email ?>"><?= $email ?></a>
         </div>
     </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Ultimo acceso:</label>
+        <div class="col-sm-7">
+            <span class="generic-inline pull-left"><?= date("H:i:s d/m/Y", strtotime($last_login)) ?></span>
+        </div>
+    </div>
     <br>
 
     <div class="form-group">
@@ -64,7 +70,7 @@
         </div>
     </div>
     <div class="form-group <?= $admin_group_from_ldap ? 'hidden' : '' ?>" id="admin-group-box">
-        <label for="i-group" class="col-sm-3 control-label">Gruppo permessi amministrativo:</label>
+        <label for="i-admin-group" class="col-sm-3 control-label">Gruppo permessi amministrativo:</label>
         <div class="col-sm-7">
             <span class="hidden" id="current-admin-group"><?= $admin_group == '' ? 'none' : $admin_group ?></span>
             <select class="form-control selectpicker" id="i-admin-group">
@@ -88,7 +94,7 @@
         <div class="col-sm-offset-3 col-sm-7">
             <div class="checkbox toggle">
                 <label>
-                    <input type="checkbox" id="i-admin-frontend-group"
+                    <input type="checkbox" id="i-frontend-local-group"
                            class="auto-bswitch" <?= $frontend_group_from_ldap == false ? 'checked' : '' ?>> &nbsp;Sovrascrivi
                     gruppo pubblico LDAP con gruppo locale
                 </label>
@@ -96,7 +102,7 @@
         </div>
     </div>
     <div class="form-group <?= $frontend_group_from_ldap ? 'hidden' : '' ?>" id="frontend-group-box">
-        <label for="i-group" class="col-sm-3 control-label">Gruppo permessi pubblico:</label>
+        <label for="i-frontend-group" class="col-sm-3 control-label">Gruppo permessi pubblico:</label>
         <div class="col-sm-7">
             <span class="hidden"
                   id="current-frontend-group"><?= $frontend_group == '' ? 'none' : $frontend_group ?></span>

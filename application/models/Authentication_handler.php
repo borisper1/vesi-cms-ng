@@ -18,7 +18,6 @@ class Authentication_handler extends CI_Model
         } elseif ($auth_type === 1) {
             //TODO: Check LDAP User password and Sync LDAP user (handled by Ldap_user_handler)
         }
-
         $active = $this->local_user_handler->is_active();
         if ($active === 1) {
             return array(false, 'user_revoked');
@@ -73,8 +72,8 @@ class Authentication_handler extends CI_Model
         $frontend_users = [];
         foreach ($local_db as $user) {
             $result = $this->process_user_data($user, $ldap_enabled, $ldap_failed);
-            $ldap_users_deleted = $result['ldap_error'] == 3 ? true : $ldap_users_deleted;
-            $ldap_users_obsolete_sync = $result['ldap_error'] == 2 ? true : $ldap_users_obsolete_sync;
+            $ldap_users_deleted = $result['user_data']['ldap_error'] == 3 ? true : $ldap_users_deleted;
+            $ldap_users_obsolete_sync = $result['user_data']['ldap_error'] == 2 ? true : $ldap_users_obsolete_sync;
             $ldap_leftovers = $result['ldap_leftovers'] ? true : $ldap_leftovers;
             if ($user->admin_group != '') {
                 $admin_users[] = $result['user_data'];
@@ -106,6 +105,7 @@ class Authentication_handler extends CI_Model
                 'admin_group_from_ldap' => false,
                 'frontend_group_from_ldap' => false
             );
+            $result['ldap_leftovers'] = false;
         } elseif (intval($user->auth_method) === 1) {
             $result['ldap_leftovers'] = !$ldap_enabled;
             if (!$ldap_enabled or $ldap_failed) {
@@ -146,6 +146,7 @@ class Authentication_handler extends CI_Model
             'email' => $user->email,
             'active' => intval($user->active),
             'status' => intval($user->active) === 1 ? (intval($user->failed_access) < 5 ? 1 : 2) : 0,
+            'last_login' => $user->last_login
         );
         $result['user_data'] += $ldap_array;
         return $result;
@@ -166,10 +167,10 @@ class Authentication_handler extends CI_Model
         } else {
             $ldap_failed = false;
         }
-        $result = $this->process_user_data($user, $ldap_enabled, $ldap_failed);
-        return $result['user_data'];
-
+        $result = $this->process_user_data($user, $ldap_enabled, $ldap_failed)['user_data'];
+        $result['ldap_failed'] = $ldap_failed;
+        $result['ldap_enabled'] = $ldap_enabled;
+        return $result;
     }
-
 
 }

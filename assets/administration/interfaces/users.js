@@ -3,6 +3,22 @@ $(document).ready(function() {
 
     $('.auto-bswitch').bootstrapSwitch();
 
+    $('#i-admin-local-group').on('switchChange.bootstrapSwitch', function () {
+        if ($(this).prop('checked')) {
+            $('#admin-group-box').removeClass('hidden');
+        } else {
+            $('#admin-group-box').addClass('hidden');
+        }
+    });
+
+    $('#i-frontend-local-group').on('switchChange.bootstrapSwitch', function () {
+        if ($(this).prop('checked')) {
+            $('#frontend-group-box').removeClass('hidden');
+        } else {
+            $('#frontend-group-box').addClass('hidden');
+        }
+    });
+
     $('.vcms-select-user').change(function () {
         if ($('.vcms-select-user:checked').length > 0) {
             $('#users-actions').removeClass('hidden');
@@ -31,4 +47,23 @@ $(document).ready(function() {
         object.toggleClass('hidden');
     });
 
+    $('#save-edit').click(function () {
+        var username_oject = $('#username');
+        var type = username_oject.data('type');
+        var data = {};
+        data.username = username_oject.val();
+        data.admin_group = $('#i-admin-group').val();
+        data.frontend_group = $('#i-frontend-group').val();
+        data.active = $('#i-activate').prop('checked');
+        if (type == 'local') {
+            data.admin_local_group = $('#i-admin-local-group').prop('checked');
+            data.fronted_local_group = $('#i-frontend-local-group').prop('checked');
+        }
+        else {
+            data.full_name = $('#i-fullname').val();
+            data.email = $('#i-email').val();
+        }
+        var json_str = JSON.stringify(data);
+
+    });
 });
