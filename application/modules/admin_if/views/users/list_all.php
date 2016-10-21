@@ -120,7 +120,7 @@
                                 <i class="fa fa-user-times tooltipped" data-toggle="tooltip"
                                    title="L'utente non esiste in LDAP"></i>
                             <?php endif; ?>
-                            <?php if ($user['ldap_no_local_group']): ?>
+                            <?php if ($user['no_local_group']): ?>
                                 <i class="fa fa-exclamation-circle tooltipped" data-toggle="tooltip"
                                    title="Nessun gruppo locale associato a questo utente"></i>
                             <?php endif; ?>
@@ -197,7 +197,7 @@
                                 <i class="fa fa-user-times tooltipped" data-toggle="tooltip"
                                    title="L'utente non esiste in LDAP"></i>
                             <?php endif; ?>
-                            <?php if ($user['ldap_no_local_group']): ?>
+                            <?php if ($user['no_local_group']): ?>
                                 <i class="fa fa-exclamation-circle tooltipped" data-toggle="tooltip"
                                    title="Nessun gruppo locale associato a questo utente"></i>
                             <?php endif; ?>

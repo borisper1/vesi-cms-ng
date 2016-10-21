@@ -14,7 +14,7 @@
 <br>
 
 <?php if ($status == 2): ?>
-    <div class="alert alert-info" id="ldap-user-not-synced">
+    <div class="alert alert-info" id="user_locked">
         <p><i class="fa fa-info-circle"></i> <b>L'utente è bloccato a causa di troppi accessi falliti.</b></p>
         <p>
             <button type="button" class="btn btn-default" id="unlock-account"><i class="fa fa-unlock"></i> Sblocca
@@ -22,6 +22,18 @@
         </p>
     </div>
 <?php endif; ?>
+
+
+<div class="save-user-alert alert alert-danger hidden" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile
+        modificare l'account:</b><br><span id="error-msg"></span></div>
+<div class="save-user-alert alert alert-danger hidden" id="delete-error-alert"><i class="fa fa-exclamation-circle"></i>
+    <b>Impossibile eliminare l'account:</b><br><span id="delete-error-msg"></span></div>
+<div class="save-user-alert alert alert-success hidden" id="success-alert"><i class="fa fa-check"></i> Utente modificato
+    con successo
+</div>
+<div class="save-user-alert alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Modifica
+    dell'utente...
+</div>
 
 <form class="form-horizontal">
     <div class="form-group">
@@ -98,7 +110,7 @@
             </select>
         </div>
     </div>
-    \
+
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-7">
             <div class="checkbox toggle">

@@ -51,11 +51,11 @@ $(document).ready(function() {
         var username_oject = $('#username');
         var type = username_oject.data('type');
         var data = {};
-        data.username = username_oject.val();
+        data.username = username_oject.text();
         data.admin_group = $('#i-admin-group').val();
         data.frontend_group = $('#i-frontend-group').val();
         data.active = $('#i-activate').prop('checked');
-        if (type == 'local') {
+        if (type == 'ldap') {
             data.admin_local_group = $('#i-admin-local-group').prop('checked');
             data.fronted_local_group = $('#i-frontend-local-group').prop('checked');
         }
@@ -64,6 +64,41 @@ $(document).ready(function() {
             data.email = $('#i-email').val();
         }
         var json_str = JSON.stringify(data);
+        $('.save-user-alert').addClass('hidden');
+        $('#spinner').removeClass('hidden');
+        $.ajax({
+            type: "POST",
+            url: window.vbcknd.base_url + 'ajax/admin/users/save_edit',
+            data: {type: type, data_string: json_str},
+            success: AJAXSaveOperationOK,
+            error: AJAXSaveOperationFailed
+        });
+    });
 
+    function AJAXSaveOperationOK(data) {
+        $('.save-user-alert').addClass('hidden');
+        if (data == 'success') {
+            $('#success-alert').removeClass('hidden');
+        }
+        else {
+            $('#error-alert').removeClass('hidden');
+            $('#error-mgs').text(data);
+        }
+    }
+
+    function AJAXSaveOperationFailed() {
+        $('.save-user-alert').addClass('hidden');
+        $('#error-alert').removeClass('hidden');
+        $('#error-mgs').text('500 request failed');
+    }
+
+    $('#unlock-account').click(function () {
+        $.post(window.vbcknd.base_url + 'ajax/admin/users/unlock_user', {username: $('#username').text()}, function () {
+            window.location.reload(true);
+        });
+    });
+
+    $('#close-edit').click(function () {
+        window.location = window.vbcknd.base_url + 'admin/users';
     });
 });

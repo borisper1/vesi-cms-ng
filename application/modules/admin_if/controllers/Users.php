@@ -30,4 +30,21 @@ class Users extends MX_Controller
         }
     }
 
+    function save_edit()
+    {
+        $this->load->model('authentication_handler');
+        $type = $this->input->post('type');
+        $data_string = $this->input->post('data_string');
+        $result = $this->authentication_handler->save_user_data($type, $data_string);
+        echo $result ? 'success' : 'failed - 500';
+    }
+
+    function unlock_user()
+    {
+        $this->load->model('local_user_handler');
+        $this->local_user_handler->load_user($this->input->post('username'));
+        $result = $this->local_user_handler->unlock_user();
+        echo $result ? 'success' : 'failed - 500';
+    }
+
 }

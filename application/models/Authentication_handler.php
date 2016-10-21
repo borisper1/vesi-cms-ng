@@ -101,7 +101,7 @@ class Authentication_handler extends CI_Model
             //Local user, disable all LDAP flags
             $ldap_array = array(
                 'ldap_error' => 0,
-                'ldap_no_local_group' => false,
+                'no_local_group' => $user->admin_group == '' and $user->frontend_group == '',
                 'admin_group_from_ldap' => false,
                 'frontend_group_from_ldap' => false
             );
@@ -111,7 +111,7 @@ class Authentication_handler extends CI_Model
             if (!$ldap_enabled or $ldap_failed) {
                 $ldap_array = array(
                     'ldap_error' => 1,
-                    'ldap_no_local_group' => false,
+                    'no_local_group' => false,
                     'admin_group_from_ldap' => false,
                     'frontend_group_from_ldap' => false
                 );
@@ -119,7 +119,7 @@ class Authentication_handler extends CI_Model
                 $ldap_array = [];
                 //TODO: Check LDAP USER exists
                 $ldap_array['admin_group_from_ldap'] = true;
-                $ldap_array['ldap_no_local_group'] = ($user->frontend_group == 'ldap::' and $user->admin_group == 'ldap::');
+                $ldap_array['no_local_group'] = ($user->frontend_group == 'ldap::' and $user->admin_group == 'ldap::');
                 if (strpos($user->admin_group, 'ldap::') === 0) {
                     //LDAP derived group
                     $ldap_array['admin_group_from_ldap'] = true;
@@ -173,4 +173,34 @@ class Authentication_handler extends CI_Model
         return $result;
     }
 
+    function save_user_data($user_type, $data_string)
+    {
+        $this->load->model('local_user_handler');
+        $user_object = json_decode($data_string);
+        $username = $user_object->username;
+        $write_array = [];
+        if ($user_type == 'ldap') {
+            if ($user_object->admin_local_group) {
+                $write_array['admin_group'] = $user_object->admin_group !== 'none' ? $user_object->admin_group : '';
+            } else {
+                //READ DATA FROM LDAP
+                $write_array['admin_group'] = 'ldap::';
+            }
+            if ($user_object->frontend_local_group) {
+                $write_array['frontend_group'] = $user_object->frontend_group !== 'none' ? $user_object->frontend_group : '';
+            } else {
+                //READ DATA FROM LDAP
+                $write_array['frontend_group'] = 'ldap::';
+            }
+            //UPDATE ALL REMAINING LDAP DATA
+        } else {
+            //The user is a local user
+            $write_array['admin_group'] = $user_object->admin_group !== 'none' ? $user_object->admin_group : '';
+            $write_array['frontend_group'] = $user_object->frontend_group !== 'none' ? $user_object->frontend_group : '';
+            $write_array['full_name'] = $user_object->full_name;
+            $write_array['email'] = $user_object->email;
+        }
+        $write_array['active'] = $user_object->active;
+        return $this->local_user_handler->save_edit($username, $write_array);
+    }
 }

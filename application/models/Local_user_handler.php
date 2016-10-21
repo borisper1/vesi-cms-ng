@@ -74,5 +74,26 @@ class Local_user_handler extends CI_Model
         return $query->result();
     }
 
+    function save_edit($username, $write_data)
+    {
+        $this->db->where('username', $username);
+        return $this->db->update('users', $write_data);
+    }
+
+    function unlock_user()
+    {
+        if ($this->database_structure->failed_access >= 5) {
+            $this->db->where('username', $this->username);
+            return $this->db->update('users', array('failed_access' => 0));
+        } else {
+            return false;
+        }
+    }
+
+    function request_password_reset()
+    {
+
+    }
+
 
 }
