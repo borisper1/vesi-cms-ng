@@ -8,44 +8,120 @@
 </div>
 <br>
 <br>
-
-<table class="table table-hover">
-    <thead>
+<div class="panel panel-primary container-block" id="panel-admin">
+    <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-wrench"></i> Gruppi amministratori</h3>
+    </div>
+    <table class="table table-hover">
+        <thead>
         <tr>
             <th>Nome</th>
             <th>Descrizione</th>
             <th>Stato</th>
             <th>Permessi</th>
             <th>Utenti a cui si applica</th>
+            <?php if ($ldap_enabled): ?>
+                <th>Gruppi LDAP a cui si applica</th>
+            <?php endif; ?>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         <tr>
             <td><span class="label label-danger">super-users</span></td>
             <td>Gruppo per gli utenti con accesso completo al sistema</td>
             <td><i class="fa fa-check"></i> Attivo</td>
             <td>Accesso completo</td>
             <td>
-                <?php foreach($super_users as $user): ?>
+                <?php foreach ($admin_super_users as $user): ?>
+                    <span class="label label-default"><?= $user ?></span>
+                <?php endforeach; ?>
+            </td>
+        </tr>
+        <?php foreach ($admin_groups as $group): ?>
+            <tr>
+                <td><input type="checkbox" class="vcms-select-group" value="<?= $group['name'] ?>"> <a
+                        href="<?= base_url('admin/groups/edit/' . $group['name']) ?>"><?= $group['name'] ?></a></td>
+                <td><?= $group['description'] ?></td>
+                <td><?= $group['active'] ? "<i class=\"fa fa-check\"></i> Attivo" : "<i class=\"fa fa-ban\"></i> Bloccato" ?></td>
+                <td>
+                    <?php foreach ($group['permissions'] as $perm): ?>
+                        <span class="label label-info"><?= $perm ?></span>
+                    <?php endforeach; ?>
+                </td>
+                <td class="group-members">
+                    <?php foreach ($group['users'] as $user): ?>
+                        <span class="label label-default"><?= $user ?></span>
+                    <?php endforeach; ?>
+                </td>
+                <?php if ($ldap_enabled): ?>
+                    <td>
+                        <?php foreach ($group['ldap_groups'] as $ldg): ?>
+                            <span class="label label-default"><?= $ldg ?></span>
+                        <?php endforeach; ?>
+                    </td>
+                <?php endif; ?>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="panel panel-primary container-block" id="panel-frontend">
+    <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-globe"></i> Gruppi pubblico</h3>
+    </div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Descrizione</th>
+            <th>Stato</th>
+            <th>Permessi</th>
+            <th>Utenti a cui si applica</th>
+            <?php if ($ldap_enabled): ?>
+                <th>Gruppi LDAP a cui si applica</th>
+            <?php endif; ?>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><span class="label label-danger">super-users</span></td>
+            <td>Gruppo per gli utenti con accesso completo al sistema</td>
+            <td><i class="fa fa-check"></i> Attivo</td>
+            <td>Accesso completo</td>
+            <td>
+                <?php foreach ($frontend_super_users as $user): ?>
                     <span class="label label-default"><?=$user ?></span>
                 <?php endforeach; ?>
             </td>
         </tr>
-        <?php foreach($groups as $group): ?>
+        <?php foreach ($frontend_groups as $group): ?>
             <tr>
                 <td><input type="checkbox" class="vcms-select-group" value="<?=$group['name'] ?>"> <a href="<?=base_url('admin/groups/edit/'.$group['name']) ?>"><?=$group['name'] ?></a></td>
                 <td><?=$group['description'] ?></td>
                 <td><?=$group['active'] ? "<i class=\"fa fa-check\"></i> Attivo" : "<i class=\"fa fa-ban\"></i> Bloccato" ?></td>
-                <td><?=$group['permissions'] ?></td>
+                <td>
+                    <?php foreach ($group['permissions'] as $perm): ?>
+                        <span class="label label-info"><?= $perm ?></span>
+                    <?php endforeach; ?>
+                </td>
                 <td class="group-members">
                     <?php foreach($group['users'] as $user): ?>
                         <span class="label label-default"><?=$user ?></span>
                     <?php endforeach; ?>
                 </td>
+                <?php if ($ldap_enabled): ?>
+                    <td>
+                        <?php foreach ($group['ldap_groups'] as $ldg): ?>
+                            <span class="label label-default"><?= $ldg ?></span>
+                        <?php endforeach; ?>
+                    </td>
+                <?php endif; ?>
             </tr>
         <?php endforeach; ?>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 
 <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-label" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">

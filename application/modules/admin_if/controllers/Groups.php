@@ -5,8 +5,11 @@ class Groups extends MX_Controller
     function index()
     {
         $this->load->model('group_handler');
-        $data['super_users']= $this->group_handler->get_group_users('super-users');
-        $data['groups']=$this->group_handler->get_group_list();
+        $data['admin_super_users'] = $this->group_handler->get_admin_group_users('super-users');
+        $data['admin_groups'] = $this->group_handler->get_admin_group_list();
+        $data['frontend_super_users'] = $this->group_handler->get_frontend_group_users('super-users');
+        $data['frontend_groups'] = $this->group_handler->get_frontend_group_list();
+        $data['ldap_enabled'] = (boolean)$this->db_config->get('authentication', 'enable_ldap');
         $this->load->view('groups/list', $data);
     }
 

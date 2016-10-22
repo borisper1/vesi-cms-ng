@@ -1,0 +1,12 @@
+{
+  "frontend_permissions": [
+    {
+      "name": "test-perm",
+      "label": "Permesso di prova",
+      "description": "Qui verrà visualizzata la descrizione del permesso",
+      "icon": "fa-question-circle",
+      "only_su": false,
+      "builtin": false
+    }
+  ]
+}

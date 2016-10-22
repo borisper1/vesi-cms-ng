@@ -16,7 +16,13 @@ class Authentication_handler extends CI_Model
                 return array(false, 'invalid_credentials');
             }
         } elseif ($auth_type === 1) {
-            //TODO: Check LDAP User password and Sync LDAP user (handled by Ldap_user_handler)
+            //TODO: Check if LDAP is enabled
+            $this->load->model('ldap_user_handler');
+            $result = $this->ldap_user_handler->ldap_bind_connect($username, $password);
+            if (!$result) {
+                return array(false, 'ldap_no_bind');
+            }
+            //TODO: Sync LDAP user
         }
         $active = $this->local_user_handler->is_active();
         if ($active === 1) {

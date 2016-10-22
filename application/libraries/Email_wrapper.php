@@ -8,9 +8,9 @@ class Email_wrapper
     {
         $this->CI = &get_instance();
         $this->smtp_data = array(
-            'ssl' => $this->CI->db_config->get('email', 'smtp_ssl'),
-            'auth' => $this->CI->db_config->get('email', 'smtp_auth'),
-            'port' => $this->CI->db_config->get('email', 'smtp_port'),
+            'ssl' => intval($this->CI->db_config->get('email', 'smtp_ssl')),
+            'auth' => intval($this->CI->db_config->get('email', 'smtp_auth')),
+            'port' => intval($this->CI->db_config->get('email', 'smtp_port')),
             'user' => $this->CI->db_config->get('email', 'smtp_user'),
             'address' => $this->CI->db_config->get('email', 'smtp_address'),
             'hostname' => $this->CI->db_config->get('email', 'smtp_hostname'),

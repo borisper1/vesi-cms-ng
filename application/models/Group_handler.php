@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Group_handler extends CI_Model
 {
-    function get_group_list()
+    function get_admin_group_list()
     {
         $query = $this->db->get('admin_groups');
         $grouplist=[];
@@ -13,28 +13,47 @@ class Group_handler extends CI_Model
             $group['name']=$row->name;
             $group['active']=(boolean)$row->active;
             $group['description']=$row->fullname;
-
-            $group['permissions']=$this->get_permissions_string($row->code);
-            $group['users']= $this->get_group_users($row->name);
+            $code = json_decode($row->code);
+            $group['permissions'] = $code->allowed_interfaces;
+            $group['users'] = $this->get_admin_group_users($row->name);
+            $group['ldap_groups'] = explode(',', $row->ldap_groups);
             $grouplist[]=$group;
         }
         return $grouplist;
     }
 
-    function get_permissions_string($code)
+    function get_admin_group_users($group)
     {
-        $code = json_decode($code);
-        $output="";
-        foreach($code->allowed_interfaces as $interface)
+        $query = $this->db->get_where('users', array('admin_group' => $group));
+        $users = [];
+        foreach ($query->result() as $row)
         {
-            $output.="<span class=\"label label-info\">$interface</span> ";
+            $users[] = $row->username;
         }
-        return $output;
+        return $users;
     }
 
-    function get_group_users($group)
+    function get_frontend_group_list()
     {
-        $query = $this->db->get_where('admin_users',array('group' => $group));
+        $query = $this->db->get('frontend_groups');
+        $grouplist = [];
+        foreach ($query->result() as $row) {
+            $group = [];
+            $group['name'] = $row->name;
+            $group['active'] = (boolean)$row->active;
+            $group['description'] = $row->fullname;
+            $code = json_decode($row->code);
+            $group['permissions'] = $code->allowed_permissions;
+            $group['users'] = $this->get_frontend_group_users($row->name);
+            $group['ldap_groups'] = explode(',', $row->ldap_groups);
+            $grouplist[] = $group;
+        }
+        return $grouplist;
+    }
+
+    function get_frontend_group_users($group)
+    {
+        $query = $this->db->get_where('users', array('frontend_group' => $group));
         $users = [];
         foreach($query->result() as $row)
         {
@@ -42,6 +61,7 @@ class Group_handler extends CI_Model
         }
         return $users;
     }
+
 
     function get_group_data($group)
     {
