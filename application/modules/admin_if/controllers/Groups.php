@@ -33,9 +33,10 @@ class Groups extends MX_Controller
             $data['group_name']=$id;
             $data['is_new']=false;
         }
+        $data['ldap_enabled'] = (boolean)$this->db_config->get('authentication', 'enable_ldap');
         $data['permission_groups'] = $this->modules_handler->get_interfaces_raw_array();
         $data['containers']=$this->page_handler->get_containers_list();
-        $this->load->view('groups/edit',$data);
+        $this->load->view('groups/edit_admin', $data);
     }
 
     function get_pages()

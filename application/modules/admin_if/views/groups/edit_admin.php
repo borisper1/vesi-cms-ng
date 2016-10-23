@@ -18,6 +18,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 <span id="is-new" class="hidden"><?=$is_new ? 'true' : 'false' ?></span>
+
+<?php if ($ldap_enabled): ?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Gruppi LDAP associati</h3>
+        </div>
+        <div class="panel-body">
+            <p><b>Scegliere i gruppi LDAP a cui associare questo gruppo:</b></p>
+            <div class="btn-group spaced" data-toggle="buttons">
+                <label class="btn btn-default active">
+                    <input type="radio" name="ldapgrp-editor-mode" id="ldapgrp-edit-gui" checked> <i
+                        class="fa fa-list-alt"></i> Editor grafico
+                </label>
+                <label class="btn btn-default">
+                    <input type="radio" name="ldapgrp-editor-mode" id="ldapgrp-edit-code"> <i class="fa fa-code"></i>
+                    Modifica codice
+                </label>
+            </div>
+            <div id="ldapgrp-editor-gui" class="container-fluid">
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-default" id="ldapgrp-gui-add"><i class="fa fa-plus-square"></i>
+                        Aggiungi elemento
+                    </button>
+                </div>
+                <div class="well" id="gui-ldap-editor-area">
+
+                </div>
+                <div class="hidden" id="ldap-group-template">
+                    <span class="label label-success ldap-group-element">
+                        <span class="ldap-element"></span>
+                        <a href="#gui-ldap-editor-area" class="delete-filter-element lmb tooltipped"
+                           data-toggle="tooltip" title="Elimina"><i class="fa fa-remove"></i></a>
+                    </span>
+                </div>
+            </div>
+            <div id="ldapgrp-editor-code" class="container-fluid hidden">
+                <p><b>Inserire l'espressione del filtro:</b></p>
+                <textarea class="form-control" rows="4" placeholder="Espressione CSV dei gruppi LDAP"
+                          id="cfilter-code-expression"><?= $content_filter_directives ?></textarea>
+                <p>Inserire nomi di contenitori o coppie <code>RDN (class=value)</code> separando i valori con una <kbd>,</kbd>.
+                    L'input non verrà controllato, un errore potrebbe causare il blocco dell'accesso da parte degli
+                    utenti a cui si applicano queste restrizioni.</p>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">Permessi delle interfacce amministrative</h3>
@@ -50,7 +97,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
     <div class="panel-body">
         <p class="text-warning"><i class="fa fa-warning"></i> Attenzione: i permessi relativi ai contenuti possono rallentare notevolmente l'accesso al sistema da parte degli utenti a cui si applica la restrizione.</p>
-        <p><input type="checkbox" id="enable-content-filter" <?=$use_content_filter ? 'checked' : '' ?>> <b>Attiva filtro basato sui contenuti</b></p>
+        <label><input type="checkbox" id="enable-content-filter" <?= $use_content_filter ? 'checked' : '' ?>> <b>Attiva
+                filtro basato sui contenuti</b></label>
         <span id="onload_cfilter_status" class="hidden"><?=$use_content_filter ? 'true' : 'false' ?></span>
         <span id="onload_cfilter_mode" class="hidden"><?=$content_filter_mode ?></span>
         <p><b>Scegliere il modo di operazione del filtro:</b></p>

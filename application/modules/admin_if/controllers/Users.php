@@ -19,7 +19,7 @@ class Users extends MX_Controller
             $this->load->model('authentication_handler');
             $user_data = $this->authentication_handler->get_user_data($user);
             $data = array(
-                    'admin_groups' => $this->group_handler->get_group_list(),
+                    'admin_groups' => $this->group_handler->get_admin_group_list(),
                     'frontend_groups' => [],
                 ) + $user_data;
             if ($data['type'] == 1) {
