@@ -7,8 +7,10 @@
         <i class="fa fa-plus"></i> Nuovo <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-        <li><a href="#" id="new-admin-group"><i class="fa fa-fw fa-wrench"></i> Gruppo amministrativo</a></li>
-        <li><a href="#" id="new-frontend-group"><i class="fa fa-fw fa-globe"></i> Gruppo pubblico</a></li>
+        <li><a href="<?= base_url('admin/groups/edit_admin/new') ?>" id="new-admin-group"><i
+                    class="fa fa-fw fa-wrench"></i> Gruppo amministrativo</a></li>
+        <li><a href="<?= base_url('admin/groups/edit_frontend/new') ?>" id="new-frontend-group"><i
+                    class="fa fa-fw fa-globe"></i> Gruppo pubblico</a></li>
     </ul>
 </div>
 <div class="btn-group hidden" id="group-actions">

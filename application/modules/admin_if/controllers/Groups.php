@@ -25,6 +25,7 @@ class Groups extends MX_Controller
             $data['use_content_filter']=false;
             $data['content_filter_mode']='whitelist';
             $data['content_filter_directives'] = '';
+            $data['ldap_linked_groups'] = [];
             $data['is_new']=true;
         }
         else
@@ -53,6 +54,7 @@ class Groups extends MX_Controller
             $data['group_name'] = '';
             $data['description'] = '';
             $data['allowed_permissions_csv'] = '';
+            $data['ldap_linked_groups'] = [];
             $data['is_new'] = true;
         } else {
             $this->load->model('group_handler');
@@ -104,11 +106,10 @@ class Groups extends MX_Controller
         }
     }
 
-    /*
     function delete(){
-        $groups = explode(',', $this->input->post('groups'));
+        $groups_obj = json_decode(rawurldecode($this->input->post('groups')));
         $this->load->model('group_handler');
-        $result = $this->group_handler->delete_groups($groups);
+        $result = $this->group_handler->delete_groups($groups_obj);
         if($result)
         {
             echo 'success';
@@ -120,9 +121,9 @@ class Groups extends MX_Controller
     }
 
     function enable(){
-        $groups = explode(',', $this->input->post('groups'));
+        $groups_obj = json_decode(rawurldecode($this->input->post('groups')));
         $this->load->model('group_handler');
-        $result = $this->group_handler->enable_groups($groups);
+        $result = $this->group_handler->enable_disable_groups($groups_obj, 1);
         if($result)
         {
             echo 'success';
@@ -134,9 +135,9 @@ class Groups extends MX_Controller
     }
 
     function disable(){
-        $groups = explode(',', $this->input->post('groups'));
+        $groups_obj = json_decode(rawurldecode($this->input->post('groups')));
         $this->load->model('group_handler');
-        $result = $this->group_handler->disable_groups($groups);
+        $result = $this->group_handler->enable_disable_groups($groups_obj, 0);
         if($result)
         {
             echo 'success';
@@ -146,5 +147,4 @@ class Groups extends MX_Controller
             echo 'failed - 500';
         }
     }
-    */
 }

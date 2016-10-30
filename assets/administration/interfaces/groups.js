@@ -4,6 +4,10 @@ $(document).ready(function() {
     var mode = $('#page-mode').text();
     var is_ldap_enabled = $('#ldapgrp-editor-gui').length;
 
+    $('.close').click(function () {
+        $(this).closest('.alert-dismissible').addClass('hidden');
+    });
+
     if (mode == 'list') {
         $('.vcms-select-group').change(function () {
             if ($('.vcms-select-group:checked').length > 0) {
@@ -12,6 +16,69 @@ $(document).ready(function() {
                 $('#group-actions').addClass('hidden');
             }
         });
+
+        $('#delete-groups').click(function () {
+            var groups = {};
+            groups.admin_groups = [];
+            groups.frontend_groups = [];
+            var members = "";
+            $('.vcms-select-group:checked').each(function () {
+                if ($(this).data('type') == 'admin') {
+                    groups.admin_groups.push($(this).val());
+                } else if ($(this).data('type') == 'frontend') {
+                    groups.frontend_groups.push($(this).val());
+                }
+                var temp = $(this).closest('tr').find('.group-members').html().trim();
+                if (temp != '') {
+                    members += '&nbsp' + temp;
+                }
+            });
+            CurrentItem = groups;
+            $('#users-remaining-list').html(members);
+            if (members != '') {
+                $('#users-remaining').removeClass('hidden');
+            } else {
+                $('#users-remaining').addClass('hidden');
+            }
+            $('#delete-modal').modal();
+        });
+
+        $('#delete-modal-confirm').click(function () {
+            $.post(window.vbcknd.base_url + 'ajax/admin/groups/delete', 'groups=' + encodeURIComponent(JSON.stringify(CurrentItem)), RefreshAJAXDone);
+        });
+
+        $('#enable-groups').click(function () {
+            var groups = {};
+            groups.admin_groups = [];
+            groups.frontend_groups = [];
+            $('.vcms-select-group:checked').each(function () {
+                if ($(this).data('type') == 'admin') {
+                    groups.admin_groups.push($(this).val());
+                } else if ($(this).data('type') == 'frontend') {
+                    groups.frontend_groups.push($(this).val());
+                }
+            });
+            $.post(window.vbcknd.base_url + 'ajax/admin/groups/enable', 'groups=' + encodeURIComponent(JSON.stringify(groups)), RefreshAJAXDone);
+        });
+
+        $('#disable-groups').click(function () {
+            var groups = {};
+            groups.admin_groups = [];
+            groups.frontend_groups = [];
+            $('.vcms-select-group:checked').each(function () {
+                if ($(this).data('type') == 'admin') {
+                    groups.admin_groups.push($(this).val());
+                } else if ($(this).data('type') == 'frontend') {
+                    groups.frontend_groups.push($(this).val());
+                }
+            });
+            $.post(window.vbcknd.base_url + 'ajax/admin/groups/disable', 'groups=' + encodeURIComponent(JSON.stringify(groups)), RefreshAJAXDone);
+        });
+
+        function RefreshAJAXDone() {
+            //TODO: Add error messages if request failed
+            window.location.reload(true);
+        }
     }
 
     if (is_ldap_enabled) {
@@ -220,11 +287,24 @@ $(document).ready(function() {
 
         $('#save-edit').click(function () {
             if (is_new_unsaved) {
-                ClearAllValidationErrors();
+                window.vbcknd.validation.clear_all_errors();
                 $('#new-group-modal').modal();
             } else {
                 DoSave();
             }
+        });
+
+        $('#new-group-modal-confirm').click(function () {
+            var name = $('#i-group-name');
+            var description = $('#i-group-description');
+            window.vbcknd.validation.clear_all_errors();
+            if ((window.vbcknd.validation.check_system_syntax(name) + window.vbcknd.validation.check_is_empty(description)) > 0) {
+                return;
+            }
+            $('#new-group-modal').modal('hide');
+            $('#group-name').text(name.val());
+            $('#group-description').text(description.val());
+            DoSave();
         });
 
         function DoSave() {

@@ -16,7 +16,8 @@ class Group_handler extends CI_Model
             $code = json_decode($row->code);
             $group['permissions'] = $code->allowed_interfaces;
             $group['users'] = $this->get_admin_group_users($row->name);
-            $group['ldap_groups'] = explode(',', $row->ldap_groups);
+            $ldap_array = json_decode($row->ldap_groups);
+            $group['ldap_groups'] = $ldap_array->ldap_groups;
             $grouplist[]=$group;
         }
         return $grouplist;
@@ -24,7 +25,8 @@ class Group_handler extends CI_Model
 
     function get_admin_group_users($group)
     {
-        $query = $this->db->get_where('users', array('admin_group' => $group));
+        $this->db->like('admin_group', $group, 'before');
+        $query = $this->db->get('users');
         $users = [];
         foreach ($query->result() as $row)
         {
@@ -45,7 +47,8 @@ class Group_handler extends CI_Model
             $code = json_decode($row->code);
             $group['permissions'] = $code->allowed_permissions;
             $group['users'] = $this->get_frontend_group_users($row->name);
-            $group['ldap_groups'] = explode(',', $row->ldap_groups);
+            $ldap_array = json_decode($row->ldap_groups);
+            $group['ldap_groups'] = $ldap_array->ldap_groups;
             $grouplist[] = $group;
         }
         return $grouplist;
@@ -53,7 +56,8 @@ class Group_handler extends CI_Model
 
     function get_frontend_group_users($group)
     {
-        $query = $this->db->get_where('users', array('frontend_group' => $group));
+        $this->db->like('frontend_group', $group, 'before');
+        $query = $this->db->get('users');
         $users = [];
         foreach($query->result() as $row)
         {
@@ -125,25 +129,39 @@ class Group_handler extends CI_Model
         }
     }
 
-    /*
-    function delete_groups($groups)
+    function delete_groups($groups_obj)
     {
-        $this->db->where_in('name',$groups);
-        return $this->db->delete('admin_groups');
+        if ($groups_obj->admin_groups != []) {
+            $this->db->where_in('name', $groups_obj->admin_groups);
+            $result1 = $this->db->delete('admin_groups');
+        } else {
+            $result1 = true;
+        }
+        if ($groups_obj->frontend_groups != []) {
+            $this->db->where_in('name', $groups_obj->frontend_groups);
+            $result2 = $this->db->delete('frontend_groups');
+        } else {
+            $result2 = true;
+        }
+        return ($result1 and $result2);
     }
 
-    function enable_groups($groups)
+    function enable_disable_groups($groups_obj, $value)
     {
-        $this->db->where_in('name',$groups);
-        return $this->db->update('admin_groups', array('active' => 1));
+        if ($groups_obj->admin_groups != []) {
+            $this->db->where_in('name', $groups_obj->admin_groups);
+            $result1 = $this->db->update('admin_groups', array('active' => $value));
+        } else {
+            $result1 = true;
+        }
+        if ($groups_obj->frontend_groups != []) {
+            $this->db->where_in('name', $groups_obj->frontend_groups);
+            $result2 = $this->db->update('frontend_groups', array('active' => $value));
+        } else {
+            $result2 = true;
+        }
+        return ($result1 and $result2);
     }
-
-    function disable_groups($groups)
-    {
-        $this->db->where_in('name',$groups);
-        return $this->db->update('admin_groups', array('active' => 0));
-    }
-    */
 
     private function parse_group($group)
     {
