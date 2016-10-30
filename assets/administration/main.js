@@ -13,6 +13,28 @@ window.vbcknd.auto_file_size_format = function (size) {
     } while (size > 1024);
     return Math.max(size, 0.01).toFixed(2) + byteUnits[i];
 };
+window.vbcknd.validation = {};
+window.vbcknd.validation.clear_all_errors = function () {
+    $('.has-error').removeClass('has-error');
+};
+
+window.vbcknd.validation.check_system_syntax = function (object) {
+    if (!object.val().match(/^[a-z0-9-]+$/) || object.val() === '') {
+        object.closest('.form-group').addClass('has-error');
+        return 1;
+    } else {
+        return 0;
+    }
+};
+
+window.vbcknd.validation.check_is_empty = function (object) {
+    if (object.val() === '') {
+        object.closest('.form-group').addClass('has-error');
+        return 1;
+    } else {
+        return 0;
+    }
+};
 
 $(document).ready(function () {
     var code_editor_callback;

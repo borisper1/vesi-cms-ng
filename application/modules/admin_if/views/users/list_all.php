@@ -11,20 +11,6 @@
         <li><a href="#" id="new-frontend-user"><i class="fa fa-fw fa-globe"></i> Utente pubblico</a></li>
     </ul>
 </div>
-<?php if ($ldap_enabled): ?>
-    <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            <i class="fa fa-hourglass-end"></i> Sincronizza <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a href="#" id="new-admin-user"><i class="fa fa-fw fa-hourglass-half"></i> Sincronizza selezionati</a>
-            </li>
-            <li><a href="#" id="new-frontend-user"><i class="fa fa-fw fa-hourglass-start"></i> Sincronizza tutti</a>
-            </li>
-        </ul>
-    </div>
-<?php endif; ?>
 <div class="btn-group hidden" id="users-actions">
     <button type="button" class="btn btn-default" id="enable-users"><span class="fa fa-check"></span> Attiva</button>
     <button type="button" class="btn btn-default" id="disable-users"><span class="fa fa-ban"></span> Revoca</button>
@@ -74,14 +60,6 @@
         Alcuni utenti registrati nel sito sono stati eliminati da LDAP. Eliminare gli utenti non necessari dal sito.
     </div>
 <?php endif; ?>
-<?php if ($ldap_users_obsolete_sync): ?>
-    <div class="alert alert-info" id="ldap-user-not-synced">
-        <i class="fa fa-info-circle"></i> <b>Alcuni utenti non sono stati sincronizzati recentemente con LDAP.</b><br>
-        Le informazioni (Nome, Gruppi derivati da LDAP e indirizzo e-mail) sull'utente potrebbero essere inesatte.
-        Sincronizzare gli
-        account per aggiornare le informazioni
-    </div>
-<?php endif; ?>
 
 <div id="ajax-cage">
     <?php if ($admin_users != []): ?>
@@ -109,14 +87,11 @@
                         data-enable="<?= $user['active'] ? 'true' : 'false' ?>">
                         <td>
                             <input type="checkbox" class="vcms-select-user" value="<?= $user['username'] ?>"> <a
-                                href="<?= base_url('admin/users/edit/' . $user['username']) ?>"><?= $user['username'] ?></a>
+                                href="<?= base_url('admin/users/edit/' . rawurlencode($user['username'])) ?>"><?= $user['username'] ?></a>
                             <?php if ($user['ldap_error'] === 1): ?>
                                 <i class="fa fa-exclamation-triangle tooltipped" data-toggle="tooltip"
                                    title="Impossibile connettersi a LDAP"></i>
                             <?php elseif ($user['ldap_error'] === 2): ?>
-                                <i class="fa fa-hourglass-end tooltipped" data-toggle="tooltip"
-                                   title="L'utente non è stato sincronizzato recentemente con LDAP"></i>
-                            <?php elseif ($user['ldap_error'] === 3): ?>
                                 <i class="fa fa-user-times tooltipped" data-toggle="tooltip"
                                    title="L'utente non esiste in LDAP"></i>
                             <?php endif; ?>
@@ -186,14 +161,11 @@
                         data-enable="<?= $user['active'] ? 'true' : 'false' ?>">
                         <td>
                             <input type="checkbox" class="vcms-select-user" value="<?= $user['username'] ?>"> <a
-                                href="<?= base_url('admin/users/edit/' . $user['username']) ?>"><?= $user['username'] ?></a>
+                                href="<?= base_url('admin/users/edit/' . rawurlencode($user['username'])) ?>"><?= $user['username'] ?></a>
                             <?php if ($user['ldap_error'] === 1): ?>
                                 <i class="fa fa-exclamation-triangle tooltipped" data-toggle="tooltip"
                                    title="Impossibile connettersi a LDAP"></i>
                             <?php elseif ($user['ldap_error'] === 2): ?>
-                                <i class="fa fa-hourglass-end tooltipped" data-toggle="tooltip"
-                                   title="L'utente non è stato sincronizzato recentemente con LDAP"></i>
-                            <?php elseif ($user['ldap_error'] === 3): ?>
                                 <i class="fa fa-user-times tooltipped" data-toggle="tooltip"
                                    title="L'utente non esiste in LDAP"></i>
                             <?php endif; ?>

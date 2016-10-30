@@ -19,21 +19,14 @@
         Controllare la configurazione dell'autenticazione LDAP. Il server LDAP potrebbe essere non disponibile
         oppure non si dispone delle autorizzazioni necessarie per accedere alla directory.<br>
         Questo errore potrebbe impedire l'accesso per gli utenti che usano autenticazione LDAP<br>
-        <a href="<?= base_url('admin/edit' . $username) ?>" class="alert-link">Ricaricare</a> la pagina per riprovare
+        <a href="<?= base_url('admin/edit/' . $username) ?>" class="alert-link">Ricaricare</a> la pagina per riprovare
     </div>
 <?php endif; ?>
-<?php if ($ldap_error == 3): ?>
+<?php if ($ldap_error == 2): ?>
     <div class="alert alert-danger" id="ldap-user-deleted">
         <i class="fa fa-exclamation-circle"></i> <b>L'utente è stato eliminato da LDAP.</b><br>
         Questo utente non è stato trovato nella directory LDAP. L'utente non funzionerà se non si ricrea l'utente in
         LDAP
-    </div>
-<?php endif; ?>
-<?php if ($ldap_error == 2): ?>
-    <div class="alert alert-info" id="ldap-user-not-synced">
-        <i class="fa fa-info-circle"></i> <b>L'utente non è stato sincronizzato recentemente con LDAP.</b><br>
-        Le informazioni (Nome, Gruppi derivati da LDAP e indirizzo e-mail) sull'utente potrebbero essere inesatte.
-        Sincronizzare l'account per aggiornare le informazioni
     </div>
 <?php endif; ?>
 

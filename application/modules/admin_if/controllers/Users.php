@@ -12,6 +12,7 @@ class Users extends MX_Controller
 
     function edit($user)
     {
+        $user = rawurldecode($user);
         $this->load->model('group_handler');
         if ($user === 'new') {
             $this->load->view('users/new');
@@ -20,7 +21,7 @@ class Users extends MX_Controller
             $user_data = $this->authentication_handler->get_user_data($user);
             $data = array(
                     'admin_groups' => $this->group_handler->get_admin_group_list(),
-                    'frontend_groups' => [],
+                    'frontend_groups' => $this->group_handler->get_frontend_group_list(),
                 ) + $user_data;
             if ($data['type'] == 1) {
                 $this->load->view('users/edit_ldap', $data);

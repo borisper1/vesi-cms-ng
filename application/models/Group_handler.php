@@ -12,7 +12,7 @@ class Group_handler extends CI_Model
             $group=[];
             $group['name']=$row->name;
             $group['active']=(boolean)$row->active;
-            $group['description']=$row->fullname;
+            $group['description'] = $row->full_name;
             $code = json_decode($row->code);
             $group['permissions'] = $code->allowed_interfaces;
             $group['users'] = $this->get_admin_group_users($row->name);
@@ -41,7 +41,7 @@ class Group_handler extends CI_Model
             $group = [];
             $group['name'] = $row->name;
             $group['active'] = (boolean)$row->active;
-            $group['description'] = $row->fullname;
+            $group['description'] = $row->full_name;
             $code = json_decode($row->code);
             $group['permissions'] = $code->allowed_permissions;
             $group['users'] = $this->get_frontend_group_users($row->name);
@@ -63,49 +63,69 @@ class Group_handler extends CI_Model
     }
 
 
-    function get_group_data($group)
+    function get_admin_group_data($group)
     {
         $query = $this->db->get_where('admin_groups', array('name' => $group));
         $row = $query->row();
         if (isset($row))
         {
-            $data['description'] = $row->fullname;
+            $data['description'] = $row->full_name;
             $processed_code = json_decode($row->code);
             $data['allowed_interfaces_csv'] = implode(',', $processed_code->allowed_interfaces);
             $data['use_content_filter'] = $processed_code->use_content_filter;
             $data['content_filter_mode'] = $processed_code->content_filter_mode;
             $data['content_filter_directives'] = implode(',', $processed_code->content_filter_directives);
+            $data['ldap_linked_groups'] = json_decode($row->ldap_groups, true)['ldap_groups'];
         }
         return $data;
     }
 
-    function save($group, $description, $code)
+    function get_frontend_group_data($group)
+    {
+        $query = $this->db->get_where('frontend_groups', array('name' => $group));
+        $row = $query->row();
+        if (isset($row)) {
+            $data['description'] = $row->full_name;
+            $processed_code = json_decode($row->code);
+            $data['allowed_permissions_csv'] = implode(',', $processed_code->allowed_permissions);
+            $data['ldap_linked_groups'] = json_decode($row->ldap_groups, true)['ldap_groups'];
+        }
+        return $data;
+    }
+
+    function save($name, $type, $description, $code, $ldap_groups)
     {
         $this->load->library('validation');
         if (!$this->validation->check_json($code))
         {
             return false;
         }
+        if (!$this->validation->check_json($ldap_groups)) {
+            return false;
+        }
         $data = array(
-            'fullname' => $description,
-            'code' => $code
+            'full_name' => $description,
+            'code' => $code,
+            'ldap_groups' => $ldap_groups
         );
+
+        $table = $type == 'admin' ? 'admin_groups' : 'frontend_groups';
         //create a new content if the id does not exists
-        $query=$this->db->get_where('admin_groups',array('name'=> $group));
+        $query = $this->db->get_where($table, array('name' => $name));
         if ($query->num_rows() > 0)
         {
-            $this->db->where('name', $group);
-            return $this->db->update('admin_groups', $data);
+            $this->db->where('name', $name);
+            return $this->db->update($table, $data);
         }
         else
         {
-            $data['name'] = $group;
+            $data['name'] = $name;
             $data['active'] = 0;
-            return $this->db->insert('admin_groups', $data);
+            return $this->db->insert($table, $data);
         }
     }
 
-
+    /*
     function delete_groups($groups)
     {
         $this->db->where_in('name',$groups);
@@ -123,6 +143,7 @@ class Group_handler extends CI_Model
         $this->db->where_in('name',$groups);
         return $this->db->update('admin_groups', array('active' => 0));
     }
+    */
 
     private function parse_group($group)
     {

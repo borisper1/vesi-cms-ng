@@ -13,9 +13,10 @@ class Groups extends MX_Controller
         $this->load->view('groups/list', $data);
     }
 
-    function edit($id)
+    function edit_admin($id)
     {
         $this->load->model('page_handler');
+        $this->load->model('ldap_user_handler');
         if($id=='new')
         {
             $data['group_name']='';
@@ -29,14 +30,45 @@ class Groups extends MX_Controller
         else
         {
             $this->load->model('group_handler');
-            $data = $this->group_handler->get_group_data($id);
+            $data = $this->group_handler->get_admin_group_data($id);
             $data['group_name']=$id;
             $data['is_new']=false;
         }
         $data['ldap_enabled'] = (boolean)$this->db_config->get('authentication', 'enable_ldap');
+        if ($data['ldap_enabled']) {
+            $data['ldap_failed'] = !(bool)$this->ldap_user_handler->ldap_admin_connect();
+            if (!$data['ldap_failed']) {
+                $data['ldap_groups'] = $this->ldap_user_handler->get_all_groups();
+            }
+        }
         $data['permission_groups'] = $this->modules_handler->get_interfaces_raw_array();
         $data['containers']=$this->page_handler->get_containers_list();
         $this->load->view('groups/edit_admin', $data);
+    }
+
+    function edit_frontend($id)
+    {
+        $this->load->model('ldap_user_handler');
+        if ($id == 'new') {
+            $data['group_name'] = '';
+            $data['description'] = '';
+            $data['allowed_permissions_csv'] = '';
+            $data['is_new'] = true;
+        } else {
+            $this->load->model('group_handler');
+            $data = $this->group_handler->get_frontend_group_data($id);
+            $data['group_name'] = $id;
+            $data['is_new'] = false;
+        }
+        $data['ldap_enabled'] = (boolean)$this->db_config->get('authentication', 'enable_ldap');
+        if ($data['ldap_enabled']) {
+            $data['ldap_failed'] = !(bool)$this->ldap_user_handler->ldap_admin_connect();
+            if (!$data['ldap_failed']) {
+                $data['ldap_groups'] = $this->ldap_user_handler->get_all_groups();
+            }
+        }
+        $data['permissions'] = $this->modules_handler->get_frontend_permissions_array();
+        $this->load->view('groups/edit_frontend', $data);
     }
 
     function get_pages()
@@ -56,10 +88,12 @@ class Groups extends MX_Controller
     function save()
     {
         $name = $this->input->post('name');
+        $type = $this->input->post('type');
         $description = rawurldecode($this->input->post('description'));
         $code = rawurldecode($this->input->post('code'));
+        $ldap_groups = rawurldecode($this->input->post('ldap_groups'));
         $this->load->model('group_handler');
-        $response = $this->group_handler->save($name, $description, $code);
+        $response = $this->group_handler->save($name, $type, $description, $code, $ldap_groups);
         if($response)
         {
             echo 'success';
@@ -70,6 +104,7 @@ class Groups extends MX_Controller
         }
     }
 
+    /*
     function delete(){
         $groups = explode(',', $this->input->post('groups'));
         $this->load->model('group_handler');
@@ -111,4 +146,5 @@ class Groups extends MX_Controller
             echo 'failed - 500';
         }
     }
+    */
 }

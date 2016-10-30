@@ -1,10 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><div class="page-header"><h1><i class="fa fa-lock"></i> Gruppi e permessi</h1></div>
+<span id="page-mode" class="hidden">edit_admin</span>
 <h3 class="pull-left inline"><i class="fa fa-pencil"></i> Modifica gruppo: <span id="group-name"><?=$group_name ?></span> <small><i><span id="group-description"><?=$description ?></span></i></small></h3>
 <div class="btn-group pull-right spaced" id="group-actions">
     <button type="button" class="btn btn-default" id="save-edit"><i class="fa fa-save"></i> Salva</button>
-    <button type="button" class="btn btn-default" id="edit-code" disabled><i class="fa fa-code"></i> Modifica codice</button>
     <button type="button" class="btn btn-default" id="refresh"><i class="fa fa-refresh"></i> Aggiorna</button>
     <button type="button" class="btn btn-default" id="close-edit"><i class="fa fa-remove"></i> Chiudi</button>
 </div>
@@ -16,26 +16,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 <div class="alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Modifica del gruppo...</div>
 
-
 <span id="is-new" class="hidden"><?=$is_new ? 'true' : 'false' ?></span>
 
 <?php if ($ldap_enabled): ?>
+    <?php if ($ldap_failed): ?>
+        <div class="alert alert-danger" id="ldap-connect-failed-all">
+            <i class="fa fa-exclamation-circle"></i> <b>Non è stato possibile connettersi a LDAP.</b><br>
+            Controllare la configurazione dell'autenticazione LDAP. Il server LDAP potrebbe essere non disponibile
+            oppure non si dispone delle autorizzazioni necessarie per accedere alla directory.<br>
+            Non è possibile asociare gruppi LDAP.<br>
+            <a href="<?= base_url('admin/groups/edit_admin/' . $group_name) ?>" class="alert-link">Ricaricare</a> la
+            pagina per riprovare
+        </div>
+    <?php endif; ?>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Gruppi LDAP associati</h3>
         </div>
         <div class="panel-body">
             <p><b>Scegliere i gruppi LDAP a cui associare questo gruppo:</b></p>
-            <div class="btn-group spaced" data-toggle="buttons">
-                <label class="btn btn-default active">
-                    <input type="radio" name="ldapgrp-editor-mode" id="ldapgrp-edit-gui" checked> <i
-                        class="fa fa-list-alt"></i> Editor grafico
-                </label>
-                <label class="btn btn-default">
-                    <input type="radio" name="ldapgrp-editor-mode" id="ldapgrp-edit-code"> <i class="fa fa-code"></i>
-                    Modifica codice
-                </label>
-            </div>
             <div id="ldapgrp-editor-gui" class="container-fluid">
                 <div class="btn-group btn-group-sm" role="group">
                     <button type="button" class="btn btn-default" id="ldapgrp-gui-add"><i class="fa fa-plus-square"></i>
@@ -43,23 +42,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </button>
                 </div>
                 <div class="well" id="gui-ldap-editor-area">
-
+                    <?php foreach ($ldap_linked_groups as $group): ?>
+                        <span class="label label-default ldap-group-element">
+                        <span class="ldap-element"><?= $group ?></span>
+                        <a class="delete-ldap-element lmb tooltipped"
+                           data-toggle="tooltip" title="Elimina"><i class="fa fa-remove"></i></a>
+                    </span>&nbsp;
+                    <?php endforeach; ?>
                 </div>
                 <div class="hidden" id="ldap-group-template">
-                    <span class="label label-success ldap-group-element">
+                    <span class="label label-default ldap-group-element">
                         <span class="ldap-element"></span>
-                        <a href="#gui-ldap-editor-area" class="delete-filter-element lmb tooltipped"
+                        <a class="delete-ldap-element lmb tooltipped"
                            data-toggle="tooltip" title="Elimina"><i class="fa fa-remove"></i></a>
                     </span>
                 </div>
-            </div>
-            <div id="ldapgrp-editor-code" class="container-fluid hidden">
-                <p><b>Inserire l'espressione del filtro:</b></p>
-                <textarea class="form-control" rows="4" placeholder="Espressione CSV dei gruppi LDAP"
-                          id="cfilter-code-expression"><?= $content_filter_directives ?></textarea>
-                <p>Inserire nomi di contenitori o coppie <code>RDN (class=value)</code> separando i valori con una <kbd>,</kbd>.
-                    L'input non verrà controllato, un errore potrebbe causare il blocco dell'accesso da parte degli
-                    utenti a cui si applicano queste restrizioni.</p>
             </div>
         </div>
     </div>
@@ -71,7 +68,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
     <div class="panel-body">
         <p>Selezionare le interfacce amministrative a cui questo gruppo di utenti potrà accedere (alcune interfacce sono riservate al gruppo <span class="label label-danger">super-users</span>).</p>
-        <span class="hidden" id="onload_allowed_interfaces"><?=$allowed_interfaces_csv ?></span>
+        <span class="hidden" id="onload_allowed_permissions"><?= $allowed_interfaces_csv ?></span>
         <?php foreach($permission_groups as $permission_group): ?>
             <h3><i class="fa <?=$permission_group['icon'] ?>"></i> <?=$permission_group['label'] ?></h3>
             <p><?=$permission_group['description'] ?></p>
@@ -203,6 +200,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
                 <button type="button" class="btn btn-success" id="new-container-filter-modal-confirm" data-dismiss="modal"><i class="fa fa-plus"></i> Aggiungi contenitore</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="new-ldap-group-modal" tabindex="-1" role="dialog"
+     aria-labelledby="new-ldap-group-modal-label" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="new-ldap-group-modal-label"><i class="fa fa-plus"></i> Associa gruppo LDAP
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="i-ldap-group">Scegli il gruppo LDAP da associare (DN completo)</label>
+                    <select class="form-control selectpicker" id="i-ldap-group">
+                        <?php foreach ($ldap_groups as $group_i): ?>
+                            <option
+                                data-content="<?= $group_i['cn'] ?> <span class='label label-default'><?= $group_i['dn'] ?></span> "><?= $group_i['dn'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <label><input type="checkbox" id="hide-builtin-ldap-groups"> Nascondi gruppi predefiniti di Active
+                    Directory <code>CN=Builtin</code></label>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
+                </button>
+                <button type="button" class="btn btn-success" id="new-ldap-group-modal-confirm" data-dismiss="modal"><i
+                        class="fa fa-plus"></i> Associa gruppo LDAP
+                </button>
             </div>
         </div>
     </div>

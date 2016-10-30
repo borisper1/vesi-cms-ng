@@ -1,6 +1,16 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 ?><div class="page-header"><h1><i class="fa fa-lock"></i> Gruppi e permessi</h1></div>
-<button type="button" class="btn btn-success" id="new-group"><i class="fa fa-plus"></i> Nuovo gruppo</button>
+<span id="page-mode" class="hidden">list</span>
+<div class="btn-group" role="group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+        <i class="fa fa-plus"></i> Nuovo <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li><a href="#" id="new-admin-group"><i class="fa fa-fw fa-wrench"></i> Gruppo amministrativo</a></li>
+        <li><a href="#" id="new-frontend-group"><i class="fa fa-fw fa-globe"></i> Gruppo pubblico</a></li>
+    </ul>
+</div>
 <div class="btn-group hidden" id="group-actions">
     <button type="button" class="btn btn-default" id="enable-groups"><span class="fa fa-check"></span> Attiva</button>
     <button type="button" class="btn btn-default" id="disable-groups"><span class="fa fa-ban"></span> Blocca</button>
@@ -39,10 +49,11 @@
         </tr>
         <?php foreach ($admin_groups as $group): ?>
             <tr>
-                <td><input type="checkbox" class="vcms-select-group" value="<?= $group['name'] ?>"> <a
-                        href="<?= base_url('admin/groups/edit/' . $group['name']) ?>"><?= $group['name'] ?></a></td>
+                <td><input type="checkbox" class="vcms-select-group" value="<?= $group['name'] ?>" data-type="admin"> <a
+                        href="<?= base_url('admin/groups/edit_admin/' . $group['name']) ?>"><?= $group['name'] ?></a>
+                </td>
                 <td><?= $group['description'] ?></td>
-                <td><?= $group['active'] ? "<i class=\"fa fa-check\"></i> Attivo" : "<i class=\"fa fa-ban\"></i> Bloccato" ?></td>
+                <td><?= $group['active'] ? "<i class=\"fa fa-check\"></i> Attivo" : "<i class=\"fa fa-ban\"></i> Revocato" ?></td>
                 <td>
                     <?php foreach ($group['permissions'] as $perm): ?>
                         <span class="label label-info"><?= $perm ?></span>
@@ -97,9 +108,11 @@
         </tr>
         <?php foreach ($frontend_groups as $group): ?>
             <tr>
-                <td><input type="checkbox" class="vcms-select-group" value="<?=$group['name'] ?>"> <a href="<?=base_url('admin/groups/edit/'.$group['name']) ?>"><?=$group['name'] ?></a></td>
+                <td><input type="checkbox" class="vcms-select-group" value="<?= $group['name'] ?>" data-type="frontend">
+                    <a href="<?= base_url('admin/groups/edit_frontend/' . $group['name']) ?>"><?= $group['name'] ?></a>
+                </td>
                 <td><?=$group['description'] ?></td>
-                <td><?=$group['active'] ? "<i class=\"fa fa-check\"></i> Attivo" : "<i class=\"fa fa-ban\"></i> Bloccato" ?></td>
+                <td><?= $group['active'] ? "<i class=\"fa fa-check\"></i> Attivo" : "<i class=\"fa fa-ban\"></i> Revocato" ?></td>
                 <td>
                     <?php foreach ($group['permissions'] as $perm): ?>
                         <span class="label label-info"><?= $perm ?></span>

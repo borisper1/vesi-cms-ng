@@ -350,6 +350,12 @@ class Modules_handler
         file_put_contents(APPPATH . "config/config_interfaces.json", json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 
+    function get_frontend_permissions_array()
+    {
+        $schema = json_decode(file_get_contents(APPPATH . "config/frontend_permissions.json"), true);
+        return $schema['frontend_permissions'];
+    }
+
 
     function install_plugin($store_name)
     {

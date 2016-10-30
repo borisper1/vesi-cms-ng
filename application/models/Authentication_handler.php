@@ -11,7 +11,6 @@ class Authentication_handler extends CI_Model
         }
         $auth_type = $this->local_user_handler->get_auth_type();
         if ($auth_type === 0) {
-            //Standard local user
             if (!$this->local_user_handler->check_credentials($password)) {
                 return array(false, 'invalid_credentials');
             }
@@ -22,7 +21,8 @@ class Authentication_handler extends CI_Model
             if (!$result) {
                 return array(false, 'ldap_no_bind');
             }
-            //TODO: Sync LDAP user
+            $this->ldap_sync_user($username);
+            $this->local_user_handler->complete_login($username);
         }
         $active = $this->local_user_handler->is_active();
         if ($active === 1) {
@@ -31,7 +31,6 @@ class Authentication_handler extends CI_Model
         if ($active === 2) {
             return array(false, 'user_locked');
         }
-        //WARNING LDAP group synchronization happens only ONCE AT LOGIN, to enforce new groups all sessions must be revoked!
         $admin_group = $this->local_user_handler->get_admin_group();
         return array(true, $username, $admin_group);
     }
@@ -63,23 +62,21 @@ class Authentication_handler extends CI_Model
     function prepare_users_list()
     {
         $this->load->model('local_user_handler');
+        $this->load->model('ldap_user_handler');
         $local_db = $this->local_user_handler->get_full_user_db_list();
         $ldap_enabled = (boolean)$this->db_config->get('authentication', 'enable_ldap');
         if ($ldap_enabled) {
-            //TODO: DO A LDAP test HERE
-            $ldap_failed = false;
+            $ldap_failed = !$this->ldap_user_handler->ldap_admin_connect();
         } else {
             $ldap_failed = false;
         }
         $ldap_users_deleted = false;
-        $ldap_users_obsolete_sync = false;
         $ldap_leftovers = false;
         $admin_users = [];
         $frontend_users = [];
         foreach ($local_db as $user) {
             $result = $this->process_user_data($user, $ldap_enabled, $ldap_failed);
-            $ldap_users_deleted = $result['user_data']['ldap_error'] == 3 ? true : $ldap_users_deleted;
-            $ldap_users_obsolete_sync = $result['user_data']['ldap_error'] == 2 ? true : $ldap_users_obsolete_sync;
+            $ldap_users_deleted = $result['user_data']['ldap_error'] == 2 ? true : $ldap_users_deleted;
             $ldap_leftovers = $result['ldap_leftovers'] ? true : $ldap_leftovers;
             if ($user->admin_group != '') {
                 $admin_users[] = $result['user_data'];
@@ -93,7 +90,6 @@ class Authentication_handler extends CI_Model
             'ldap_failed' => $ldap_failed,
             'ldap_leftovers' => $ldap_leftovers,
             'ldap_users_deleted' => $ldap_users_deleted,
-            'ldap_users_obsolete_sync' => $ldap_users_obsolete_sync,
             'admin_users' => $admin_users,
             'frontend_users' => $frontend_users
         );
@@ -114,34 +110,32 @@ class Authentication_handler extends CI_Model
             $result['ldap_leftovers'] = false;
         } elseif (intval($user->auth_method) === 1) {
             $result['ldap_leftovers'] = !$ldap_enabled;
+            $ldap_array = array(
+                'admin_group_from_ldap' => false,
+                'frontend_group_from_ldap' => false,
+            );
             if (!$ldap_enabled or $ldap_failed) {
-                $ldap_array = array(
-                    'ldap_error' => 1,
-                    'no_local_group' => false,
-                    'admin_group_from_ldap' => false,
-                    'frontend_group_from_ldap' => false
-                );
+                $ldap_array['ldap_error'] = 1;
             } else {
-                $ldap_array = [];
-                //TODO: Check LDAP USER exists
-                $ldap_array['admin_group_from_ldap'] = true;
-                $ldap_array['no_local_group'] = ($user->frontend_group == 'ldap::' and $user->admin_group == 'ldap::');
-                if (strpos($user->admin_group, 'ldap::') === 0) {
-                    //LDAP derived group
-                    $ldap_array['admin_group_from_ldap'] = true;
-                    $user->admin_group = substr($user->admin_group, 6);
-                }
-                if (strpos($user->frontend_group, 'ldap::') === 0) {
-                    //LDAP derived group
-                    $ldap_array['frontend_group_from_ldap'] = true;
-                    $user->frontend_group = substr($user->frontend_group, 6);
-                }
-                $ldap_array['ldap_error'] = 0;
-                if (strtotime($user->last_login) <= strtotime("-7 days")) {
+                $ldap_result = $this->ldap_user_handler->get_ldap_user_info($user_row->username);
+                if ($ldap_result) {
+                    $ldap_array['ldap_error'] = 0;
+                    //TODO: Synchronize user data
+                } else {
                     $ldap_array['ldap_error'] = 2;
                 }
             }
-
+            $ldap_array['no_local_group'] = ($user->frontend_group == 'ldap::' and $user->admin_group == 'ldap::');
+            if (strpos($user->admin_group, 'ldap::') === 0) {
+                //LDAP derived group
+                $ldap_array['admin_group_from_ldap'] = true;
+                $user->admin_group = substr($user->admin_group, 6);
+            }
+            if (strpos($user->frontend_group, 'ldap::') === 0) {
+                //LDAP derived group
+                $ldap_array['frontend_group_from_ldap'] = true;
+                $user->frontend_group = substr($user->frontend_group, 6);
+            }
         }
         $result['user_data'] = array(
             'username' => $user->username,
@@ -161,6 +155,7 @@ class Authentication_handler extends CI_Model
     function get_user_data($username)
     {
         $this->load->model('local_user_handler');
+        $this->load->model('ldap_user_handler');
         $ldap_enabled = (boolean)$this->db_config->get('authentication', 'enable_ldap');
 
         if (!$this->local_user_handler->load_user($username)) {
@@ -168,8 +163,7 @@ class Authentication_handler extends CI_Model
         }
         $user = $this->local_user_handler->get_full_user_data();
         if ($ldap_enabled) {
-            //TODO: DO A LDAP test HERE
-            $ldap_failed = false;
+            $ldap_failed = !$this->ldap_user_handler->ldap_admin_connect();
         } else {
             $ldap_failed = false;
         }
@@ -208,5 +202,24 @@ class Authentication_handler extends CI_Model
         }
         $write_array['active'] = $user_object->active;
         return $this->local_user_handler->save_edit($username, $write_array);
+    }
+
+    function ldap_sync_user($username)
+    {
+        //Check if specific attribute import is enabled
+        $this->load->model('ldap_user_handler');
+        $this->load->model('local_user_handler');
+        $result = $this->ldap_user_handler->get_ldap_user_info($username);
+        $sync_full_name = true;
+        $sync_email = true;
+        $write_array = [];
+        if ($sync_full_name and $result['full_name']) {
+            $write_array['full_name'] = $result['full_name'];
+        }
+        if ($sync_email and $result['email']) {
+            $write_array['email'] = $result['email'];
+        }
+        //TODO: Calculate LDAP Groups if required
+        $this->local_user_handler->save_edit($username, $write_array);
     }
 }
