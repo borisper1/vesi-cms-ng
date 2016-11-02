@@ -119,9 +119,9 @@ class Page_handler extends CI_Model
             return false;
         }
         $data=array(
-            'name' => $name,
-            'container' => $container,
-            'title' => $title,
+            'name' => strip_tags($name),
+            'container' => strip_tags($container),
+            'title' => strip_tags($title),
             'code' => $json,
         );
         $query=$this->db->get_where('pages',array('id'=> $id));
@@ -132,7 +132,7 @@ class Page_handler extends CI_Model
         }
         else
         {
-            $data['id']=$id;
+            $data['id'] = strip_tags($id);
             return $this->db->insert('pages', $data);
         }
     }

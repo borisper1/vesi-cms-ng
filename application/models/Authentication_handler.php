@@ -148,7 +148,8 @@ class Authentication_handler extends CI_Model
             'email' => $user->email,
             'active' => intval($user->active),
             'status' => intval($user->active) === 1 ? (intval($user->failed_access) < 5 ? 1 : 2) : 0,
-            'last_login' => $user->last_login
+            'last_login' => $user->last_login,
+            'pending_pwd_reset' => $user->auth_method == 0 ? ($this->check_pending_pwd_requests($user->username) != false) : false
         );
         $result['user_data'] += $ldap_array;
         return $result;
@@ -216,10 +217,10 @@ class Authentication_handler extends CI_Model
         $sync_email = true;
         $write_array = [];
         if ($sync_full_name and $result['full_name']) {
-            $write_array['full_name'] = $result['full_name'];
+            $write_array['full_name'] = strip_tags($result['full_name']);
         }
         if ($sync_email and $result['email']) {
-            $write_array['email'] = $result['email'];
+            $write_array['email'] = strip_tags($result['email']);
         }
         //Calculate LDAP Groups if required
         $this->local_user_handler->load_user($username);
@@ -261,5 +262,59 @@ class Authentication_handler extends CI_Model
             $write_array['frontend_group'] = 'ldap::' . $current_group['name'];
         }
         $this->local_user_handler->save_edit($username, $write_array);
+    }
+
+    function request_password_reset($user)
+    {
+        $this->load->model('local_user_handler');
+        if (!$this->local_user_handler->load_user($user)) {
+            return false;
+        }
+        if ($this->check_pending_pwd_requests($user)) {
+            return false;
+        }
+        $token = bin2hex($this->security->get_random_bytes(32));
+        $id = uniqid();
+        $time = date('Y-m-d H:i:s');
+        $expires = date('Y-m-d H:i:s', strtotime('+24 hours'));
+        $this->lang->load('email_templates_lang');
+        $template = trim($this->lang->line('email_templates_password_reset'));
+        $website_name = $this->db_config->get('general', 'website_name');
+        $email = str_replace('[[website]]', $website_name, $template);
+        $email = str_replace('[[url]]', base_url('system/pwdreset/' . $id . '/' . $token), $email);
+        $subject = 'Richiesta reset password - ' . $website_name;
+        $this->load->library('email_wrapper');
+        $to = [];
+        $to[] = array(
+            'name' => $this->local_user_handler->get_full_name(),
+            'email' => $this->local_user_handler->get_email()
+        );
+        $result = $this->email_wrapper->send_mail($to, $subject, $email);
+        if ($result) {
+            $data = array(
+                'token' => $token,
+                'user' => $user,
+            );
+            $data = json_encode($data);
+            $this->load->model('pending_operations_handler');
+            $result2 = $this->pending_operations_handler->register_new_operation($id, $time, $expires, 'authentication', 'pwd_reset', $data);
+            if ($result2) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function check_pending_pwd_requests($user)
+    {
+        $this->load->model('pending_operations_handler');
+        $ops = $this->pending_operations_handler->get_pending_operations('authentication', 'pwd_reset');
+        foreach ($ops as $op) {
+            $op_data = json_decode($op['data']);
+            if ($op_data->user == $user and new DateTime() < new DateTime($op['expires'])) {
+                return true;
+            }
+        }
+        return false;
     }
 }

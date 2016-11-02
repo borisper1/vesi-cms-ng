@@ -24,10 +24,10 @@ class Email_wrapper
         $mail = new PHPMailer;
         $mail->isSMTP();
         $mail->Host = $this->smtp_data['hostname'];
-        $mail->SMTPAuth = $this->smtp_data['auth'];
+        $mail->SMTPAuth = (bool)$this->smtp_data['auth'];
         $mail->Username = $this->smtp_data['user'];
         $mail->Password = $this->smtp_data['password'];
-        $mail->SMTPSecure = $this->smtp_data['ssl'];
+        $mail->SMTPSecure = $this->smtp_data['ssl'] ? 'tls' : '';
         $mail->Port = $this->smtp_data['port'];
         $mail->setFrom($this->smtp_data['address'], $this->CI->config->item('site_name'));
         foreach ($to as $recipient) {
@@ -35,6 +35,6 @@ class Email_wrapper
         }
         $mail->Subject = $subject;
         $mail->msgHTML($html);
-        $mail->send();
+        return $mail->send();
     }
 }

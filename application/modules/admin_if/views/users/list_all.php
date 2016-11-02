@@ -7,34 +7,15 @@
         <i class="fa fa-plus"></i> Nuovo <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-        <li><a href="#" id="new-admin-user"><i class="fa fa-fw fa-wrench"></i> Utente amministrativo</a></li>
-        <li><a href="#" id="new-frontend-user"><i class="fa fa-fw fa-globe"></i> Utente pubblico</a></li>
+        <li><a href="#" id="new-local-user"><i class="fa fa-fw fa-database"></i> Utente locale</a></li>
+        <li <?= $ldap_enabled ? '' : 'class="disabled"' ?>><a href="#" id="new-LDAP-user"><i
+                    class="fa fa-fw fa-server"></i> Utente LDAP</a></li>
     </ul>
 </div>
 <div class="btn-group hidden" id="users-actions">
     <button type="button" class="btn btn-default" id="enable-users"><span class="fa fa-check"></span> Attiva</button>
     <button type="button" class="btn btn-default" id="disable-users"><span class="fa fa-ban"></span> Revoca</button>
     <button type="button" class="btn btn-danger" id="delete-users"><span class="fa fa-trash"></span> Elimina</button>
-    <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            <i class="fa fa-wrench"></i> Gestisci <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a href="#" id="set-admin-local-group"><i class="fa fa-fw  fa-lock"></i> Assegna gruppo amministrativo
-                    locale</a></li>
-            <li><a href="#" id="set-frontend-local-group"><i class="fa-fw  fa fa-lock"></i> Assegna gruppo pubblico
-                    locale</a></li>
-            <?php if ($ldap_enabled): ?>
-                <li><a href="#" id="set-admin-ldap-group"><i class="fa fa-fw  fa-plug"></i> Usa gruppo amministrativo
-                        LDAP</a></li>
-                <li><a href="#" id="set-frontend-ldap-group"><i class="fa fa-fw  fa-plug"></i> Usa gruppo pubblico LDAP</a>
-                </li>
-            <?php endif; ?>
-            <li role="separator" class="divider"></li>
-            <li><a href="#" id="password-reset"><i class="fa fa-fw fa-key"></i> Resetta password</a></li>
-        </ul>
-    </div>
 </div>
 <br><br>
 <?php if ($ldap_failed): ?>
@@ -205,4 +186,57 @@
             </table>
         </div>
     <?php endif; ?>
+</div>
+
+<div class="modal fade" id="new-local-user-modal" tabindex="-1" role="dialog" aria-labelledby="new-group-modal-label"
+     aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="new-local-user-label"><i class="fa fa-plus"></i> Crea nuovo utente locale
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <p class="text-warning"><i class="fa fa-warning"></i> Attenzione: non sarà possibile modificare il nome
+                    utente in seguito</p>
+                <div class="form-group">
+                    <label for="i-group-name">Inserire il nome utente per il nuovo utente</label>
+                    <input type="text" class="form-control" id="i-local-username" placeholder="Nome utente">
+                    <span class="help-block">Non può contenere spazi</span>
+                </div>
+                <div class="form-group">
+                    <label for="i-parent-link-page">Inserire il nome completo dell'utente</label>
+                    <input type="text" class="form-control" id="i-local-fullname" placeholder="Nome completo">
+                </div>
+                <div class="form-group">
+                    <label for="i-parent-link-page">Inserire l'indirizzo e-mail dell'utente</label>
+                    <input type="email" class="form-control" id="i-local-email" placeholder="E-mail">
+                </div>
+                <div class="form-group">
+                    <label>Metodo di inserimento password:</label>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="local-pwd-mode" id="i-local-pwd-mode-email" value="email">
+                            Richiedi una password via e-mail
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="local-pwd-mode" id="i-local-pwd-mode-none" value="none">
+                            Non inserire una password ora, sarà possibile inserire una password nell'editor utente
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
+                </button>
+                <button type="button" class="btn btn-success" id="new-local-user-modal-confirm"><i
+                        class="fa fa-plus"></i> Crea utente
+                </button>
+            </div>
+        </div>
+    </div>
 </div>

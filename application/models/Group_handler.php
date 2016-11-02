@@ -108,7 +108,7 @@ class Group_handler extends CI_Model
             return false;
         }
         $data = array(
-            'full_name' => $description,
+            'full_name' => strip_tags($description),
             'code' => $code,
             'ldap_groups' => $ldap_groups
         );
@@ -123,7 +123,7 @@ class Group_handler extends CI_Model
         }
         else
         {
-            $data['name'] = $name;
+            $data['name'] = strip_tags($name);
             $data['active'] = 0;
             return $this->db->insert($table, $data);
         }

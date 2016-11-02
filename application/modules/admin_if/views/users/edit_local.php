@@ -15,10 +15,8 @@
 
 <?php if ($status == 2): ?>
     <div class="alert alert-info" id="user_locked">
-        <p><i class="fa fa-info-circle"></i> <b>L'utente è bloccato a causa di troppi accessi falliti.</b></p>
-        <p>
-            <button type="button" class="btn btn-default" id="unlock-account"><i class="fa fa-unlock"></i> Sblocca
-            </button>
+        <p><i class="fa fa-info-circle"></i> <b>L'utente è stato bloccato a causa di troppi accessi falliti.</b>
+            <button type="button" class="btn btn-info" id="unlock-account"><i class="fa fa-unlock"></i> Sblocca</button>
         </p>
     </div>
 <?php endif; ?>
@@ -33,6 +31,9 @@
 </div>
 <div class="save-user-alert alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Modifica
     dell'utente...
+</div>
+<div class="save-user-alert alert alert-info hidden" id="pwd-reset-spinner"><i class="fa fa-refresh fa-spin"></i>
+    Richiesta reset password...
 </div>
 
 <form class="form-horizontal">
@@ -57,12 +58,24 @@
     </div>
     <br>
 
+    <?php if ($pending_pwd_reset): ?>
+        <div class="alert alert-warning" id="user_pwd_reset_pending">
+            <p><i class="fa fa-warning"></i> <b>L'utente ha già richiesto il reset della password.</b>
+                <button type="button" class="btn btn-warning" id="revoke-reset-request"><i class="fa fa-trash"></i>
+                    Revoca richiesta
+                </button>
+            </p>
+        </div>
+    <?php endif; ?>
+
     <div class="form-group">
         <label for="i-password" class="col-sm-3 control-label">Password:</label>
         <div class="col-sm-7">
             <span class="password-inline pull-left">••••••••••••</span>
             <div class="btn-group pull-right" id="users-actions">
-                <button type="button" class="btn btn-default" id="change-pwd"><i class="fa fa-key"></i> Resetta password
+                <button type="button" class="btn btn-default"
+                        id="reset-pwd" <?= $pending_pwd_reset ? 'disabled' : '' ?>><i class="fa fa-key"></i> Resetta
+                    password
                 </button>
                 <button type="button" class="btn btn-default" id="change-pwd"><i class="fa fa-lock"></i> Cambia password
                 </button>

@@ -30,6 +30,17 @@
     </div>
 <?php endif; ?>
 
+<div class="save-user-alert alert alert-danger hidden" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile
+        modificare l'account:</b><br><span id="error-msg"></span></div>
+<div class="save-user-alert alert alert-danger hidden" id="delete-error-alert"><i class="fa fa-exclamation-circle"></i>
+    <b>Impossibile eliminare l'account:</b><br><span id="delete-error-msg"></span></div>
+<div class="save-user-alert alert alert-success hidden" id="success-alert"><i class="fa fa-check"></i> Utente modificato
+    con successo
+</div>
+<div class="save-user-alert alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Modifica
+    dell'utente...
+</div>
+
 <form class="form-horizontal">
     <div class="form-group">
         <label class="col-sm-3 control-label">Nome completo:</label>

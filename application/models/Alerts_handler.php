@@ -83,9 +83,9 @@ class Alerts_handler extends CI_Model
         $this->load->library('validation');
         $content = $this->validation->filter_html($content, false);
         $data = array(
-            'type' => $type,
-            'dismissible' => $dismissible,
-            'display_on' => $display_on,
+            'type' => strip_tags($type),
+            'dismissible' => strip_tags($dismissible),
+            'display_on' => strip_tags($display_on),
             'content'=> $content
         );
         //create a new content if the id does not exists
@@ -97,7 +97,7 @@ class Alerts_handler extends CI_Model
         }
         else
         {
-            $data['id'] = $id;
+            $data['id'] = strip_tags($id);
             return $this->db->insert('alerts', $data);
         }
     }

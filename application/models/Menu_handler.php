@@ -114,9 +114,9 @@ class Menu_handler extends CI_Model
             return false;
         }
         $data=array(
-            'title' => $title,
+            'title' => strip_tags($title),
             'content' => $json,
-            'display_title' => $display_title
+            'display_title' => strip_tags($display_title)
         );
         $query=$this->db->get_where('menus',array('id'=> $id));
         if ($query->num_rows() > 0)
@@ -127,7 +127,7 @@ class Menu_handler extends CI_Model
         else
         {
             $data['class']='secondary';
-            $data['id']=$id;
+            $data['id'] = strip_tags($id);
             return $this->db->insert('menus', $data);
         }
     }

@@ -193,7 +193,7 @@ class Content_handler extends CI_Model
             return 2;
         }
         $data = array(
-            'type' => $type,
+            'type' => strip_tags($type),
             'content'=> $content
         );
         if($component_info->has_options)
@@ -218,7 +218,7 @@ class Content_handler extends CI_Model
         }
         else
         {
-            $data['id'] = $id;
+            $data['id'] = strip_tags($id);
             return $this->db->insert('contents', $data) ? 0 : 1;
         }
     }

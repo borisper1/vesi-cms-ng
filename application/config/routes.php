@@ -74,10 +74,12 @@ $route['admin/(:any)/(:any)'] = 'administration/load_interface/$1/$2';
 $route['admin/(:any)/(:any)/(:any)'] = 'administration/load_interface/$1/$2/$3';
 $route['ajax/admin/(:any)/(:any)'] = 'administration/ajax_interface/$1/$2';
 
-//The route for forntend user interaction
+//The route for frontend user interaction
 $route['system/login'] = 'page_render/login';
 $route['system/logout'] = 'page_render/logout';
-$route['system/users/(:any)'] = 'Frontend_users/$1';
+$route['system/users/(:any)'] = 'page_render/show_user/$1';
+$route['system/pwd_reset/(:any)/(:any)'] = 'page_render/reset_password/$1/$2';
+$route['ajax/frontend/']
 
 //The route for standard page views
 $route['(:any)/(:any)'] = 'page_render/view/$1/$2';

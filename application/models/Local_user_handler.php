@@ -63,6 +63,11 @@ class Local_user_handler extends CI_Model
         return $this->database_structure->full_name;
     }
 
+    function get_email()
+    {
+        return $this->database_structure->email;
+    }
+
     function get_admin_group()
     {
         return (strpos($this->database_structure->admin_group, 'ldap::') === 0) ? substr($this->database_structure->admin_group, 6) : $this->database_structure->admin_group;

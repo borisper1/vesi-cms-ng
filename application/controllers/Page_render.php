@@ -157,15 +157,22 @@ class Page_render extends MX_Controller
         $this->error_logger->log_404_error($referrer);
     }
 
+    //Frontend authentication system management: NOTE: this can't be a separate controller as it uses $this->output_page();
+
     function login()
     {
-        
+
     }
-    
+
     function logout()
     {
         $this->session->sess_destroy();
         $redirect_to = $this->input->post("origin_page");
         echo "<script>window.location.href = \"$redirect_to\"</script>";
+    }
+
+    function reset_password($id, $token)
+    {
+        
     }
 }

@@ -48,4 +48,13 @@ class Users extends MX_Controller
         echo $result ? 'success' : 'failed - 500';
     }
 
+    function request_password_reset()
+    {
+        $this->load->model('authentication_handler');
+        $user = $this->input->post('user');
+        $result = $this->authentication_handler->request_password_reset($user);
+        echo $result ? 'success' : 'failed - 500';
+    }
+
+
 }

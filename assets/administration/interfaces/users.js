@@ -57,7 +57,7 @@ $(document).ready(function() {
         data.active = $('#i-activate').prop('checked');
         if (type == 'ldap') {
             data.admin_local_group = $('#i-admin-local-group').prop('checked');
-            data.fronted_local_group = $('#i-frontend-local-group').prop('checked');
+            data.frontend_local_group = $('#i-frontend-local-group').prop('checked');
         }
         else {
             data.full_name = $('#i-fullname').val();
@@ -93,12 +93,27 @@ $(document).ready(function() {
     }
 
     $('#unlock-account').click(function () {
-        $.post(window.vbcknd.base_url + 'ajax/admin/users/unlock_user', {username: $('#username').text()}, function () {
-            window.location.reload(true);
-        });
+        $.post(window.vbcknd.base_url + 'ajax/admin/users/unlock_user', {username: $('#username').text()}, AJAXSimpleResultHandler);
     });
 
     $('#close-edit').click(function () {
         window.location = window.vbcknd.base_url + 'admin/users';
     });
+
+    $('#new-local-user').click(function () {
+        $('#new-local-user-modal').modal();
+    });
+
+    $('#reset-pwd').click(function () {
+        $('#pwd-reset-spinner').removeClass('hidden');
+        $.post(window.vbcknd.base_url + 'ajax/admin/users/request_password_reset', {user: $('#username').text()}, AJAXSimpleResultHandler);
+    });
+
+    function AJAXSimpleResultHandler(data) {
+        if (data == 'success') {
+            window.location.reload(true);
+        } else {
+            alert("Si è verificato un errore durante l'esecuzione dell'operazione richiesta");
+        }
+    }
 });
