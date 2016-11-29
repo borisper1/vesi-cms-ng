@@ -18,24 +18,7 @@
     <div class="panel-body">
         <div class="alert alert-warning">
             <i class="fa fa-warning"></i> <b>L'unica implementazione di LDAP completamente supportata è Active
-                Directory</b>. L'integrazione di gruppi e permessi non sarà disponibile con altre implementazioni.
-        </div>
-        <div class="form-group">
-            <label>Tipo di server LDAP utilizzato:</label>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="ldap-type" id="i-ldap-type-ad"
-                           value="ad" <?= $ldap_mode == 0 ? 'checked' : '' ?>>
-                    Active Directory
-                </label>
-            </div>
-            <div class="radio">
-                <label>
-                    <input type="radio" name="ldap-type" id="i-ldap-type-std"
-                           value="std" <?= $ldap_mode == 1 ? 'checked' : '' ?>>
-                    Sistema LDAP standard (OpenLDAP, Apache Directory Server,...)
-                </label>
-            </div>
+                Directory</b>. L'integrazione potrebbe non funzionare con altro software.
         </div>
         <div class="form-group">
             <label for="i-remote-server-url">Hostname del server LDAP:</label>
@@ -75,6 +58,18 @@
                    value="<?= $ldap_base_dn ?>">
             <span
                 class="help-block">Il DN (distinguished name) di base da utilizzare per interrogare il server LDAP</span>
+        </div>
+        <br>
+        <div class="form-group">
+            <div class="checkbox toggle">
+                <label>
+                    <input type="checkbox" class="checkbox-sw"
+                           id="i-ldap-sync-email" <?= $ldap_sync_email ? 'checked' : '' ?>>
+                    &nbsp;Ottieni indirizzo e-mail tramite LDAP
+                </label>
+            </div>
+            <span class="help-block">Permette di ottenere automaticamente gli indirizzi e-mail degli utenti da LDAP.
+                Deselezionare se le informazioni nella directory non sono aggiornate</i></span>
         </div>
     </div>
 </div>

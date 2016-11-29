@@ -69,6 +69,7 @@ class Page_render extends MX_Controller
         $base_data['urls']=$this->resources->urls;
         $base_data['urls']['aux_js_loader']=$this->resources->get_aux_js_urls();
         $base_data['fallback_urls']=$this->resources->fallback_urls;
+        $base_data['title'] = $title;
         
         //Load the final view and render the page
         $this->load->view('frontend/base', $base_data);
@@ -173,6 +174,17 @@ class Page_render extends MX_Controller
 
     function reset_password($id, $token)
     {
-        
+        $this->session->sess_destroy();
+        $this->load->model('authentication_handler');
+        $user = $this->authentication_handler->check_pwd_reset_request($id, $token);
+        if ($user == false) {
+            $content = $this->load->view('frontend/users/password_reset_expired', null, true);
+        } else {
+            $data = array('username' => $user, 'id' => $id, 'token' => $token);
+            $content = $this->load->view('frontend/users/password_reset', $data, true);
+        }
+        $title = 'Modifica password - Vesi CMS';
+        $this->resources->load_aux_js_file('assets/frontend-user-management.js');
+        $this->output_page($content, $title);
     }
 }

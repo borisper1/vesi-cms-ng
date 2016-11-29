@@ -22,4 +22,32 @@ class Pending_operations_handler extends CI_Model
         return $query->result_array();
     }
 
+    function get_operation_by_id($id)
+    {
+        $query = $this->db->get_where('pending_operations', array('id' => $id));
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+        } else {
+            return false;
+        }
+        $out_array = array(
+            'date' => $row->date,
+            'module' => $row->module,
+            'operation' => $row->operation,
+            'expires' => $row->expires,
+            'data' => json_decode($row->data),
+        );
+        if ($out_array['expires'] < date("Y-m-d H:i:s")) {
+            return false;
+        }
+        return $out_array;
+    }
+
+    function remove_operation_by_id($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('pending_operations');
+    }
+
+
 }

@@ -16,7 +16,7 @@ class Resources
         $this->use_cdn['bootstrap.js']=(boolean)$this->CI->db_config->get('resources','bootstrap_js_usecdn');
         $this->use_cdn['fontawesome']=(boolean)$this->CI->db_config->get('resources','fontawesome_usecdn');
         //Compute primary URLs to use
-        $this->urls['jquery']=$this->legacy_support ? ($this->use_cdn['jquery'] ? $this->CI->db_config->get('resources','jquery1_cdnurl') : $this->CI->config->item('jquery1.x_path')) : base_url(($this->use_cdn['jquery'] ? $this->CI->db_config->get('resources','jquery2_cdnurl') : $this->CI->config->item('jquery2.x_path')));
+        $this->urls['jquery'] = $this->legacy_support ? ($this->use_cdn['jquery'] ? $this->CI->db_config->get('resources', 'jquery1_cdnurl') : base_url($this->CI->config->item('jquery1.x_path'))) : ($this->use_cdn['jquery'] ? $this->CI->db_config->get('resources', 'jquery2_cdnurl') : base_url($this->CI->config->item('jquery2.x_path')));
         $this->urls['bootstrap.js']=$this->use_cdn['bootstrap.js'] ? $this->CI->db_config->get('resources','bootstrap_js_cdnurl') : base_url($this->CI->config->item('bootstrap.js_path'));
         $this->urls['fontawesome']=$this->use_cdn['fontawesome'] ? $this->CI->db_config->get('resources','fontawesome_cdnurl') : base_url($this->CI->config->item('fontawesome_path'));
         //Compute fallback URLs to be used when needed (and loading detection is available (eg. only js files).

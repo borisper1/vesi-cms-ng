@@ -62,7 +62,7 @@ $(document).ready(function() {
         });
 
         $('#disable-groups').click(function () {
-            var groups = {};
+            var groups = [];
             groups.admin_groups = [];
             groups.frontend_groups = [];
             $('.vcms-select-group:checked').each(function () {

@@ -142,7 +142,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="delete-modal-label"><i class="fa fa-lg fa-trash"></i> Eliminazione avviso</h4>
+                <h4 class="modal-title" id="delete-modal-label"><i class="fa fa-lg fa-trash"></i> Eliminazione gruppi
+                </h4>
             </div>
             <div class="modal-body">
                 <p>Eliminando i gruppi selezionati gli utenti associati a qui gruppi non potranno più accedere al sistema.</p>

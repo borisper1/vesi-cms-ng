@@ -11,7 +11,7 @@ $form="<form id='frontend-authenticator' method='POST'>
                 <span class='input-group-addon'><span class='fa fa-lock'></span></span>
                 <input type='password' class='form-control' placeholder='Password' name='password'>
              </div>
-             <a href='" . base_url("system/users/forgot") . "'>Password dimenticata?</a>
+             <a href='" . base_url("system/pwd_forgot") . "'>Password dimenticata?</a>
          </div>
          <input type='submit' class='btn btn-default' value='Accedi'>
          </form>";

@@ -3,6 +3,10 @@ $(document).ready(function() {
 
     $('.auto-bswitch').bootstrapSwitch();
 
+    $('.close').click(function () {
+        $(this).closest('.alert-dismissible').addClass('hidden');
+    });
+
     $('#i-admin-local-group').on('switchChange.bootstrapSwitch', function () {
         if ($(this).prop('checked')) {
             $('#admin-group-box').removeClass('hidden');
@@ -116,4 +120,81 @@ $(document).ready(function() {
             alert("Si è verificato un errore durante l'esecuzione dell'operazione richiesta");
         }
     }
+
+    //List mode functions (TODO: maybe implement if-tree based loading as in groups.js)
+
+    $('#new-local-user-modal-confirm').click(function () {
+        var username = $('#i-local-username');
+        var fullname = $('#i-local-fullname');
+        var email = $('#i-local-email');
+        window.vbcknd.validation.clear_all_errors();
+        $('#local-error-alert').addClass('hidden');
+        if (window.vbcknd.validation.check_is_empty(username) || window.vbcknd.validation.check_is_empty(fullname)
+            || window.vbcknd.validation.check_is_empty(email)) {
+            $('#local-error-alert').removeClass('hidden');
+            return;
+        }
+        var mode = 'nopwd';
+        if ($('#i-local-pwd-mode-email').prop('checked')) {
+            mode = 'emailpwd';
+        }
+        var data = {
+            'username': username.val(),
+            'full_name': fullname.val(),
+            'email': email.val(),
+            'mode': mode
+        };
+        CurrentItem = username.val();
+        $('#new-user-spinner').removeClass('hidden');
+        $('#new-user-success-alert').addClass('hidden');
+        $('#new-user-failure-alert').addClass('hidden');
+        $.ajax({
+            type: "POST",
+            url: window.vbcknd.base_url + 'ajax/admin/users/new_local',
+            data: data,
+            success: AJAXNewOK,
+            error: AJAXNewFailed
+        });
+    });
+
+    function AJAXNewOK() {
+        $('#new-user-spinner').addClass('hidden');
+        $('#new-user-success-alert').removeClass('hidden');
+    }
+
+    function AJAXNewFailed() {
+        $('#new-user-spinner').addClass('hidden');
+        $('#new-user-failure-alert').removeClass('hidden');
+    }
+
+    $('#enable-users').click(function () {
+        var users = [];
+        $('.vcms-select-user:checked').each(function () {
+            users.push($(this).val());
+        });
+        $.post(window.vbcknd.base_url + 'ajax/admin/users/enable', 'users=' + encodeURIComponent(users.join()), AJAXSimpleResultHandler);
+    });
+
+    $('#disable-users').click(function () {
+        var users = [];
+        $('.vcms-select-user:checked').each(function () {
+            users.push($(this).val());
+        });
+        $.post(window.vbcknd.base_url + 'ajax/admin/users/disable', 'users=' + encodeURIComponent(users.join()), AJAXSimpleResultHandler);
+    });
+
+    $('#delete-users').click(function () {
+        var users = [];
+        $('.vcms-select-user:checked').each(function () {
+            users.push($(this).val());
+        });
+        CurrentItem = users;
+        $('#delete-modal').modal();
+    });
+
+    $('#delete-modal-confirm').click(function () {
+        $.post(window.vbcknd.base_url + 'ajax/admin/users/delete', 'users=' + encodeURIComponent(CurrentItem.join()), AJAXSimpleResultHandler);
+
+    });
+
 });

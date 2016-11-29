@@ -51,7 +51,7 @@
     <div class="form-group">
         <label class="col-sm-3 control-label">Indirizzo email:</label>
         <div class="col-sm-7">
-            <a class="password-inline pull-left" href="mailto:<?= $email ?>"><?= $email ?></a>
+            <a class="generic-inline pull-left" href="mailto:<?= $email ?>"><?= $email ?></a>
         </div>
     </div>
     <div class="form-group">

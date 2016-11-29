@@ -15,14 +15,18 @@ class Authentication_handler extends CI_Model
                 return array(false, 'invalid_credentials');
             }
         } elseif ($auth_type === 1) {
-            //TODO: Check if LDAP is enabled
-            $this->load->model('ldap_user_handler');
-            $result = $this->ldap_user_handler->ldap_bind_connect($username, $password);
-            if (!$result) {
-                return array(false, 'ldap_no_bind');
+            //Check if LDAP is enabled
+            if ($this->db_config->get('authentication', 'enable_ldap')) {
+                $this->load->model('ldap_user_handler');
+                $result = $this->ldap_user_handler->ldap_bind_connect($username, $password);
+                if (!$result) {
+                    return array(false, 'ldap_no_bind');
+                }
+                $this->ldap_sync_user($username);
+                $this->local_user_handler->complete_login($username);
+            } else {
+                return array(false, 'ldap_off');
             }
-            $this->ldap_sync_user($username);
-            $this->local_user_handler->complete_login($username);
         }
         $active = $this->local_user_handler->is_active();
         if ($active === 1) {
@@ -208,17 +212,13 @@ class Authentication_handler extends CI_Model
 
     function ldap_sync_user($username)
     {
-        //Check if specific attribute import is enabled
         $this->load->model('ldap_user_handler');
         $this->load->model('local_user_handler');
         $this->load->model('group_handler');
         $result = $this->ldap_user_handler->get_ldap_user_info($username);
-        $sync_full_name = true;
-        $sync_email = true;
+        $sync_email = (bool)$this->db_config->get('authentication', 'ldap_sync_email');
         $write_array = [];
-        if ($sync_full_name and $result['full_name']) {
-            $write_array['full_name'] = strip_tags($result['full_name']);
-        }
+        $write_array['full_name'] = strip_tags($result['full_name']);
         if ($sync_email and $result['email']) {
             $write_array['email'] = strip_tags($result['email']);
         }
@@ -264,7 +264,7 @@ class Authentication_handler extends CI_Model
         $this->local_user_handler->save_edit($username, $write_array);
     }
 
-    function request_password_reset($user)
+    function request_password_reset($user, $new_user = false)
     {
         $this->load->model('local_user_handler');
         if (!$this->local_user_handler->load_user($user)) {
@@ -278,11 +278,18 @@ class Authentication_handler extends CI_Model
         $time = date('Y-m-d H:i:s');
         $expires = date('Y-m-d H:i:s', strtotime('+24 hours'));
         $this->lang->load('email_templates_lang');
-        $template = trim($this->lang->line('email_templates_password_reset'));
+
         $website_name = $this->db_config->get('general', 'website_name');
+        if ($new_user) {
+            $template = trim($this->lang->line('email_templates_new_user_set_password'));
+            $subject = 'Registrazione nuovo utente - ' . $website_name;
+            $template = str_replace('[[user]]', $user, $template);
+        } else {
+            $template = trim($this->lang->line('email_templates_password_reset'));
+            $subject = 'Richiesta reset password - ' . $website_name;
+        }
         $email = str_replace('[[website]]', $website_name, $template);
-        $email = str_replace('[[url]]', base_url('system/pwdreset/' . $id . '/' . $token), $email);
-        $subject = 'Richiesta reset password - ' . $website_name;
+        $email = str_replace('[[url]]', base_url('system/pwd_reset/' . $id . '/' . $token), $email);
         $this->load->library('email_wrapper');
         $to = [];
         $to[] = array(
@@ -317,4 +324,36 @@ class Authentication_handler extends CI_Model
         }
         return false;
     }
+
+    function check_pwd_reset_request($id, $token)
+    {
+        $this->load->model('pending_operations_handler');
+        $op = $this->pending_operations_handler->get_operation_by_id($id);
+        if ($op == false) {
+            return false;
+        }
+        if (!($op['module'] === 'authentication' and $op['operation'] === 'pwd_reset')) {
+            return false;
+        }
+        if ($op['data']->token === $token) {
+            return $op['data']->user;
+        }
+        return false;
+    }
+
+    function execute_password_change($request_id, $token, $password)
+    {
+        $user = $this->check_pwd_reset_request($request_id, $token);
+        if ($user == false or strlen($password) < 8) {
+            return false;
+        }
+        $this->load->model('pending_operations_handler');
+        $this->load->model('local_user_handler');
+        $result = $this->local_user_handler->set_new_password($user, $password);
+        $this->pending_operations_handler->remove_operation_by_id($request_id);
+        return $result;
+    }
+
+
+
 }

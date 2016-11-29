@@ -42,6 +42,19 @@
     </div>
 <?php endif; ?>
 
+<div class="save-user-alert alert alert-info hidden" id="new-user-spinner"><i class="fa fa-refresh fa-spin"></i>
+    Creazione nuovo utente...
+</div>
+<div class="alert alert-success alert-dismissible hidden" id="new-user-success-alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+    <i class="fa fa-check"></i> Utente <i><span id="new-user-name"></span></i> creato con successo. Per visualizzare
+    l'account nella lista aggiornare la pagina
+</div>
+<div class="alert alert-danger alert-dismissible hidden" id="new-user-failure-alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+    <i class="fa fa-check"></i> Impossibile creare l'account <i><span id="new-user-name"></span></i>.
+</div>
+
 <div id="ajax-cage">
     <?php if ($admin_users != []): ?>
         <div class="panel panel-primary container-block" id="panel-admin">
@@ -198,26 +211,31 @@
             </div>
 
             <div class="modal-body">
+                <div class="alert alert-danger hidden" id="local-error-alert">
+                    <i class="fa fa-exclamation-circle"></i> <b>Impossibile creare l'utente locale:</b> i campi non sono
+                    stati
+                    compilati correttamente.
+                </div>
                 <p class="text-warning"><i class="fa fa-warning"></i> Attenzione: non sarà possibile modificare il nome
                     utente in seguito</p>
                 <div class="form-group">
-                    <label for="i-group-name">Inserire il nome utente per il nuovo utente</label>
+                    <label for="i-local-username">Inserire il nome utente per il nuovo utente</label>
                     <input type="text" class="form-control" id="i-local-username" placeholder="Nome utente">
                     <span class="help-block">Non può contenere spazi</span>
                 </div>
                 <div class="form-group">
-                    <label for="i-parent-link-page">Inserire il nome completo dell'utente</label>
+                    <label for="i-local-fullname">Inserire il nome completo dell'utente</label>
                     <input type="text" class="form-control" id="i-local-fullname" placeholder="Nome completo">
                 </div>
                 <div class="form-group">
-                    <label for="i-parent-link-page">Inserire l'indirizzo e-mail dell'utente</label>
+                    <label for="i-local-email">Inserire l'indirizzo e-mail dell'utente</label>
                     <input type="email" class="form-control" id="i-local-email" placeholder="E-mail">
                 </div>
                 <div class="form-group">
                     <label>Metodo di inserimento password:</label>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="local-pwd-mode" id="i-local-pwd-mode-email" value="email">
+                            <input type="radio" name="local-pwd-mode" id="i-local-pwd-mode-email" value="email" checked>
                             Richiedi una password via e-mail
                         </label>
                     </div>
@@ -233,8 +251,31 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
                 </button>
-                <button type="button" class="btn btn-success" id="new-local-user-modal-confirm"><i
+                <button type="button" class="btn btn-success" id="new-local-user-modal-confirm" data-dismiss="modal"><i
                         class="fa fa-plus"></i> Crea utente
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-label"
+     aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="delete-modal-label"><i class="fa fa-lg fa-trash"></i> Eliminazione utenti
+                </h4>
+            </div>
+            <div class="modal-body">
+                <p>Gli utenti selezionati verranno eliminati e non potranno più accedere al sistema.</p>
+                <p>L'eliminazione è una operazione definitiva. Eliminare questi utenti?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
+                </button>
+                <button type="button" class="btn btn-danger" id="delete-modal-confirm" data-dismiss="modal"><i
+                            class="fa fa-trash"></i> Elimina
                 </button>
             </div>
         </div>

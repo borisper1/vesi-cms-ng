@@ -79,7 +79,7 @@ $route['system/login'] = 'page_render/login';
 $route['system/logout'] = 'page_render/logout';
 $route['system/users/(:any)'] = 'page_render/show_user/$1';
 $route['system/pwd_reset/(:any)/(:any)'] = 'page_render/reset_password/$1/$2';
-$route['ajax/frontend/']
+$route['ajax/frontend/(:any)'] = 'frontend_ajax/$1';
 
 //The route for standard page views
 $route['(:any)/(:any)'] = 'page_render/view/$1/$2';

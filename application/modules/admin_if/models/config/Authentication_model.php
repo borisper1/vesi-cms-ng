@@ -7,12 +7,12 @@ class Authentication_model extends CI_Model
     {
         $data = array(
             'enable_ldap' => (boolean)$this->db_config->get('authentication', 'enable_ldap'),
-            'ldap_mode' => $this->db_config->get('authentication', 'ldap_mode'),
             'ldap_hostname' => $this->db_config->get('authentication', 'ldap_hostname'),
             'ldap_port' => $this->db_config->get('authentication', 'ldap_port'),
             'ldap_ssl' => (boolean)$this->db_config->get('authentication', 'ldap_ssl'),
             'ldap_user' => $this->db_config->get('authentication', 'ldap_user'),
             'ldap_base_dn' => $this->db_config->get('authentication', 'ldap_base_dn'),
+            'ldap_sync_email' => $this->db_config->get('authentication', 'ldap_sync_email'),
         );
         return $data;
     }

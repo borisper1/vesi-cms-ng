@@ -100,10 +100,26 @@ class Local_user_handler extends CI_Model
         }
     }
 
-    function request_password_reset()
+    function set_new_password($username, $password)
     {
-
+        $this->db->where('username', $username);
+        return $this->db->update('users', array('password' => password_hash($password, PASSWORD_DEFAULT)));
     }
 
+    function create_new($data)
+    {
+        return $this->db->insert('users', $data);
+    }
 
+    function enable_disable_users($users, $value)
+    {
+        $this->db->where_in('username', $users);
+        return $this->db->update('users', array('active' => $value));
+    }
+
+    function delete_users($users)
+    {
+        $this->db->where_in('username', $users);
+        return $this->db->delete('users');
+    }
 }

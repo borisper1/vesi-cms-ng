@@ -36,6 +36,17 @@ window.vbcknd.validation.check_is_empty = function (object) {
     }
 };
 
+window.vbcknd.validation.check_pwds = function (object1, object2) {
+    if (object1.val().length < 8 || object1.val() !== object2.val()) {
+        object1.closest('.form-group').addClass('has-error');
+        object2.closest('.form-group').addClass('has-error');
+        return 1;
+    } else {
+        return 0;
+    }
+};
+
+
 $(document).ready(function () {
     var code_editor_callback;
 
