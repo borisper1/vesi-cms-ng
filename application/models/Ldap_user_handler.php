@@ -106,4 +106,31 @@ class Ldap_user_handler extends CI_Model
     {
         ldap_unbind($this->connection);
     }
+
+    function search_user($query)
+    {
+        $query = ldap_escape($query, null, LDAP_ESCAPE_FILTER);
+        $result = ldap_search($this->connection, $this->ldap_settings['base_dn'], "(& (objectCategory=person) (objectClass=user) (userPrincipalName=*$query))");
+        if (!$result) {
+            return false;
+        }
+        $entries = ldap_get_entries($this->connection, $result);
+        $return_array = [];
+        for($i=0; $i<$entries['count']; $i++)
+        {
+            $entry_array = array(
+                'username' => isset($entries[$i]['userPrincipalName'][0]) ? $entries[$i]['userPrincipalName'][0] : null,
+                'full_name' => isset($entries[$i]['displayname'][0]) ? $entries[$i]['displayname'][0] : null,
+                'given_name' => isset($entries[$i]['givenname'][0]) ? $entries[$i]['givenname'][0] : null,
+                'cn' => isset($entries[$i]['cn'][0]) ? $entries[$i]['cn'][0] : null,
+                'sn' => isset($entries[$i]['sn'][0]) ? $entries[$i]['sn'][0] : null,
+                'name' => isset($entries[$i]['name'][0]) ? $entries[$i]['name'][0] : null,
+                'email' => isset($entries[$i]['mail'][0]) ? $entries[$i]['mail'][0] : null,
+                'title' => isset($entries[$i]['title'][0]) ? $entries[$i]['title'][0] : null,
+                'groups' => isset($entries[$i]['memberof']) ? $entries[$i]['memberof'] : null,
+            );
+            $return_array[] = $entry_array;
+        }
+        return $return_array;
+    }
 }

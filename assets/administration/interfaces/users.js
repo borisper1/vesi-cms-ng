@@ -204,4 +204,11 @@ $(document).ready(function() {
 
     });
 
+    $('#but-ldap-new-user-search').click(function(){
+        CurrentItem = {};
+        CurrentItem.mode = 'search';
+        $('#ldap-new-user-start').addClass('hidden');
+        $('#ldap-new-user-search').removeClass('hidden');
+    })
+
 });

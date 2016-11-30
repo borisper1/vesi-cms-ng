@@ -293,16 +293,16 @@
 
             <div class="modal-body">
                 <div id="ldap-new-user-start">
-                    <button type="button" class="btn btn-primary btn-block">Cerca un utente nella directory LDAP
+                    <button type="button" class="btn btn-primary btn-block" id="but-ldap-new-user-search">Cerca un utente nella directory LDAP
                     </button>
-                    <button type="button" class="btn btn-primary btn-block">Associa tutti gli utenti appartententi ad un
+                    <button type="button" class="btn btn-primary btn-block" id="but-ldap-new-user-from-group">Associa tutti gli utenti appartententi ad un
                         gruppo
                     </button>
-                    <button type="button" class="btn btn-default btn-block">Associa un utente effettuando il login (<i>bind
+                    <button type="button" class="btn btn-default btn-block" id="but-ldap-new-user-manual-bind">Associa un utente effettuando il login (<i>bind
                             manuale</i>)
                     </button>
                 </div>
-                <div id="ldap-new-user-search">
+                <div id="ldap-new-user-search" class="hidden">
                     <div class="form-group">
                         <label for="i-ldap-user-query">Inserire il nome utente da cercare</label>
                         <div class="input-group">
@@ -321,11 +321,12 @@
                         </div>
                     </div>
                 </div>
-                <div id="ldap-new-user-from-group">
+                <div id="ldap-new-user-from-group" class="hidden">
                     <div class="form-group">
                         <label for="i-ldap-from-group">Scegli il gruppo LDAP da cui associare gli utenti (DN
                             completo)</label>
                         <select class="form-control selectpicker" id="i-ldap-from-group">
+                            <option data-hidden="true">Seleziona un gruppo</option>
                             <?php foreach ($ldap_groups as $group_i): ?>
                                 <option data-content="<?= $group_i['cn'] ?> <span class='label label-default'><?= $group_i['dn'] ?></span> "><?= $group_i['dn'] ?></option>
                             <?php endforeach; ?>
@@ -340,7 +341,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="ldap-new-user-manual-bind">
+                <div id="ldap-new-user-manual-bind" class="hidden">
                     <div class="alert alert-warning">
                         <i class="fa fa-warning"></i> Associare gli account tramite bind manuale porebbe creare account
                         invalidi.

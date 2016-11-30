@@ -127,4 +127,11 @@ class Users extends MX_Controller
             echo 'failed - 500';
         }
     }
+
+    function ldap_search_user()
+    {
+        $query = $this->input->post('query');
+        $this->load->model('ldap_user_handler');
+
+    }
 }

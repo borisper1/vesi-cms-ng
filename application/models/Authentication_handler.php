@@ -69,8 +69,13 @@ class Authentication_handler extends CI_Model
         $this->load->model('ldap_user_handler');
         $local_db = $this->local_user_handler->get_full_user_db_list();
         $ldap_enabled = (boolean)$this->db_config->get('authentication', 'enable_ldap');
+        $ldap_groups =[];
         if ($ldap_enabled) {
             $ldap_failed = !$this->ldap_user_handler->ldap_admin_connect();
+            if(!$ldap_failed)
+            {
+                $ldap_groups = $this->ldap_user_handler->get_all_groups();
+            }
         } else {
             $ldap_failed = false;
         }
@@ -89,13 +94,15 @@ class Authentication_handler extends CI_Model
             }
 
         }
+
         return array(
             'ldap_enabled' => $ldap_enabled,
             'ldap_failed' => $ldap_failed,
             'ldap_leftovers' => $ldap_leftovers,
             'ldap_users_deleted' => $ldap_users_deleted,
             'admin_users' => $admin_users,
-            'frontend_users' => $frontend_users
+            'frontend_users' => $frontend_users,
+            'ldap_groups' => $ldap_groups,
         );
     }
 
