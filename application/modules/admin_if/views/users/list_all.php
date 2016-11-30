@@ -201,7 +201,7 @@
     <?php endif; ?>
 </div>
 
-<div class="modal fade" id="new-local-user-modal" tabindex="-1" role="dialog" aria-labelledby="new-group-modal-label"
+<div class="modal fade" id="new-local-user-modal" tabindex="-1" role="dialog" aria-labelledby="new-local-user-label"
      aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -251,7 +251,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
                 </button>
-                <button type="button" class="btn btn-success" id="new-local-user-modal-confirm" data-dismiss="modal"><i
+                <button type="button" class="btn btn-success" id="new-local-user-modal-confirm"><i
                         class="fa fa-plus"></i> Crea utente
                 </button>
             </div>
@@ -276,6 +276,92 @@
                 </button>
                 <button type="button" class="btn btn-danger" id="delete-modal-confirm" data-dismiss="modal"><i
                             class="fa fa-trash"></i> Elimina
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="new-ldap-user-modal" tabindex="-1" role="dialog" aria-labelledby="new-ldap-user-label"
+     aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="new-ldap-user-label"><i class="fa fa-plus"></i> Crea nuovo utente LDAP
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div id="ldap-new-user-start">
+                    <button type="button" class="btn btn-primary btn-block">Cerca un utente nella directory LDAP
+                    </button>
+                    <button type="button" class="btn btn-primary btn-block">Associa tutti gli utenti appartententi ad un
+                        gruppo
+                    </button>
+                    <button type="button" class="btn btn-default btn-block">Associa un utente effettuando il login (<i>bind
+                            manuale</i>)
+                    </button>
+                </div>
+                <div id="ldap-new-user-search">
+                    <div class="form-group">
+                        <label for="i-ldap-user-query">Inserire il nome utente da cercare</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="i-ldap-user-query" placeholder="Nome utente">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">Cerca</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Risultati ricerca</h3>
+                        </div>
+                        <div class="panel-body">
+                            Nessuna ricerca effettuata
+                        </div>
+                    </div>
+                </div>
+                <div id="ldap-new-user-from-group">
+                    <div class="form-group">
+                        <label for="i-ldap-from-group">Scegli il gruppo LDAP da cui associare gli utenti (DN
+                            completo)</label>
+                        <select class="form-control selectpicker" id="i-ldap-from-group">
+                            <?php foreach ($ldap_groups as $group_i): ?>
+                                <option data-content="<?= $group_i['cn'] ?> <span class='label label-default'><?= $group_i['dn'] ?></span> "><?= $group_i['dn'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Utenti da associare</h3>
+                        </div>
+                        <div class="panel-body">
+                            Nessun gruppo selezionato
+                        </div>
+                    </div>
+                </div>
+                <div id="ldap-new-user-manual-bind">
+                    <div class="alert alert-warning">
+                        <i class="fa fa-warning"></i> Associare gli account tramite bind manuale porebbe creare account
+                        invalidi.
+                        Si raccomanda di utilizzare gli altri metodi per creare account LDAP.
+                    </div>
+                    <div class="form-group">
+                        <label for="i-ldap-bind-username">Inserire il nome utente per l'accesso LDAP</label>
+                        <input type="text" class="form-control" id="i-ldap-bind-username" placeholder="Nome utente">
+                    </div>
+                    <div class="form-group">
+                        <label for="i-ldap-bind-password">Inserire la password per l'accesso LDAP</label>
+                        <input type="password" class="form-control" id="i-ldap-bind-password" placeholder="Password">
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
+                </button>
+                <button type="button" class="btn btn-success hidden" id="new-ldap-user-modal-confirm"><i
+                            class="fa fa-plus"></i> Crea utente
                 </button>
             </div>
         </div>

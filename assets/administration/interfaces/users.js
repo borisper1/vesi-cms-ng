@@ -104,10 +104,6 @@ $(document).ready(function() {
         window.location = window.vbcknd.base_url + 'admin/users';
     });
 
-    $('#new-local-user').click(function () {
-        $('#new-local-user-modal').modal();
-    });
-
     $('#reset-pwd').click(function () {
         $('#pwd-reset-spinner').removeClass('hidden');
         $.post(window.vbcknd.base_url + 'ajax/admin/users/request_password_reset', {user: $('#username').text()}, AJAXSimpleResultHandler);
@@ -123,14 +119,24 @@ $(document).ready(function() {
 
     //List mode functions (TODO: maybe implement if-tree based loading as in groups.js)
 
+    $('#new-local-user').click(function () {
+        $('#new-local-user-modal').modal();
+        window.vbcknd.validation.clear_all_errors();
+        $('#local-error-alert').addClass('hidden');
+    });
+
+    $('#new-LDAP-user').click(function () {
+        $('#new-ldap-user-modal').modal();
+    });
+
     $('#new-local-user-modal-confirm').click(function () {
         var username = $('#i-local-username');
         var fullname = $('#i-local-fullname');
         var email = $('#i-local-email');
         window.vbcknd.validation.clear_all_errors();
         $('#local-error-alert').addClass('hidden');
-        if (window.vbcknd.validation.check_is_empty(username) || window.vbcknd.validation.check_is_empty(fullname)
-            || window.vbcknd.validation.check_is_empty(email)) {
+        if (window.vbcknd.validation.check_is_empty(username) + window.vbcknd.validation.check_is_empty(fullname)
+            + window.vbcknd.validation.check_is_empty(email) > 0) {
             $('#local-error-alert').removeClass('hidden');
             return;
         }
@@ -148,6 +154,7 @@ $(document).ready(function() {
         $('#new-user-spinner').removeClass('hidden');
         $('#new-user-success-alert').addClass('hidden');
         $('#new-user-failure-alert').addClass('hidden');
+        $('#new-local-user-modal').modal('hide');
         $.ajax({
             type: "POST",
             url: window.vbcknd.base_url + 'ajax/admin/users/new_local',

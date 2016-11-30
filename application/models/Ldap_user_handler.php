@@ -9,7 +9,6 @@ class Ldap_user_handler extends CI_Model
     {
         $this->ldap_settings = array(
             'ssl' => intval($this->db_config->get('authentication', 'ldap_ssl')),
-            'mode' => intval($this->db_config->get('authentication', 'ldap_mode')),
             'port' => intval($this->db_config->get('authentication', 'ldap_port')),
             'user' => $this->db_config->get('authentication', 'ldap_user'),
             'base_dn' => $this->db_config->get('authentication', 'ldap_base_dn'),
