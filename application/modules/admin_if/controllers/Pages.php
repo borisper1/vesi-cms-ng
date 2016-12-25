@@ -32,6 +32,7 @@ class Pages extends MX_Controller
             $data_array['layout']='';
             $data_array['has_sidebar']=false;
             $data_array['main_content']='';
+            $data_array['restrict_access'] = false;
             $data_array['is_new']=true;
         }
         else
@@ -54,6 +55,7 @@ class Pages extends MX_Controller
         $data_array['containers']=$this->page_handler->get_containers_list();
         $data_array['components_list'] = $this->modules_handler->get_components_list();
         $data_array['plugins'] = $this->modules_handler->get_full_plugin_list();
+        $data_array['frontend_groups'] = $this->modules_handler->get_frontend_permissions_array();
         $this->load->view('pages/edit_wrapper', $data_array);
     }
 
@@ -240,7 +242,7 @@ class Pages extends MX_Controller
 
     protected function render_interactive_list($cfilter = false)
     {
-        //TODO: Implement content filtering
+        //Implement content filtering
         $this->load->model('page_handler');
         $containers = $this->page_handler->get_containers_list();
         $rendered_html='';

@@ -356,7 +356,6 @@ class Modules_handler
         return $schema['frontend_permissions'];
     }
 
-
     function install_plugin($store_name)
     {
         $this->CI->load->library('file_handler');

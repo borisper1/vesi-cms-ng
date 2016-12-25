@@ -20,6 +20,8 @@ class Page_handler extends CI_Model
 
         $page->title = $row->title;
         $descriptor=json_decode($row->code);
+        $page->restrict_access = isset($descriptor->allowed_groups);
+        $page->allowed_groups = $page->restrict_access ? $descriptor->allowed_groups : [];
         $page->layout=$descriptor->layout;
         $page->elements = $descriptor->elements;
         if(strpos($descriptor->layout,'sidebar')!==false)
@@ -165,6 +167,7 @@ class Page_handler extends CI_Model
                     $data_array['title'] = $row->title;
                     $json_code = json_decode($row->code);
                     $data_array['layout'] = $json_code->layout;
+                    $data_array['restricted'] = isset($json_code->allowed_groups);
                 }
                 $data_array['tags'] = $row->tags;
                 $data_array['home'] = ($row->container.'::'.$row->name)===$this->db_config->get('general','home_page');

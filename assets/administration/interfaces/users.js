@@ -277,7 +277,8 @@ $(document).ready(function() {
     $('#i-ldap-from-group').on('changed.bs.select', function (e) {
         var query = $(this).val();
         $('#ldap-new-user-group-waitbox').prepend('<span id="waiting"><i class="fa fa-spin fa-refresh"></i> </span>');
-        $(this).prop('disabled', true);
+        $(this).prop('disabled', true).selectpicker('render');
+        ;
         $.post(window.vbcknd.base_url + 'ajax/admin/users/ldap_search_users_group', 'group=' + encodeURIComponent(query), AJAXLoadUsersGroupLDAPSearch);
     });
 

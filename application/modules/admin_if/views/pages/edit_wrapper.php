@@ -7,7 +7,9 @@
                 data-help_path="pages::edit"><i class="fa fa-question-circle"></i></button>
     </h1>
 </div>
-<h3 class="pull-left inline"><i class="fa fa-pencil"></i> <span id="f-title"><?=$title ?></span> <i class="fa fa-lock tooltipped" id="restricted-access-icon" title="Accesso ristretto"></i>
+<h3 class="pull-left inline"><i class="fa fa-pencil"></i> <span id="f-title"><?= $title ?></span> <i
+            class="fa fa-lock tooltipped <?= $restrict_access ? '' : 'hidden' ?>" id="restricted-access-icon"
+            title="Accesso ristretto"></i>
     <small> <span class="label label-info"><span id="f-container"><?=$container ?></span> <i class="fa fa-ellipsis-v"></i> <span id="f-page-name"><?=$page_name ?></span></span> <span class="label label-default" id="f-id"><?=$id ?></span></small>
 </h3>
 <div class="btn-group pull-right" id="page-actions">
@@ -119,25 +121,31 @@
             </div>
             <div class="modal-body">
                 <div class="btn-group spaced" data-toggle="buttons">
-                    <label class="btn btn-default active">
-                        <input type="radio" name="permissions-limiting-mode" id="permissions-no-restrict" checked> <i class="fa fa-unlock"></i> Non restringere questa pagina
+                    <label class="btn btn-default <?= $restrict_access ? '' : 'active' ?>">
+                        <input type="radio" name="permissions-limiting-mode"
+                               id="permissions-no-restrict" <?= $restrict_access ? '' : 'checked' ?>> <i
+                                class="fa fa-unlock"></i> Non restringere questa pagina
                     </label>
-                    <label class="btn btn-default">
-                        <input type="radio" name="permissions-limiting-mode" id="permissions-restrict"> <i class="fa fa-lock"></i> Restringi pagina
+                    <label class="btn btn-default <?= $restrict_access ? 'active' : '' ?>">
+                        <input type="radio" name="permissions-limiting-mode"
+                               id="permissions-restrict" <?= $restrict_access ? 'checked' : '' ?>> <i
+                                class="fa fa-lock"></i> Restringi pagina
                     </label>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="i-allowed-groups">Scegliere i gruppi a cui restringere l'accesso alla pagina</label>
-                    <select class="selectpicker form-control" id="i-allowed-groups" multiple>
+                    <select class="selectpicker form-control" id="i-allowed-groups"
+                            multiple <?= $restrict_access ? '' : 'disabled' ?>>
                         <?php foreach($frontend_groups as $group): ?>
-                            <option value="<?=$group['name'] ?>">[<?=$group['name'] ?>] <?=$group['label'] ?></option>
+                            <option value="<?= $group['name'] ?>" <?= in_array($group['name'], $allowed_groups) ? 'selected' : '' ?>>
+                                [<?= $group['name'] ?>] <?= $group['label'] ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
-                <button type="button" class="btn btn-success" id="edit-attributes-confirm"><i class="fa fa-bolt"></i> Applica modifiche</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> OK
+                </button>
             </div>
         </div>
     </div>

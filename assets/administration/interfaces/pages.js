@@ -241,6 +241,16 @@ $(document).ready(function() {
         $('#edit-permissions-modal').modal();
     });
 
+    $('#permissions-no-restrict').change(function () {
+        $('#i-allowed-groups').prop('disabled', true).selectpicker('refresh');
+        $('#restricted-access-icon').addClass('hidden');
+    });
+
+    $('#permissions-restrict').change(function () {
+        $('#i-allowed-groups').prop('disabled', false).selectpicker('refresh');
+        $('#restricted-access-icon').removeClass('hidden');
+    });
+
     $('#generate-page-name').click(function(){
         var title = $('#i-page-title').val();
         $('#i-page-name').val(window.vbcknd.auto_name_format(title));
@@ -312,6 +322,10 @@ $(document).ready(function() {
         json_object.elements = RunTree($('#sortable-main-content > li > div'));
         if(json_object.layout.indexOf('sidebar')===0) {
             json_object.sidebar_elements = RunTree($('#sortable-sidebar > li > div'));
+        }
+        if ($('#permissions-restrict').prop('checked')) {
+            var value = $('#i-allowed-groups').val();
+            json_object.allowed_groups = value == null ? [] : value;
         }
         var json = JSON.stringify(json_object, null, '\t');
         return {

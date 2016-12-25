@@ -23,6 +23,9 @@
                     <?php else: ?>
                         <td>
                             <?=$page['home'] ? '<i class="fa fa-home"></i>' : '<i class="fa fa-file-o"></i>' ?> <a href="<?=base_url('admin/pages/edit/'.$page['id']) ?>"><?=$page['title'] ?></a>
+                            <?php if ($page['restricted']): ?>
+                                <i class="fa fa-lock tooltipped" title="Accesso ristretto a certi gruppi"></i>
+                            <?php endif; ?>
                             <a class='remove-page lmbnc pull-right tooltipped' title='Elimina'><i class='fa fa-trash'></i></a>
                             <?php if(!$page['home'] and !$cfilter_status): ?>
                                 <a class='set-home lmbnc pull-right tooltipped' title='Imposta come pagina iniziale'><i class='fa fa-home'></i></a>
