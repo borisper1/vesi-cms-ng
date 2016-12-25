@@ -3,6 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pending_operations_handler extends CI_Model
 {
+
+    function __construct()
+    {
+        $this->db->where('expires <', date("Y-m-d H:i:s"));
+        $this->db->delete('pending_operations');
+        parent::__construct();
+    }
+
     function register_new_operation($id, $time, $expires, $module, $operation, $data)
     {
         $data = array(

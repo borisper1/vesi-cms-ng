@@ -361,6 +361,70 @@ class Authentication_handler extends CI_Model
         return $result;
     }
 
+    function reset_pending_pwd_reset_request($user)
+    {
+        $this->load->model('pending_operations_handler');
+        $ops = $this->pending_operations_handler->get_pending_operations('authentication', 'pwd_reset');
+        $result = true;
+        foreach ($ops as $op) {
+            $op_data = json_decode($op['data']);
+            if ($op_data->user == $user) {
+                $part_result = $this->pending_operations_handler->remove_operation_by_id($op['id']);
+                if(!$part_result)
+                {
+                    $result = false;
+                }
+            }
+        }
+        return $result;
+    }
 
+    function add_users_from_ldap($users)
+    {
+        $this->load->model('local_user_handler');
+        $result = true;
+        foreach($users as $user){
+            if(!$this->local_user_handler->load_user($user))
+            {
+                $data = array(
+                    'username' => $user,
+                    'auth_method' => 1,
+                    'password' => null,
+                    'admin_group' => 'ldap::',
+                    'frontend_group' => 'ldap::',
+                    'full_name' => null,
+                    'email' => null,
+                    'active' => 0,
+                    'failed_access' => 0
+                );
+                $part_result = $this->local_user_handler->create_new($data);
+                if(!$part_result)
+                {
+                    $result = false;
+                }
+            }
+        }
+        return $result;
+    }
+
+    function ldap_manual_bind($user, $password)
+    {
+        $this->load->model('ldap_user_handler');
+        $result = $this->ldap_user_handler->ldap_bind_connect($user, $password);
+        if($result)
+        {
+            return $this->add_users_from_ldap(array($user));
+        }
+        return false;
+    }
+
+    function admin_password_change($user, $password)
+    {
+        if ($user == false or strlen($password) < 8) {
+            return false;
+        }
+        $this->load->model('local_user_handler');
+        return $this->local_user_handler->set_new_password($user, $password);
+    }
 
 }

@@ -43,16 +43,18 @@
 <?php endif; ?>
 
 <div class="save-user-alert alert alert-info hidden" id="new-user-spinner"><i class="fa fa-refresh fa-spin"></i>
-    Creazione nuovo utente...
+    Creazione nuovi utenti...
 </div>
-<div class="alert alert-success alert-dismissible hidden" id="new-user-success-alert">
-    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
-    <i class="fa fa-check"></i> Utente <i><span id="new-user-name"></span></i> creato con successo. Per visualizzare
-    l'account nella lista aggiornare la pagina
+<div class="alert alert-success hidden" id="new-user-success-alert">
+    <i class="fa fa-check"></i> Utenti creati con successo. Per visualizzare gli account nella lista aggiornare la pagina
 </div>
 <div class="alert alert-danger alert-dismissible hidden" id="new-user-failure-alert">
     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
-    <i class="fa fa-check"></i> Impossibile creare l'account <i><span id="new-user-name"></span></i>.
+    <i class="fa fa-exclamation-circle"></i> Impossibile creare gli account richiesti.
+</div>
+<div class="alert alert-danger alert-dismissible hidden" id="new-user-failure-mb-alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+    <i class="fa fa-exclamation-circle"></i> Impossibile creare l'account richiesto. Bind manuale a LDAP non risuscito, verificare le credenziali dell'utente
 </div>
 
 <div id="ajax-cage">
@@ -308,7 +310,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="i-ldap-user-query" placeholder="Nome utente">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">Cerca</button>
+                                <button class="btn btn-default" type="button" id="but-ldap-user-query">Cerca</button>
                             </span>
                         </div>
                     </div>
@@ -316,15 +318,15 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">Risultati ricerca</h3>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body table-responsive" id="ldap-search-user-contents">
                             Nessuna ricerca effettuata
                         </div>
                     </div>
+                    <p>Selezionare gli utenti da associare e poi premere su <i class="fa fa-plus"></i> <i>Crea utenti</i> per completare l'operazione</p>
                 </div>
                 <div id="ldap-new-user-from-group" class="hidden">
                     <div class="form-group">
-                        <label for="i-ldap-from-group">Scegli il gruppo LDAP da cui associare gli utenti (DN
-                            completo)</label>
+                        <label for="i-ldap-from-group">Scegli il gruppo LDAP da cui associare gli utenti (DN completo)</label>
                         <select class="form-control selectpicker" id="i-ldap-from-group">
                             <option data-hidden="true">Seleziona un gruppo</option>
                             <?php foreach ($ldap_groups as $group_i): ?>
@@ -332,19 +334,22 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-default" id="ldap-from-group-search-sall">Seleziona tutto</button>
+                        <button type="button" class="btn btn-default" id="ldap-from-group-search-dall">Deseleziona tutto</button>
+                    </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Utenti da associare</h3>
+                            <h3 class="panel-title" id="ldap-new-user-group-waitbox">Utenti da associare</h3>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body table-responsive" id="ldap-search-from-group-contents">
                             Nessun gruppo selezionato
                         </div>
                     </div>
                 </div>
                 <div id="ldap-new-user-manual-bind" class="hidden">
                     <div class="alert alert-warning">
-                        <i class="fa fa-warning"></i> Associare gli account tramite bind manuale porebbe creare account
-                        invalidi.
+                        <i class="fa fa-warning"></i> <b>Associare gli account tramite bind manuale potrebbe creare account invalidi</b>.
                         Si raccomanda di utilizzare gli altri metodi per creare account LDAP.
                     </div>
                     <div class="form-group">
@@ -362,7 +367,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
                 </button>
                 <button type="button" class="btn btn-success hidden" id="new-ldap-user-modal-confirm"><i
-                            class="fa fa-plus"></i> Crea utente
+                            class="fa fa-plus"></i> Crea utente/i
                 </button>
             </div>
         </div>

@@ -7,7 +7,6 @@
 </h3>
 <div class="btn-group pull-right" id="users-actions">
     <button type="button" class="btn btn-success" id="save-edit"><i class="fa fa-save"></i> Salva</button>
-    <button type="button" class="btn btn-danger" id="delete-user"><i class="fa fa-trash"></i> Elimina</button>
     <button type="button" class="btn btn-default" id="close-edit"><i class="fa fa-remove"></i> Chiudi</button>
 </div>
 <div class="clearfix"></div>
@@ -34,6 +33,9 @@
 </div>
 <div class="save-user-alert alert alert-info hidden" id="pwd-reset-spinner"><i class="fa fa-refresh fa-spin"></i>
     Richiesta reset password...
+</div>
+<div class="save-user-alert alert alert-info hidden" id="revoke-pwd-reset-spinner"><i class="fa fa-refresh fa-spin"></i>
+    Revoca richiesta reset password...
 </div>
 
 <form class="form-horizontal">
@@ -73,12 +75,8 @@
         <div class="col-sm-7">
             <span class="password-inline pull-left">••••••••••••</span>
             <div class="btn-group pull-right" id="users-actions">
-                <button type="button" class="btn btn-default"
-                        id="reset-pwd" <?= $pending_pwd_reset ? 'disabled' : '' ?>><i class="fa fa-key"></i> Resetta
-                    password
-                </button>
-                <button type="button" class="btn btn-default" id="change-pwd"><i class="fa fa-lock"></i> Cambia password
-                </button>
+                <button type="button" class="btn btn-default" id="reset-pwd" <?= $pending_pwd_reset ? 'disabled' : '' ?>><i class="fa fa-key"></i> Resetta password</button>
+                <button type="button" class="btn btn-default" id="change-pwd" <?= $pending_pwd_reset ? 'disabled' : '' ?>><i class="fa fa-lock"></i> Cambia password</button>
             </div>
 
         </div>
@@ -135,3 +133,34 @@
         </div>
     </div>
 </form>
+
+<div class="modal fade" id="users-change-password-manual">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><i class="fa fa-lg fa-lock"></i> Cambia password</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="alert alert-danger hidden" id="pchange-error-alert">
+                    <i class="fa fa-exclamation-circle"></i> <b>Impossibile cambiare la password:</b> i campi non sono stati compilati o le password non corrispondono
+                </div>
+                <div class="form-group">
+                    <label for="i-password">Inserire la nuova password</label>
+                    <input type="password" class="form-control" id="i-password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label for="c-password">Confermare la nuova password</label>
+                    <input type="password" class="form-control" id="i-cpassword" placeholder="Conferma password">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> <i class="fa fa-ban"></i> Annulla</button>
+                <button type="button" class="btn btn-primary" id="pchange-ok"><i class="fa fa-check"></i> OK</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+

@@ -7,7 +7,6 @@
 </h3>
 <div class="btn-group pull-right" id="users-actions">
     <button type="button" class="btn btn-success" id="save-edit"><i class="fa fa-save"></i> Salva</button>
-    <button type="button" class="btn btn-danger" id="delete-user"><i class="fa fa-trash"></i> Elimina</button>
     <button type="button" class="btn btn-default" id="close-edit"><i class="fa fa-remove"></i> Chiudi</button>
 </div>
 <div class="clearfix"></div>

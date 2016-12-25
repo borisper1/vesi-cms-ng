@@ -23,14 +23,6 @@ $(document).ready(function() {
         }
     });
 
-    $('.vcms-select-user').change(function () {
-        if ($('.vcms-select-user:checked').length > 0) {
-            $('#users-actions').removeClass('hidden');
-        } else {
-            $('#users-actions').addClass('hidden');
-        }
-    });
-
     var admin_group_control = $('#i-admin-group');
     if (admin_group_control) {
         admin_group_control.selectpicker('val', $('#current-admin-group').text());
@@ -40,16 +32,6 @@ $(document).ready(function() {
     if (frontend_group_control) {
         frontend_group_control.selectpicker('val', $('#current-frontend-group').text());
     }
-
-    $('#ajax-cage').on('click', '.panel-actuator', function () {
-        var object = $(this).closest('.container-block').find('table:first');
-        if (object.hasClass('hidden')) {
-            $(this).find('.fa-chevron-right').removeClass('fa-chevron-right').addClass('fa-chevron-down');
-        } else {
-            $(this).find('.fa-chevron-down').removeClass('fa-chevron-down').addClass('fa-chevron-right');
-        }
-        object.toggleClass('hidden');
-    });
 
     $('#save-edit').click(function () {
         var username_oject = $('#username');
@@ -109,7 +91,36 @@ $(document).ready(function() {
         $.post(window.vbcknd.base_url + 'ajax/admin/users/request_password_reset', {user: $('#username').text()}, AJAXSimpleResultHandler);
     });
 
+    $('#revoke-reset-request').click(function () {
+        $('#revoke-pwd-reset-spinner').removeClass('hidden');
+        $.post(window.vbcknd.base_url + 'ajax/admin/users/revoke_password_reset', {user: $('#username').text()}, AJAXSimpleResultHandler);
+    });
+
+    $('#change-pwd').click(function(){
+        $('#users-change-password-manual').modal();
+        $('#i-password').val('');
+        $('#i-cpassword').val('');
+        window.vbcknd.validation.clear_all_errors();
+    });
+
+    $('#pchange-ok').click(function () {
+        var password = $('#i-password');
+        var cpassword = $('#i-cpassword');
+        var error_alert = $('#pchange-error-alert');
+        error_alert.addClass('hidden');
+        window.vbcknd.validation.clear_all_errors();
+        if (window.vbcknd.validation.check_pwds(password, cpassword)) {
+            error_alert.removeClass('hidden');
+            return;
+        }
+        $('#users-change-password-manual').modal('hide');
+        //Execute POST request
+        $.post(window.vbcknd.base_url + 'ajax/admin/users/change_password', {user: $('#username').text(), password: password.val()}, AJAXSimpleResultHandler);
+    });
+
     function AJAXSimpleResultHandler(data) {
+        $('#pwd-reset-spinner').addClass('hidden');
+        $('#revoke-pwd-reset-spinner').addClass('hidden');
         if (data == 'success') {
             window.location.reload(true);
         } else {
@@ -119,14 +130,28 @@ $(document).ready(function() {
 
     //List mode functions (TODO: maybe implement if-tree based loading as in groups.js)
 
+    $('.vcms-select-user').change(function () {
+        if ($('.vcms-select-user:checked').length > 0) {
+            $('#users-actions').removeClass('hidden');
+        } else {
+            $('#users-actions').addClass('hidden');
+        }
+    });
+
+    $('#ajax-cage').on('click', '.panel-actuator', function () {
+        var object = $(this).closest('.container-block').find('table:first');
+        if (object.hasClass('hidden')) {
+            $(this).find('.fa-chevron-right').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+        } else {
+            $(this).find('.fa-chevron-down').removeClass('fa-chevron-down').addClass('fa-chevron-right');
+        }
+        object.toggleClass('hidden');
+    });
+
     $('#new-local-user').click(function () {
         $('#new-local-user-modal').modal();
         window.vbcknd.validation.clear_all_errors();
         $('#local-error-alert').addClass('hidden');
-    });
-
-    $('#new-LDAP-user').click(function () {
-        $('#new-ldap-user-modal').modal();
     });
 
     $('#new-local-user-modal-confirm').click(function () {
@@ -174,6 +199,11 @@ $(document).ready(function() {
         $('#new-user-failure-alert').removeClass('hidden');
     }
 
+    function AJAXNewFailedMB() {
+        $('#new-user-spinner').addClass('hidden');
+        $('#new-user-failure-mb-alert').removeClass('hidden');
+    }
+
     $('#enable-users').click(function () {
         var users = [];
         $('.vcms-select-user:checked').each(function () {
@@ -204,11 +234,120 @@ $(document).ready(function() {
 
     });
 
+    $('#new-LDAP-user').click(function () {
+        $('#ldap-new-user-start').removeClass('hidden');
+        $('#ldap-new-user-search').addClass('hidden');
+        $('#ldap-new-user-from-group').addClass('hidden');
+        $('#ldap-new-user-manual-bind').addClass('hidden');
+        $('#new-ldap-user-modal-confirm').addClass('hidden');
+        $('#new-ldap-user-modal').modal();
+    });
+
     $('#but-ldap-new-user-search').click(function(){
         CurrentItem = {};
         CurrentItem.mode = 'search';
         $('#ldap-new-user-start').addClass('hidden');
         $('#ldap-new-user-search').removeClass('hidden');
-    })
+        $('#new-ldap-user-modal-confirm').removeClass('hidden');
+    });
+
+    $('#but-ldap-user-query').click(function(){
+        var query = $('#i-ldap-user-query').val();
+        CurrentItem.temp = $(this).html();
+        $(this).html('<i class="fa fa-spin fa-refresh"></i>');
+        $(this).prop('disabled', true);
+        $(this).selectpicker('render');
+        $.post(window.vbcknd.base_url + 'ajax/admin/users/ldap_search_user', 'query=' + encodeURIComponent(query), AJAXLoadUserLDAPSearch);
+    });
+
+    function AJAXLoadUserLDAPSearch(data)
+    {
+        $('#but-ldap-user-query').html(CurrentItem.temp).prop('disabled', false);
+        $('#ldap-search-user-contents').html(data);
+    }
+
+    $('#but-ldap-new-user-from-group').click(function(){
+        CurrentItem = {};
+        CurrentItem.mode = 'from-group';
+        $('#ldap-new-user-start').addClass('hidden');
+        $('#ldap-new-user-from-group').removeClass('hidden');
+        $('#new-ldap-user-modal-confirm').removeClass('hidden');
+    });
+
+    $('#i-ldap-from-group').on('changed.bs.select', function (e) {
+        var query = $(this).val();
+        $('#ldap-new-user-group-waitbox').prepend('<span id="waiting"><i class="fa fa-spin fa-refresh"></i> </span>');
+        $(this).prop('disabled', true);
+        $.post(window.vbcknd.base_url + 'ajax/admin/users/ldap_search_users_group', 'group=' + encodeURIComponent(query), AJAXLoadUsersGroupLDAPSearch);
+    });
+
+    $('#ldap-from-group-search-sall').click(function(){
+        $('#ldap-search-from-group-contents').find('.vcms-select-ldap-user').each(function(){
+            $(this).prop('checked', true);
+        });
+    });
+
+    $('#ldap-from-group-search-dall').click(function(){
+        $('#ldap-search-from-group-contents').find('.vcms-select-ldap-user').each(function(){
+            $(this).prop('checked', false);
+        });
+    });
+
+    function AJAXLoadUsersGroupLDAPSearch(data)
+    {
+        $('#ldap-new-user-group-waitbox').find('#waiting').remove();
+        $('#ldap-search-from-group-contents').html(data);
+        $('#i-ldap-from-group').prop('disabled', false).selectpicker('render');
+    }
+
+    $('#new-ldap-user-modal-confirm').click(function(){
+       if(CurrentItem.mode=='search') {
+           var users = [];
+           $('#ldap-search-user-contents').find('.vcms-select-ldap-user:checked').each(function(){
+               users.push($(this).val());
+           });
+           $.ajax({
+               type: "POST",
+               url: window.vbcknd.base_url + 'ajax/admin/users/ldap_add_users',
+               data: {"users": encodeURIComponent(users.join(','))},
+               success: AJAXNewOK,
+               error: AJAXNewFailed
+           });
+       }else if(CurrentItem.mode=='from-group') {
+            var users = [];
+            $('#ldap-search-from-group-contents').find('.vcms-select-ldap-user:checked').each(function(){
+                users.push($(this).val());
+            });
+           $.ajax({
+               type: "POST",
+               url: window.vbcknd.base_url + 'ajax/admin/users/ldap_add_users',
+               data: {"users": encodeURIComponent(users.join(','))},
+               success: AJAXNewOK,
+               error: AJAXNewFailed
+           });
+       }else if(CurrentItem.mode=='manual-bind') {
+           $.ajax({
+               type: "POST",
+               url: window.vbcknd.base_url + 'ajax/admin/users/ldap_add_bind',
+               data: {"user": encodeURIComponent($('#i-ldap-bind-username').val()),
+                   "password": encodeURIComponent($('#i-ldap-bind-password').val())},
+               success: AJAXNewOK,
+               error: AJAXNewFailedMB
+           });
+       }
+       $('#new-user-spinner').removeClass('hidden');
+       $('#new-user-success-alert').addClass('hidden');
+       $('#new-user-failure-alert').addClass('hidden');
+       $('#new-user-failure-mb-alert').addClass('hidden');
+       $('#new-ldap-user-modal').modal('hide');
+    });
+
+    $('#but-ldap-new-user-manual-bind').click(function(){
+        CurrentItem = {};
+        CurrentItem.mode = 'manual-bind';
+        $('#ldap-new-user-start').addClass('hidden');
+        $('#ldap-new-user-manual-bind').removeClass('hidden');
+        $('#new-ldap-user-modal-confirm').removeClass('hidden');
+    });
 
 });

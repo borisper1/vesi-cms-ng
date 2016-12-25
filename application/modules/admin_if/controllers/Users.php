@@ -56,6 +56,14 @@ class Users extends MX_Controller
         echo $result ? 'success' : 'failed - 500';
     }
 
+    function revoke_password_reset()
+    {
+        $this->load->model('authentication_handler');
+        $user = $this->input->post('user');
+        $result = $this->authentication_handler->reset_pending_pwd_reset_request($user);
+        echo $result ? 'success' : 'failed - 500';
+    }
+
     function new_local()
     {
         $this->load->model('local_user_handler');
@@ -130,8 +138,65 @@ class Users extends MX_Controller
 
     function ldap_search_user()
     {
-        $query = $this->input->post('query');
+        $query = rawurldecode($this->input->post('query'));
         $this->load->model('ldap_user_handler');
+        $this->ldap_user_handler->ldap_admin_connect();
+        $result = $this->ldap_user_handler->search_user($query);
+        $this->load->view('users/ldap_synthetic_list', array('users'=> $result));
+    }
 
+    function ldap_search_users_group()
+    {
+        $group = rawurldecode($this->input->post('group'));
+        $this->load->model('ldap_user_handler');
+        $this->ldap_user_handler->ldap_admin_connect();
+        $result = $this->ldap_user_handler->search_users_group($group);
+        $this->load->view('users/ldap_synthetic_list', array('users'=> $result));
+    }
+
+    function ldap_add_users()
+    {
+        $users = rawurldecode($this->input->post('users'));
+        $users = explode(',', $users);
+        $this->load->model('authentication_handler');
+        $this->authentication_handler->add_users_from_ldap($users);
+        $result = true;
+        if ($result) {
+            $this->output->set_status_header(200);
+            $this->output->set_output('success');
+        } else {
+            $this->output->set_status_header(500);
+            $this->output->set_output('failed user creation');
+        }
+    }
+
+    function ldap_add_bind()
+    {
+        $user = rawurldecode($this->input->post('user'));
+        $password = rawurldecode($this->input->post('password'));
+        $this->load->model('authentication_handler');
+        $result = $this->authentication_handler->ldap_manual_bind($user, $password);
+        if ($result) {
+            $this->output->set_status_header(200);
+            $this->output->set_output('success');
+        } else {
+            $this->output->set_status_header(500);
+            $this->output->set_output('failed user creation');
+        }
+    }
+
+    function change_password()
+    {
+        $user = rawurldecode($this->input->post('user'));
+        $password = rawurldecode($this->input->post('password'));
+        $this->load->model('authentication_handler');
+        $result = $this->authentication_handler->admin_password_change($user, $password);
+        if ($result) {
+            $this->output->set_status_header(200);
+            $this->output->set_output('success');
+        } else {
+            $this->output->set_status_header(200);
+            $this->output->set_output('failed user creation');
+        }
     }
 }

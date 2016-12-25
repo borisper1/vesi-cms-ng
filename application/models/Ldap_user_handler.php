@@ -110,16 +110,32 @@ class Ldap_user_handler extends CI_Model
     function search_user($query)
     {
         $query = ldap_escape($query, null, LDAP_ESCAPE_FILTER);
-        $result = ldap_search($this->connection, $this->ldap_settings['base_dn'], "(& (objectCategory=person) (objectClass=user) (userPrincipalName=*$query))");
+        $result = ldap_search($this->connection, $this->ldap_settings['base_dn'], "(& (objectCategory=person) (objectClass=user) (userPrincipalName=$query*))");
         if (!$result) {
             return false;
         }
         $entries = ldap_get_entries($this->connection, $result);
+        return $this->process_results($entries);
+    }
+
+    function search_users_group($group)
+    {
+        $group = ldap_escape($group, null, LDAP_ESCAPE_FILTER);
+        $result = ldap_search($this->connection, $this->ldap_settings['base_dn'], "(& (objectCategory=person) (objectClass=user) (memberOf=$group))");
+        if (!$result) {
+            return false;
+        }
+        $entries = ldap_get_entries($this->connection, $result);
+        return $this->process_results($entries);
+    }
+
+    private function process_results($entries)
+    {
         $return_array = [];
         for($i=0; $i<$entries['count']; $i++)
         {
             $entry_array = array(
-                'username' => isset($entries[$i]['userPrincipalName'][0]) ? $entries[$i]['userPrincipalName'][0] : null,
+                'username' => isset($entries[$i]['userprincipalname'][0]) ? $entries[$i]['userprincipalname'][0] : null,
                 'full_name' => isset($entries[$i]['displayname'][0]) ? $entries[$i]['displayname'][0] : null,
                 'given_name' => isset($entries[$i]['givenname'][0]) ? $entries[$i]['givenname'][0] : null,
                 'cn' => isset($entries[$i]['cn'][0]) ? $entries[$i]['cn'][0] : null,
@@ -129,6 +145,10 @@ class Ldap_user_handler extends CI_Model
                 'title' => isset($entries[$i]['title'][0]) ? $entries[$i]['title'][0] : null,
                 'groups' => isset($entries[$i]['memberof']) ? $entries[$i]['memberof'] : null,
             );
+            if(isset($entry_array['groups']['count']))
+            {
+                unset($entry_array['groups']['count']);
+            }
             $return_array[] = $entry_array;
         }
         return $return_array;

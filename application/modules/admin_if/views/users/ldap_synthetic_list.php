@@ -9,7 +9,7 @@
         <tr>
             <td><input type="checkbox" class="vcms-select-ldap-user" value="<?= $user['username'] ?>"><?= $user['username'] ?></td>
             <td><?= $user['full_name'] ?></td>
-            <td><?= $user['username'] ?></td>
+            <td><?= $user['email'] ?></td>
             <td>
                 <?php foreach($user['groups'] as $group): ?>
                     <span class="label label-default"><?= $group ?></span>&nbsp;

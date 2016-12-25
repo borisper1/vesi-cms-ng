@@ -23,6 +23,51 @@ $(document).ready(function() {
         });
     });
 
+    $('#i-password').on('keyup',function(){
+        var progress_bar = $('#pwd-meter-progress');
+        if($(this).val().length < 8)
+        {
+            progress_bar.css('width', '0');
+            $('.pwd-meter-main-text').addClass('hidden');
+            $('#pwd-meter-short').removeClass('hidden');
+            return;
+
+        }
+        var obj = zxcvbn($(this).val());
+        if(obj.score <= 1)
+        {
+            progress_bar.css('width', '25%');
+            progress_bar.removeClass('progress-bar-warning progress-bar-success');
+            progress_bar.addClass('progress-bar-danger');
+            $('.pwd-meter-main-text').addClass('hidden');
+            $('#pwd-meter-1').removeClass('hidden');
+        }
+        else if(obj.score == 2)
+        {
+            progress_bar.css('width', '50%');
+            progress_bar.removeClass('progress-bar-danger progress-bar-success');
+            progress_bar.addClass('progress-bar-warning');
+            $('.pwd-meter-main-text').addClass('hidden');
+            $('#pwd-meter-2').removeClass('hidden');
+        }
+        else if(obj.score == 3)
+        {
+            progress_bar.css('width', '75%');
+            progress_bar.removeClass('progress-bar-danger progress-bar-warning');
+            progress_bar.addClass('progress-bar-success');
+            $('.pwd-meter-main-text').addClass('hidden');
+            $('#pwd-meter-3').removeClass('hidden');
+        }
+        else if(obj.score == 4)
+        {
+            progress_bar.css('width', '100%');
+            progress_bar.removeClass('progress-bar-danger progress-bar-warning');
+            progress_bar.addClass('progress-bar-success');
+            $('.pwd-meter-main-text').addClass('hidden');
+            $('#pwd-meter-4').removeClass('hidden');
+        }
+    });
+
     function AJAXOperationOK()
     {
         $('#panel-pwd-change').addClass('hidden');

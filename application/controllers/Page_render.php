@@ -185,6 +185,7 @@ class Page_render extends MX_Controller
         }
         $title = 'Modifica password - Vesi CMS';
         $this->resources->load_aux_js_file('assets/frontend-user-management.js');
+        $this->resources->load_aux_js_file('assets/third_party/zxcvbn/zxcvbn.js');
         $this->output_page($content, $title);
     }
 }

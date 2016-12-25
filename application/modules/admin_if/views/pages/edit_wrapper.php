@@ -7,12 +7,13 @@
                 data-help_path="pages::edit"><i class="fa fa-question-circle"></i></button>
     </h1>
 </div>
-<h3 class="pull-left inline"><i class="fa fa-pencil"></i> <span id="f-title"><?=$title ?></span>
-    <small><span class="label label-info"><span id="f-container"><?=$container ?></span> <i class="fa fa-ellipsis-v"></i> <span id="f-page-name"><?=$page_name ?></span></span> <span class="label label-default" id="f-id"><?=$id ?></span></small>
+<h3 class="pull-left inline"><i class="fa fa-pencil"></i> <span id="f-title"><?=$title ?></span> <i class="fa fa-lock tooltipped" id="restricted-access-icon" title="Accesso ristretto"></i>
+    <small> <span class="label label-info"><span id="f-container"><?=$container ?></span> <i class="fa fa-ellipsis-v"></i> <span id="f-page-name"><?=$page_name ?></span></span> <span class="label label-default" id="f-id"><?=$id ?></span></small>
 </h3>
 <div class="btn-group pull-right" id="page-actions">
     <button type="button" class="btn btn-default" id="save-page"><i class="fa fa-save"></i> Salva</button>
     <button type="button" class="btn btn-default" id="edit-code"><i class="fa fa-code"></i> Modifica codice</button>
+    <button type="button" class="btn btn-default" id="edit-permissions"><i class="fa fa-lock"></i> Restringi accesso</button>
     <button type="button" class="btn btn-default" id="edit-attributes"><i class="fa fa-wrench"></i> Modifica attributi</button>
     <button type="button" class="btn btn-default" id="refresh"><i class="fa fa-refresh"></i> Aggiorna</button>
     <button type="button" class="btn btn-default" id="close-edit"><i class="fa fa-remove"></i> Chiudi</button>
@@ -104,6 +105,39 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
                 <button type="button" class="btn btn-success" id="edit-attributes-confirm"><i class="fa fa-bolt"></i> Modifica attributi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit-permissions-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-lock"></i> Restringi accesso</h4>
+            </div>
+            <div class="modal-body">
+                <div class="btn-group spaced" data-toggle="buttons">
+                    <label class="btn btn-default active">
+                        <input type="radio" name="permissions-limiting-mode" id="permissions-no-restrict" checked> <i class="fa fa-unlock"></i> Non restringere questa pagina
+                    </label>
+                    <label class="btn btn-default">
+                        <input type="radio" name="permissions-limiting-mode" id="permissions-restrict"> <i class="fa fa-lock"></i> Restringi pagina
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="i-allowed-groups">Scegliere i gruppi a cui restringere l'accesso alla pagina</label>
+                    <select class="selectpicker form-control" id="i-allowed-groups" multiple>
+                        <?php foreach($frontend_groups as $group): ?>
+                            <option value="<?=$group['name'] ?>">[<?=$group['name'] ?>] <?=$group['label'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla</button>
+                <button type="button" class="btn btn-success" id="edit-attributes-confirm"><i class="fa fa-bolt"></i> Applica modifiche</button>
             </div>
         </div>
     </div>
@@ -368,6 +402,8 @@
         </div>
     </div>
 </div>
+
+
 
 <div class="row" id="events-cage">
     <div class="col-lg-<?=$has_sidebar ? '6' : '12' ?> editor-parent-element">

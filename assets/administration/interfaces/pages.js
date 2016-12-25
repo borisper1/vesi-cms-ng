@@ -237,6 +237,10 @@ $(document).ready(function() {
         }
     }
 
+    $('#edit-permissions').click(function(){
+        $('#edit-permissions-modal').modal();
+    });
+
     $('#generate-page-name').click(function(){
         var title = $('#i-page-title').val();
         $('#i-page-name').val(window.vbcknd.auto_name_format(title));

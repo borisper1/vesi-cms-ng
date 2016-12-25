@@ -18,10 +18,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <input type="password" class="form-control" id="i-password" placeholder="Password">
                 <span class="help-block">La password deve avere almeno 8 caratteri. <b>Si raccomanda di utilizzare una password complessa</b></span>
             </div>
+            <div id="pwd-meter-container">
+                <div class="progress">
+                    <div id="pwd-meter-progress" class="progress-bar progress-bar-danger" role="progressbar" style="width: 0%">
+                    </div>
+                </div>
+                <p class="text-danger pwd-meter-main-text" id="pwd-meter-short"><b>La password inserita è troppo corta</b></p>
+                <p class="text-danger pwd-meter-main-text hidden" id="pwd-meter-1"><b>La password inserita è molto debole</b></p>
+                <p class="text-warning pwd-meter-main-text hidden" id="pwd-meter-2"><b>La password inserita è debole</b></p>
+                <p class="text-success pwd-meter-main-text hidden" id="pwd-meter-3">La password inserita è accettabile</p>
+                <p class="text-success pwd-meter-main-text hidden" id="pwd-meter-4">La password inserita è sicura</p>
+            </div>
             <div class="form-group">
                 <label for="c-password">Confermare la nuova password</label>
                 <input type="password" class="form-control" id="i-cpassword" placeholder="Conferma password">
             </div>
+
             <button type="button" class="btn btn-primary" id="execute-password-change"><i class="fa fa-bolt"></i> Cambia
                 password
             </button>
