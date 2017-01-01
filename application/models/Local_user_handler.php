@@ -73,6 +73,11 @@ class Local_user_handler extends CI_Model
         return (strpos($this->database_structure->admin_group, 'ldap::') === 0) ? substr($this->database_structure->admin_group, 6) : $this->database_structure->admin_group;
     }
 
+    function get_frontend_group()
+    {
+        return (strpos($this->database_structure->frontend_group, 'ldap::') === 0) ? substr($this->database_structure->frontend_group, 6) : $this->database_structure->frontend_group;
+    }
+
     function get_full_user_data()
     {
         return $this->database_structure;

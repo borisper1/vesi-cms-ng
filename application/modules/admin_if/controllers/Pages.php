@@ -21,6 +21,7 @@ class Pages extends MX_Controller
         $this->load->model('page_handler');
         $this->load->model('content_handler');
         $this->load->model('menu_handler');
+        $this->load->model('group_handler');
         //Load installed modules / editor directives file
         $this->load_json_descriptor();
         if($id=='new')
@@ -55,7 +56,7 @@ class Pages extends MX_Controller
         $data_array['containers']=$this->page_handler->get_containers_list();
         $data_array['components_list'] = $this->modules_handler->get_components_list();
         $data_array['plugins'] = $this->modules_handler->get_full_plugin_list();
-        $data_array['frontend_groups'] = $this->modules_handler->get_frontend_permissions_array();
+        $data_array['frontend_groups'] = $this->group_handler->get_frontend_group_list();
         $this->load->view('pages/edit_wrapper', $data_array);
     }
 

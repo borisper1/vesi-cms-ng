@@ -3,16 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Authentication_handler extends CI_Model
 {
-    function authenticate_admin($username, $password)
+    function authenticate($username, $password)
     {
         $this->load->model('local_user_handler');
         if (!$this->local_user_handler->load_user($username)) {
-            return array(false, 'invalid_credentials');
+            return array('result' => false, 'status' => 'invalid_credentials');
         }
         $auth_type = $this->local_user_handler->get_auth_type();
         if ($auth_type === 0) {
             if (!$this->local_user_handler->check_credentials($password)) {
-                return array(false, 'invalid_credentials');
+                return array('result' => false, 'status' => 'invalid_credentials');
             }
         } elseif ($auth_type === 1) {
             //Check if LDAP is enabled
@@ -20,23 +20,27 @@ class Authentication_handler extends CI_Model
                 $this->load->model('ldap_user_handler');
                 $result = $this->ldap_user_handler->ldap_bind_connect($username, $password);
                 if (!$result) {
-                    return array(false, 'ldap_no_bind');
+                    return array('result' => false, 'status' => 'ldap_no_bind');
                 }
                 $this->ldap_sync_user($username);
                 $this->local_user_handler->complete_login($username);
             } else {
-                return array(false, 'ldap_off');
+                return array('result' => false, 'status' => 'ldap_off');
             }
         }
         $active = $this->local_user_handler->is_active();
         if ($active === 1) {
-            return array(false, 'user_revoked');
+            return array('result' => false, 'status' => 'user_revoked');
         }
         if ($active === 2) {
-            return array(false, 'user_locked');
+            return array('result' => false, 'status' => 'user_locked');
         }
-        $admin_group = $this->local_user_handler->get_admin_group();
-        return array(true, $username, $admin_group);
+        return array(
+            'result' =>true,
+            'user' => $username,
+            'admin_group' => $this->local_user_handler->get_admin_group(),
+            'frontend_group' =>$this->local_user_handler->get_frontend_group(),
+        );
     }
 
     function check_admin_session()
@@ -48,6 +52,7 @@ class Authentication_handler extends CI_Model
         if ($this->local_user_handler->load_user($this->session->username)) {
             if ($this->local_user_handler->is_active() === 0) {
                 $this->session->admin_group = $this->local_user_handler->get_admin_group();
+                $this->session->frontend_group = $this->local_user_handler->get_frontend_group();
                 return true;
             }
         }
@@ -274,7 +279,11 @@ class Authentication_handler extends CI_Model
     function request_password_reset($user, $new_user = false)
     {
         $this->load->model('local_user_handler');
-        if (!$this->local_user_handler->load_user($user)) {
+        if (!$this->local_user_handler->load_user($user) ) {
+            return false;
+        }
+        if($this->local_user_handler->get_auth_type() != 0)
+        {
             return false;
         }
         if ($this->check_pending_pwd_requests($user)) {
@@ -425,6 +434,22 @@ class Authentication_handler extends CI_Model
         }
         $this->load->model('local_user_handler');
         return $this->local_user_handler->set_new_password($user, $password);
+    }
+
+    function check_frontend_session()
+    {
+        if ($this->session->type !== 'administrative' and $this->session->type !== 'frontend') {
+            return false;
+        }
+        $this->load->model('local_user_handler');
+        if ($this->local_user_handler->load_user($this->session->username)) {
+            if ($this->local_user_handler->is_active() === 0) {
+                $this->session->admin_group = $this->local_user_handler->get_admin_group();
+                $this->session->frontend_group = $this->local_user_handler->get_frontend_group();
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -91,12 +91,13 @@ class Administration extends MX_Controller
         $username=$this->input->post('username');
         $login_data=[];
         if($username!==null){
-            $result = $this->authentication_handler->authenticate_admin($username, $this->input->post('password'));
-            if($result[0])
+            $result = $this->authentication_handler->authenticate($username, $this->input->post('password'));
+            if($result['result'])
             {
                 $this->session->type='administrative';
-                $this->session->username = $result[1];
-                $this->session->admin_group = $result[2];
+                $this->session->username = $result['user'];
+                $this->session->admin_group = $result['admin_group'];
+                $this->session->frontend_group = $result['frontend_group'];
                 redirect('admin');
             }
             else
@@ -104,7 +105,7 @@ class Administration extends MX_Controller
                 $this->lang->load('admin_login_lang');
 
                 $login_data['form_class']='has-error';
-                $login_data['error_message']=$this->lang->line('admin_login_'.$result[1]);
+                $login_data['error_message']=$this->lang->line('admin_login_'.$result['status']);
             }
         }
         else

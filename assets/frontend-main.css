@@ -74,3 +74,13 @@ body{
     position:fixed;
 }
 
+.password-inline{
+    padding: 6px 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.generic-inline {
+    padding: 6px 0;
+}
+

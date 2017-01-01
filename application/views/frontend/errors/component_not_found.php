@@ -2,7 +2,7 @@
 ?>
 <div class="panel panel-danger">
     <div class="panel-heading">
-        <h3 class="panel-title">Impossibile visualizzare il contenuto <code><?= $id ?></code></h3>
+        <h3 class="panel-title"><i class="fa fa-exclamation-circle"></i> Impossibile visualizzare il contenuto <code><?= $id ?></code></h3>
     </div>
     <div class="panel-body">
         <p>Il contenuto <code><?= $id ?></code> richiede il componente <code><?= $component ?></code> per la

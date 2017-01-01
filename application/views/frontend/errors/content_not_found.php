@@ -2,7 +2,7 @@
 ?>
 <div class="panel panel-danger">
     <div class="panel-heading">
-        <h3 class="panel-title">Impossibile visualizzare il contenuto/menu <code><?= $id ?></code></h3>
+        <h3 class="panel-title"><i class="fa fa-exclamation-circle"></i> Impossibile visualizzare il contenuto/menu <code><?= $id ?></code></h3>
     </div>
     <div class="panel-body">
         <p>Il contenuto o menu <code><?= $id ?></code> non è stato trovato nel database. Per più informazioni

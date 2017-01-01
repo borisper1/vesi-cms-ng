@@ -4,7 +4,6 @@ class Page_render extends MX_Controller
 {
     public function index()
     {
-
         $page_info = explode('::', $this->db_config->get('general', 'home_page'));
         $this->view($page_info[0], $page_info[1]);
     }
@@ -30,6 +29,16 @@ class Page_render extends MX_Controller
         }
 
         $page_data = $this->page_handler->get_page_obj($page_id);
+        if($page_data->restrict_access)
+        {
+            $result = $this->check_frontend_permissions($page_data->allowed_groups);
+            if(!$result)
+            {
+                $content = $this->load->view('frontend/errors/user_not_authorized', null, true);
+                $this->output_page($content);
+                return;
+            }
+        }
         $title=strip_tags($page_data->title).' | '.$this->db_config->get('general','website_name');
         $content =$this->display_layout($page_data);
         $this->output_page($content,$title);
@@ -38,6 +47,7 @@ class Page_render extends MX_Controller
     protected function output_page($content, $title = null,$container = "",$page = "")
     {
         $this->load->model('menu_handler');
+        $this->load->model('authentication_handler');
         $id=$this->menu_handler->get_main_menu_id();
         $menu_data = $this->menu_handler->get_menu_array($id,$container,$page);
         $menu_data['home_active'] = ($container==='home' and $page==='home');
@@ -47,7 +57,13 @@ class Page_render extends MX_Controller
         $menu_data['enable_frontend_auth'] = $this->db_config->get('users', 'enable_frontend_authentication');
         if($menu_data['enable_frontend_auth'])
         {
-            $authenticator_data['frontend_logged_in'] = false;
+            $authenticator_data['frontend_logged_in'] = $this->authentication_handler->check_frontend_session();
+            if($authenticator_data['frontend_logged_in'])
+            {
+                $authenticator_data['user_fullname'] = $this->authentication_handler->get_full_name($this->session->username);
+                preg_match_all('/(?<=\s|^)[a-z]/i', $authenticator_data['user_fullname'], $matches);
+                $authenticator_data['user_initials'] = implode('', $matches[0]);
+            }
             $menu_data['frontend_authenticator_rendered'] = $this->load->view('frontend/authenticator', $authenticator_data, true);
         }
 
@@ -158,17 +174,34 @@ class Page_render extends MX_Controller
         $this->error_logger->log_404_error($referrer);
     }
 
+    protected function check_frontend_permissions($allowed_groups)
+    {
+        $this->load->model('authentication_handler');
+        if($this->authentication_handler->check_frontend_session())
+        {
+            return in_array($this->session->frontend_group, $allowed_groups);
+        }
+        return false;
+    }
+
     //Frontend authentication system management: NOTE: this can't be a separate controller as it uses $this->output_page();
 
     function login()
     {
-
+        $this->load->model('authentication_handler');
+        if($this->authentication_handler->check_frontend_session() or !$this->db_config->get('users', 'enable_frontend_authentication'))
+        {
+            redirect('');
+        }
+        $content = $this->load->view('frontend/users/login', null, true);
+        $this->resources->load_aux_js_file('assets/frontend-user-management.js');
+        $this->output_page($content, 'Accedi - Vesi CMS');
     }
 
     function logout()
     {
         $this->session->sess_destroy();
-        $redirect_to = $this->input->post("origin_page");
+        $redirect_to = $this->input->post("redirect_to");
         echo "<script>window.location.href = \"$redirect_to\"</script>";
     }
 
@@ -186,6 +219,33 @@ class Page_render extends MX_Controller
         $title = 'Modifica password - Vesi CMS';
         $this->resources->load_aux_js_file('assets/frontend-user-management.js');
         $this->resources->load_aux_js_file('assets/third_party/zxcvbn/zxcvbn.js');
+        $this->output_page($content, $title);
+    }
+
+    function forgot_password()
+    {
+        if($this->authentication_handler->check_frontend_session() or !$this->db_config->get('users', 'enable_frontend_authentication'))
+        {
+            redirect('');
+        }
+        $content = $this->load->view('frontend/users/pwd_forgot_request', null, true);
+        $title = 'Password dimenticata - Vesi CMS';
+        $this->resources->load_aux_js_file('assets/frontend-user-management.js');
+        $this->output_page($content, $title);
+    }
+
+    function show_user()
+    {
+        $this->load->model('authentication_handler');
+        if(!$this->authentication_handler->check_frontend_session())
+        {
+            redirect('');
+        }
+        $result = $this->authentication_handler->get_user_data($this->session->username);
+        $result['ldap_man_email'] = $this->db_config->get('authentication', 'ldap_sync_email');
+        $content = $this->load->view('frontend/users/profile', $result, true);
+        $title = 'Profilo utente - Vesi CMS';
+        $this->resources->load_aux_js_file('assets/frontend-user-management.js');
         $this->output_page($content, $title);
     }
 }

@@ -2,7 +2,7 @@
 ?>
 <div class="panel panel-danger">
     <div class="panel-heading">
-        <h3 class="panel-title">Impossibile visualizzare il componente aggiuntivo <code><?= $name ?></code></h3>
+        <h3 class="panel-title"><i class="fa fa-exclamation-circle"></i> Impossibile visualizzare il componente aggiuntivo <code><?= $name ?></code></h3>
     </div>
     <div class="panel-body">
         <p>Il componente aggiuntivo <code><?= $name ?></code> non è installato oppure è disabilitato. Se il componente

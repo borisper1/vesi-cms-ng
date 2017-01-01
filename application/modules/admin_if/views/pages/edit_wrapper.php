@@ -138,7 +138,7 @@
                             multiple <?= $restrict_access ? '' : 'disabled' ?>>
                         <?php foreach($frontend_groups as $group): ?>
                             <option value="<?= $group['name'] ?>" <?= in_array($group['name'], $allowed_groups) ? 'selected' : '' ?>>
-                                [<?= $group['name'] ?>] <?= $group['label'] ?></option>
+                                <?= $group['name'] ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>

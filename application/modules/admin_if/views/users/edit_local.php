@@ -78,7 +78,6 @@
                 <button type="button" class="btn btn-default" id="reset-pwd" <?= $pending_pwd_reset ? 'disabled' : '' ?>><i class="fa fa-key"></i> Resetta password</button>
                 <button type="button" class="btn btn-default" id="change-pwd" <?= $pending_pwd_reset ? 'disabled' : '' ?>><i class="fa fa-lock"></i> Cambia password</button>
             </div>
-
         </div>
     </div>
     <br>
