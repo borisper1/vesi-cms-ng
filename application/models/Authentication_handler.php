@@ -452,4 +452,15 @@ class Authentication_handler extends CI_Model
         return false;
     }
 
+    function request_frontend_permission($permission)
+    {
+        $this->load->model('group_handler');
+        if ($this->check_frontend_session()) {
+            $group_data = $this->group_handler->parse_frontend_group($this->session->frontend_group);
+            if ($group_data !== false) {
+                return in_array($permission, $group_data['allowed_permission']);
+            }
+        }
+        return false;
+    }
 }

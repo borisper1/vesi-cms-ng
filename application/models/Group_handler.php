@@ -204,4 +204,17 @@ class Group_handler extends CI_Model
 
         }
     }
+
+    function parse_frontend_group($group)
+    {
+        $query = $this->db->get_where('frontend_groups', array('name' => $group));
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            if ($row->active == 1) {
+                return json_decode($row->code);
+            }
+        }
+        return false;
+    }
+
 }
