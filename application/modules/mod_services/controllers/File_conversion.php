@@ -3,9 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class File_conversion extends MX_Controller
 {
-    protected $extension_array = array('docx' => '.docx', 'html' => '.html', 'html5' => '.html', 'latex' => '.pdf', 'odt' => '.odt');
-    protected $type_remapping_array_to = array('docx' => 'docx', 'html' => 'html5', 'pdf' => 'latex', 'odt' => 'odt');
-    protected $type_remapping_array_from = array('docx' => 'docx', 'html' => 'html', 'odt' => 'odt');
+    protected $extension_array = array('docx' => '.docx', 'html' => '.html', 'html5' => '.html', 'odt' => '.odt', 'pdf' => '.pdf');
 
     function export_from_text(){
         if(!$this->check_enabled())
@@ -13,8 +11,8 @@ class File_conversion extends MX_Controller
             return;
         }
         $input = rawurldecode($this->input->post('text'));
-        $from = $this->type_remapping_array_from[$this->input->post('text_format')];
-        $to = $this->type_remapping_array_to[$this->input->post('output_format')];
+        $from = $this->input->post('text_format');
+        $to = $this->input->post('output_format');
         $out_name = $this->input->post('output_name');
         if(!isset($this->extension_array[$from]) or !isset($this->extension_array[$to]))
         {
@@ -99,13 +97,17 @@ class File_conversion extends MX_Controller
         {
             return false;
         }
-        if($this->db_config->get('file_conversion', 'execute_on_remote'))
+        if($to == 'pdf' and in_array($from, array('html', 'html5')))
         {
-            $output_file = $this->execute_pandoc_remote($input, $from, $to);
+            $output_file = $this->execute_tcpdf($input);
         }
         else
         {
-            $output_file = $this->execute_pandoc($input, $from, $to);
+            if ($this->db_config->get('file_conversion', 'execute_on_remote')) {
+                $output_file = $this->execute_pandoc_remote($input, $from, $to);
+            } else {
+                $output_file = $this->execute_pandoc($input, $from, $to);
+            }
         }
         if($output_file === false)
         {
@@ -127,6 +129,53 @@ class File_conversion extends MX_Controller
             return $output_file;
         }
 
+    }
+
+    protected function execute_tcpdf($input)
+    {
+
+        require_once(APPPATH.'third_party/TCPDF/tcpdf.php');
+
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        $output = APPPATH.'tmp/'.uniqid().'pdf';
+
+        // set document information
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Nicola Asuni');
+        $pdf->SetTitle('TCPDF Example 006');
+        $pdf->SetSubject('TCPDF Tutorial');
+        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+        // set default header data
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 006', PDF_HEADER_STRING);
+
+        // set header and footer fonts
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        // set default monospaced font
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        // set margins
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        // set auto page breaks
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+        // set image scale factor
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+        $pdf->SetFont('helvetica', '', 11);
+
+        $pdf->AddPage();
+        $pdf->writeHTML(file_get_contents($input), true, false, true, false, '');
+        $pdf->lastPage();
+
+        $pdf->Output($output, 'F');
+        return $output;
     }
 
     protected function execute_pandoc($input, $from, $to)

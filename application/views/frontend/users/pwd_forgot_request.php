@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <div class="panel-body">
             <h4 class="text-danger"><i class="fa fa-exclamation-circle"></i> Richiesta reset password rifiutata.</h4>
-            <p class="text-danger">L'utente utilizzate autenticazione LDAP oppure l'utente potrebbe aver già richiesto il reset della password, controllare la propria casella di posta elettronica. Per ulteriore assistenza
+            <p class="text-danger">L'utente utilizza autenticazione LDAP oppure l'utente potrebbe aver già richiesto il reset della password, controllare la propria casella di posta elettronica. Per ulteriore assistenza
             contattare l'amministratore del sistema</p>
         </div>
     </div>

@@ -224,6 +224,7 @@ class Page_render extends MX_Controller
 
     function forgot_password()
     {
+        $this->load->model('authentication_handler');
         if($this->authentication_handler->check_frontend_session() or !$this->db_config->get('users', 'enable_frontend_authentication'))
         {
             redirect('');
@@ -242,7 +243,7 @@ class Page_render extends MX_Controller
             redirect('');
         }
         $result = $this->authentication_handler->get_user_data($this->session->username);
-        $result['ldap_man_email'] = $this->db_config->get('authentication', 'ldap_sync_email');
+        $result['ldap_man_email'] = !(bool)$this->db_config->get('authentication', 'ldap_sync_email');
         $content = $this->load->view('frontend/users/profile', $result, true);
         $title = 'Profilo utente - Vesi CMS';
         $this->resources->load_aux_js_file('assets/frontend-user-management.js');

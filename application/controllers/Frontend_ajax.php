@@ -25,6 +25,14 @@ class Frontend_ajax extends MX_Controller
     public function ajax_login()
     {
         $this->load->model('authentication_handler');
+        if(!$this->db_config->get('users', 'enable_frontend_authentication'))
+        {
+            $this->lang->load('admin_login_lang');
+            $json['result'] = false;
+            $json['error_message']=$this->lang->line('admin_login_frontend_disabled');
+            $this->output->set_status_header(200);
+            $this->output->set_output(json_encode($json));
+        }
         if ($this->authentication_handler->check_frontend_session())
         {
             $this->output->set_status_header(200);

@@ -16,7 +16,7 @@
                         class="label label-warning">BETA VERSION, NOT FOR RELEASE</span> <span
                         class="label label-info">patch level: 43dc23f</span></small>
             </h3>
-            <p>Sviluppato da Boris Pertot - Copyright <span class='fa fa-copyright'></span> 2016 Boris Pertot</p>
+            <p>Sviluppato da Boris Pertot - Copyright <span class='fa fa-copyright'></span> 2016-2017 Boris Pertot</p>
             <p class="text-muted">This program is free software; you can redistribute it and/or modify
                 it under the terms of the GNU General Public License as published by
                 the Free Software Foundation; either version 2 of the License, or
@@ -45,12 +45,12 @@
                 </tr></thead>
                 <tr>
                     <td><a href="https://codeigniter.com/" target="_blank">CodeIgniter</a></td>
-                    <td>3.0.4</td>
+                    <td>3.1.3</td>
                 </tr>
                 <tr>
                     <td><a href="https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc" target="_blank">Modular
                             Extensions - HMVC</a></td>
-                    <td>5.5</td>
+                    <td>5.5+vcms12u1</td>
                 </tr>
                 <tr>
                     <td><a href="https://jquery.com/" target="_blank">jQuery</a></td>
@@ -110,10 +110,9 @@
                     <td>2.1.8</td>
                 </tr>
                 <tr>
-                    <td><a href="https://github.com/PHPMailer/PHPMailer" target="_blank">PHPMailer</a></td>
-                    <td>5.2.16</td>
+                    <td><a href="https://tcpdf.org/" target="_blank">TCPDF</a> <span class="label label-default">LGPLv3</span></td>
+                    <td>6.2.8</td>
                 </tr>
-
             </table>
         </div>
         <div role="tabpanel" class="tab-pane" id="php">
@@ -125,7 +124,7 @@
         </div>
         <div role="tabpanel" class="tab-pane" id="setup">
             <br>
-            <p>Questa scheda permette di visualizzare i componenti e ei servizi installati. Non sono incluse le
+            <p>Questa scheda permette di visualizzare i componenti e i servizi installati. Non sono incluse le
                 interfaccie di amministrazione.</p>
             <h4><i class="fa fa-cubes"></i> Componenti installati</h4>
             <table class="table table-striped">

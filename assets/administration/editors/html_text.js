@@ -45,7 +45,7 @@ $(document).ready(function() {
     }
 
     $('.export-document').click(function(){
-        window.vbcknd.services.file_conversion.export_from_text(CKEDITOR.instances.gui_editor.getData(), 'html', $(this).data('format'), $('#f-id').text());
+        window.vbcknd.services.file_conversion.export_from_text(CKEDITOR.instances.gui_editor.getData(), 'html5', $(this).data('format'), $('#f-id').text());
     });
 
     $('.import-document').click(function(){
