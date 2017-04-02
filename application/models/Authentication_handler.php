@@ -438,7 +438,7 @@ class Authentication_handler extends CI_Model
 
     function check_frontend_session()
     {
-        if(!$this->db_config->get('users', 'enable_frontend_authentication'))
+        if(!$this->db_config->get('authentication', 'enable_frontend'))
         {
             return false;
         }

@@ -4,6 +4,7 @@ $(document).ready(function () {
         var data = {};
         data.authentication = {};
         data.authentication.enable_ldap = $('#i-enable-ldap-auth').prop('checked') ? 1 : 0;
+        data.authentication.enable_frontend = $('#i-enable-frontend-auth').prop('checked') ? 1 : 0;
         data.authentication.ldap_hostname = $('#i-ldap-server-host').val();
         data.authentication.ldap_port = $('#i-ldap-server-port').val();
         data.authentication.ldap_ssl = $('#i-enable-ldap-ssl').prop('checked') ? 1 : 0;

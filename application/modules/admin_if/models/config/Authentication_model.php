@@ -7,6 +7,7 @@ class Authentication_model extends CI_Model
     {
         $data = array(
             'enable_ldap' => (boolean)$this->db_config->get('authentication', 'enable_ldap'),
+            'enable_frontend' => (boolean)$this->db_config->get('authentication', 'enable_ldap'),
             'ldap_hostname' => $this->db_config->get('authentication', 'ldap_hostname'),
             'ldap_port' => $this->db_config->get('authentication', 'ldap_port'),
             'ldap_ssl' => (boolean)$this->db_config->get('authentication', 'ldap_ssl'),

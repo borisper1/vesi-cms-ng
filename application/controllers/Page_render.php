@@ -54,7 +54,7 @@ class Page_render extends MX_Controller
         $menu_data['class'] = $this->db_config->get('style', 'menu_class');
         $menu_data['logo_image_path'] = $this->db_config->get('general', 'logo_image_path');
 
-        $menu_data['enable_frontend_auth'] = $this->db_config->get('users', 'enable_frontend_authentication');
+        $menu_data['enable_frontend_auth'] = $this->db_config->get('authentication', 'enable_frontend');
         if($menu_data['enable_frontend_auth'])
         {
             $authenticator_data['frontend_logged_in'] = $this->authentication_handler->check_frontend_session();
@@ -189,7 +189,7 @@ class Page_render extends MX_Controller
     function login()
     {
         $this->load->model('authentication_handler');
-        if($this->authentication_handler->check_frontend_session() or !$this->db_config->get('users', 'enable_frontend_authentication'))
+        if($this->authentication_handler->check_frontend_session() or !$this->db_config->get('authentication', 'enable_frontend'))
         {
             redirect('');
         }
@@ -225,7 +225,7 @@ class Page_render extends MX_Controller
     function forgot_password()
     {
         $this->load->model('authentication_handler');
-        if($this->authentication_handler->check_frontend_session() or !$this->db_config->get('users', 'enable_frontend_authentication'))
+        if($this->authentication_handler->check_frontend_session() or !$this->db_config->get('authentication', 'enable_frontend'))
         {
             redirect('');
         }

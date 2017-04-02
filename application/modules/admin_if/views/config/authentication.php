@@ -1,11 +1,19 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-?>
+?><div class="form-group">
+    <div class="checkbox toggle">
+        <label>
+            <input type="checkbox" class="checkbox-sw" id="i-enable-frontend-auth" <?= $enable_frontend ? 'checked' : '' ?>>
+            &nbsp;Abilita autenticazione per gli utenti del pubblico
+        </label>
+    </div>
+    <span class="help-block">Permette l'autenticazione sul sito anche al di fuori dall'area amministrativa (può essere richiesto da alcuni componenti aggiuntivi).</i></span>
+</div>
+
 <div class="form-group">
     <div class="checkbox toggle">
         <label>
             <input type="checkbox" class="checkbox-sw" id="i-enable-ldap-auth" <?= $enable_ldap ? 'checked' : '' ?>>
-            &nbsp;Abilita
-            autenticazione tramite LDAP
+            &nbsp;Abilita autenticazione tramite LDAP
         </label>
     </div>
     <span class="help-block">Permette di autenticare gli utenti con un sistema centralizzato che implementa il protocollo LDAP.</i></span>

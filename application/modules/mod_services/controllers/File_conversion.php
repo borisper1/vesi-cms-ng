@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class File_conversion extends MX_Controller
 {
-    protected $extension_array = array('docx' => '.docx', 'html' => '.html', 'html5' => '.html', 'odt' => '.odt', 'pdf' => '.pdf');
+    protected $extension_array = array('docx' => '.docx', 'html' => '.html', 'odt' => '.odt', 'pdf' => '.pdf');
 
     function export_from_text(){
         if(!$this->check_enabled())
@@ -103,7 +103,7 @@ class File_conversion extends MX_Controller
         }
         else
         {
-            if ($this->db_config->get('file_conversion', 'execute_on_remote')) {
+            if ($this->db_config->get('file_conversion', 'pandoc_execute_on_remote')) {
                 $output_file = $this->execute_pandoc_remote($input, $from, $to);
             } else {
                 $output_file = $this->execute_pandoc($input, $from, $to);
@@ -133,7 +133,6 @@ class File_conversion extends MX_Controller
 
     protected function execute_tcpdf($input)
     {
-
         require_once(APPPATH.'third_party/TCPDF/tcpdf.php');
 
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -142,13 +141,13 @@ class File_conversion extends MX_Controller
 
         // set document information
         $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Nicola Asuni');
-        $pdf->SetTitle('TCPDF Example 006');
-        $pdf->SetSubject('TCPDF Tutorial');
-        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+        $pdf->SetAuthor($this->db_config->get('general', 'website_name'));
+        $pdf->SetTitle('');
+        $pdf->SetSubject('');
+        $pdf->SetKeywords('');
 
         // set default header data
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 006', PDF_HEADER_STRING);
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, $this->db_config->get('file_conversion', 'pdf_header_title'), $this->db_config->get('file_conversion', 'pdf_header_text'));
 
         // set header and footer fonts
         $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));

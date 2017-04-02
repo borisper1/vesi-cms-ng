@@ -326,4 +326,17 @@ class File_handler
         }
         return $empty && (!$root) && rmdir($path);
     }
+
+    function command_exists($command)
+    {
+        if(PHP_OS == 'WINNT')
+        {
+            return !empty(shell_exec('where '.escapeshellarg($command)));
+        }
+        else
+        {
+            //Standard POSIX
+            return !empty(shell_exec('command -v '.escapeshellarg($command)));
+        }
+    }
 }
