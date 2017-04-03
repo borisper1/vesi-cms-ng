@@ -266,4 +266,27 @@ class Page_handler extends CI_Model
         $this->db->where('id', $id);
         return $this->db->update('pages', $data);
     }
+
+    function update_lock($id)
+    {
+        $lock = [];
+        $lock['user'] = $this->session->username;
+        $lock['time'] = time();
+        $lock_text = json_encode($lock);
+        $this->db->where('id', $id);
+        return $this->db->update('pages', array('lock' => $lock_text));
+    }
+
+    function check_lock($id)
+    {
+        $query = $this->db->get_where('pages', array('id' => $id));
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            $lock_struct = json_decode($row->lock, true);
+            if (time() < ($lock_struct['time'] + 95) and $lock_struct['user'] !== $this->session->username) {
+                return array('result' => true, 'user' => $lock_struct['user']);
+            }
+        }
+        return array('result' => false, 'user' => '');
+    }
 }

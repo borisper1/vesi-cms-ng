@@ -51,6 +51,14 @@ class Pages extends MX_Controller
             }
             $data_array['is_new']=false;
         }
+        $lock_state = $this->page_handler->check_lock($id);
+        if($lock_state['result'])
+        {
+            $data_array['editing_user'] = $lock_state['user'];
+            $this->load->view('pages/page_locked', $data_array);
+            return;
+        }
+        $this->page_handler->update_lock($id);
         $data_array['menus_list']=$this->menu_handler->get_menu_list();
         $data_array['contents_list']=$this->content_handler->get_contents_list();
         $data_array['containers']=$this->page_handler->get_containers_list();
@@ -360,5 +368,19 @@ class Pages extends MX_Controller
         $page = $this->input->post('page');
         $this->load->model('page_handler');
         echo $this->page_handler->edit_redirect($id,$container,$target,$page) ? 'success' : 'failed';
+    }
+
+    function update_lock()
+    {
+        $this->load->model('page_handler');
+        $id = $this->input->post('id');
+        $result = $this->page_handler->update_lock($id);
+        if ($result) {
+            $this->output->set_status_header(200);
+            $this->output->set_output('success');
+        } else {
+            $this->output->set_status_header(500);
+            $this->output->set_output('failed lock update');
+        }
     }
 }

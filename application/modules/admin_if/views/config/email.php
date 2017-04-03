@@ -26,15 +26,6 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="checkbox toggle">
-                <label>
-                    <input type="checkbox" class="checkbox-sw"
-                           id="i-enable-smtp-auth" <?= $smtp_auth ? 'checked' : '' ?>>
-                    &nbsp;Usa autenticazione per SMTP
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
             <label for="i-remote-server-url">Indirizzo e-mail:</label>
             <input type="email" class="form-control" id="i-smtp-address" placeholder="Inserire l'indirizzo e-mail"
                    value="<?= $smtp_address ?>">

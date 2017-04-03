@@ -6,6 +6,16 @@ $(document).ready(function() {
         $('#edit-attributes-modal').modal();
     }
 
+    var CurrentId = $('#f-id').text();
+    if (CurrentId != '') {
+        //Page editor mode
+        function update_lock() {
+            $.post(window.vbcknd.base_url + 'ajax/admin/pages/update_lock', {id: CurrentId});
+        }
+
+        window.setInterval(update_lock, 45000);
+    }
+
     //FUNCTIONS FOR THE LIST VIEW MODE ---------------------------------------------------------------------------------
 
     $('#ajax-cage').on('click','.panel-actuator', function(){
