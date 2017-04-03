@@ -6,6 +6,16 @@ $(document).ready(function() {
     var is_new_unsaved = $('#is-new').text()==='true';
     var CurrentId;
 
+    var CurrentId2 = $('#f-id').text();
+    if (CurrentId2 != '') {
+        //Content editor mode
+        function update_lock() {
+            $.post(window.vbcknd.base_url + 'ajax/admin/contents/update_lock', {id: CurrentId2});
+        }
+
+        window.setInterval(update_lock, 45000);
+    }
+
     $('#refresh').click(function(){
         if(is_new_unsaved) {
             var id= $('#f-id').text();

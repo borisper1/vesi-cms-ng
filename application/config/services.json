@@ -9,12 +9,6 @@
       "builtin": true
     },
     {
-      "name": "maintenance",
-      "label": "Servizio manutenzione automatica",
-      "icon": "fa-gears",
-      "builtin": true
-    },
-    {
       "name": "contextual_help",
       "label": "Servizio di aiuto contestuale",
       "icon": "fa-question-circle",

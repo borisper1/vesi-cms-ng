@@ -20,6 +20,13 @@ class Contents extends MX_Controller
         $this->load->model('content_handler');
         $data = $this->content_handler->get_content_data($id);
         $data['is_new']=false;
+        $lock_state = $this->content_handler->check_lock($id);
+        if ($lock_state['result']) {
+            $data['editing_user'] = $lock_state['user'];
+            $this->load->view('content/content_locked', $data);
+            return;
+        }
+        $this->content_handler->update_lock($id);
         $this->load->view('content/editor_wrapper',$data);
         echo Modules::run('components/load_editor',$id);
     }
@@ -93,7 +100,21 @@ class Contents extends MX_Controller
     {
         $type = $this->input->post('type');
         $data = rawurldecode($this->input->post('data'));
-        echo Modules::run('components/load_editor_preview',$type, $data);
+        echo Modules::run('components/load_editor_preview', $type, $data);
+    }
+
+    function update_lock()
+    {
+        $this->load->model('content_handler');
+        $id = $this->input->post('id');
+        $result = $this->content_handler->update_lock($id);
+        if ($result) {
+            $this->output->set_status_header(200);
+            $this->output->set_output('success');
+        } else {
+            $this->output->set_status_header(500);
+            $this->output->set_output('failed lock update');
+        }
     }
 
 }
