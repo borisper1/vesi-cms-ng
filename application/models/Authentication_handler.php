@@ -31,8 +31,7 @@ class Authentication_handler extends CI_Model
         $active = $this->local_user_handler->is_active();
         if ($active === 1) {
             return array('result' => false, 'status' => 'user_revoked');
-        }
-        if ($active === 2) {
+        } else if ($active === 2) {
             return array('result' => false, 'status' => 'user_locked');
         }
         return array(
@@ -77,8 +76,7 @@ class Authentication_handler extends CI_Model
         $ldap_groups =[];
         if ($ldap_enabled) {
             $ldap_failed = !$this->ldap_user_handler->ldap_admin_connect();
-            if(!$ldap_failed)
-            {
+            if (!$ldap_failed) {
                 $ldap_groups = $this->ldap_user_handler->get_all_groups();
             }
         } else {
