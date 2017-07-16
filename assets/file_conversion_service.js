@@ -1,12 +1,12 @@
 $(document).ready(function() {
     var CallbackFunction, InFormat;
     window.vbcknd.services.file_conversion = {};
-    window.vbcknd.services.file_conversion.export_from_text = function(text, in_format, out_format, out_name){
+    window.vbcknd.services.file_conversion.export_from_html = function (text, out_format, out_name) {
         $('#export-conversion-modal').modal();
         $.ajax({
             type: 'POST',
-            url: window.vbcknd.base_url + 'services/file_conversion/export_from_text',
-            data: {text: encodeURIComponent(text), text_format: in_format, output_format: out_format, output_name: out_name},
+            url: window.vbcknd.base_url + 'services/file_conversion/export_from_html',
+            data: {code: encodeURIComponent(text), output_format: out_format, output_name: out_name},
             success: exportDone,
             error: conversionFailed
         });
@@ -43,6 +43,7 @@ $(document).ready(function() {
         $('#import-conversion-progress-modal').modal();
         $('#import-upload-bar').css('width', '0%').text('0%');
         var form_data = new FormData($('#conversion-file-upload-form')[0]);
+        form_data.append('format', InFormat);
         $.ajax({
             type: 'POST',
             url: window.vbcknd.base_url + 'services/file_conversion/import_file_to_html',

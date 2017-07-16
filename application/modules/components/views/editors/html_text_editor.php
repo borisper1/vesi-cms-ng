@@ -13,11 +13,13 @@
             <i class="fa fa-upload"></i> Importa da file <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <?php if(in_array('docx', $file_conversion_status['import'])): ?>
-            <li><a href="#" class="import-document" data-format="docx"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
+            <?php if (in_array('winword', $file_conversion_status['import'])): ?>
+                <li><a href="#" class="import-document" data-format="winword" data-extension="docx"><i
+                                class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
             <?php endif; ?>
-            <?php if(in_array('odt', $file_conversion_status['import'])): ?>
-            <li><a href="#" class="import-document" data-format="odt"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
+            <?php if (in_array('opendocumenttext', $file_conversion_status['import'])): ?>
+                <li><a href="#" class="import-document" data-format="opendocumenttext" data-extension="odt"><i
+                                class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
             <?php endif; ?>
         </ul>
     </div>
@@ -28,14 +30,17 @@
             <i class="fa fa-download"></i> Esporta <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <?php if(in_array('docx', $file_conversion_status['export'])): ?>
-            <li><a href="#" class="export-document" data-format="docx"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
+            <?php if (in_array('winword', $file_conversion_status['export'])): ?>
+                <li><a href="#" class="export-document" data-format="winword" data-extension="docx"><i
+                                class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
             <?php endif; ?>
-            <?php if(in_array('odt', $file_conversion_status['export'])): ?>
-            <li><a href="#" class="export-document" data-format="odt"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
+            <?php if (in_array('opendocumenttext', $file_conversion_status['export'])): ?>
+                <li><a href="#" class="export-document" data-format="opendocumenttext" data-extension="odt"><i
+                                class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
             <?php endif; ?>
             <?php if(in_array('pdf', $file_conversion_status['export'])): ?>
-            <li><a href="#" class="export-document" data-format="pdf"><i class="fa fa-fw fa-file-pdf-o"></i> File PDF</a></li>
+                <li><a href="#" class="export-document" data-format="pdf" data-extension="pdf"><i
+                                class="fa fa-fw fa-file-pdf-o"></i> File PDF</a></li>
             <?php endif; ?>
         </ul>
     </div>
