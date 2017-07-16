@@ -49,10 +49,11 @@ class File_conversion extends MX_Controller
             return;
         }
         $extension = pathinfo($_FILES['to_convert']['name'], PATHINFO_EXTENSION);
-        if(!isset($this->extension_array[$extension]))
+        $format = $this->input->post('format');
+        if(!isset($this->file_conversion->format_table[$format]) or $this->file_conversion->format_table[$format]['extension'] != $extension)
         {
             $this->output->set_status_header(403);
-            $this->output->set_output('The extensions indicated do not match valid pandoc types or are blocked.');
+            $this->output->set_output('The extensions indicated do not match valid conversion types or are blocked.');
             return;
         }
         $file_input = APPPATH.'tmp/'.uniqid().$this->extension_array[$extension];
