@@ -7,26 +7,39 @@
 <span id="editor-name" class="hidden">html-text</span>
 
 <div class="btn-group spaced" id="editor-actions">
+    <?php if(array_key_exists('import', $file_conversion_status)): ?>
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-upload"></i> Importa da file <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
+            <?php if(in_array('docx', $file_conversion_status['import'])): ?>
             <li><a href="#" class="import-document" data-format="docx"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
+            <?php endif; ?>
+            <?php if(in_array('odt', $file_conversion_status['import'])): ?>
             <li><a href="#" class="import-document" data-format="odt"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
+            <?php endif; ?>
         </ul>
     </div>
+    <?php endif; ?>
+    <?php if(array_key_exists('export', $file_conversion_status)): ?>
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-download"></i> Esporta <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
+            <?php if(in_array('docx', $file_conversion_status['export'])): ?>
             <li><a href="#" class="export-document" data-format="docx"><i class="fa fa-fw fa-file-word-o"></i> File Word</a></li>
+            <?php endif; ?>
+            <?php if(in_array('odt', $file_conversion_status['export'])): ?>
             <li><a href="#" class="export-document" data-format="odt"><i class="fa fa-fw fa-file-text-o"></i> File ODT (ODF)</a></li>
-            <li><a href="#" class="export-document" data-format="pdf"><i class="fa fa-fw fa-file-pdf-o"></i> File
-                    PDF</a></li>
+            <?php endif; ?>
+            <?php if(in_array('pdf', $file_conversion_status['export'])): ?>
+            <li><a href="#" class="export-document" data-format="pdf"><i class="fa fa-fw fa-file-pdf-o"></i> File PDF</a></li>
+            <?php endif; ?>
         </ul>
     </div>
+    <?php endif; ?>
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-pencil-square-o"></i> Inserisci layout <span class="caret"></span>
