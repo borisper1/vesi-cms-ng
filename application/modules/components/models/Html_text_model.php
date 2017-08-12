@@ -25,8 +25,8 @@ class Html_text_model extends CI_Model
         //This is not the correct place to do it, but will load js files required for the module here anyway
         $this->resources->load_aux_js_file('assets/third_party/ckeditor/ckeditor.js');
         $data = $this->get_render_data($id);
-        $this->load->library('file_conversion');
-        $data['file_conversion_status'] = $this->file_conversion->get_available_conversions();
+        $this->load->library('file_conversion_lib');
+        $data['file_conversion_status'] = $this->file_conversion_lib->get_available_conversions();
         return $data;
     }
 
@@ -35,8 +35,8 @@ class Html_text_model extends CI_Model
         //This is not the correct place to do it, but will load js files required for the module here anyway
         $this->resources->load_aux_js_file('assets/third_party/ckeditor/ckeditor.js');
         $data['content']='';
-        $this->load->library('file_conversion');
-        $data['file_conversion_status'] = $this->file_conversion->get_available_conversions();
+        $this->load->library('file_conversion_lib');
+        $data['file_conversion_status'] = $this->file_conversion_lib->get_available_conversions();
         return $data;
     }
 }

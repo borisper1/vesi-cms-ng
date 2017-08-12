@@ -14,7 +14,8 @@ $(document).ready(function() {
 
     function exportDone(data){
         $('#export-conversion-modal').modal('hide');
-        window.location = data;
+        $('#export-conversion-download-file-but').attr('href', data);
+        $('#export-conversion-done-modal').modal();
     }
 
     window.vbcknd.services.file_conversion.import_to_html = function(in_format, callback_func){

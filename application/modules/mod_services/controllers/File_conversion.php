@@ -5,7 +5,8 @@ class File_conversion extends MX_Controller
 {
     public function __construct()
     {
-        $this->load->library('file_conversion');
+        $this->load->library('file_conversion_lib');
+        parent::__construct();
     }
 
     function export_from_html()
@@ -17,14 +18,14 @@ class File_conversion extends MX_Controller
         $input = rawurldecode($this->input->post('code'));
         $to = $this->input->post('output_format');
         $out_name = $this->input->post('output_name');
-        if (!isset($this->file_conversion->format_table[$to]))
+        if (!isset($this->file_conversion_lib->format_table[$to]))
         {
             $this->output->set_status_header(403);
             $this->output->set_output('The extensions indicated do not match valid pandoc types or are blocked.');
         }
         else
         {
-            $output = $this->file_conversion->convert_document('text', $input, $out_name, 'html', $to); //returns converted document public URL
+            $output = $this->file_conversion_lib->convert_from_html_text($input, $out_name, $to); //returns converted document public URL
             if($output)
             {
                 $this->output->set_status_header(200);
@@ -50,15 +51,15 @@ class File_conversion extends MX_Controller
         }
         $extension = pathinfo($_FILES['to_convert']['name'], PATHINFO_EXTENSION);
         $format = $this->input->post('format');
-        if(!isset($this->file_conversion->format_table[$format]) or $this->file_conversion->format_table[$format]['extension'] != $extension)
+        if(!isset($this->file_conversion_lib->format_table[$format]) or $this->file_conversion_lib->format_table[$format]['extension'] !== $extension)
         {
             $this->output->set_status_header(403);
             $this->output->set_output('The extensions indicated do not match valid conversion types or are blocked.');
             return;
         }
-        $file_input = APPPATH.'tmp/'.uniqid().$this->extension_array[$extension];
+        $file_input = APPPATH.'tmp/'.uniqid(). $extension;
         if (move_uploaded_file($_FILES['to_convert']['tmp_name'], $file_input)) {
-            $output = $this->convert_document('file', $file_input, null, $extension, 'html5');
+            $output = $this->file_conversion_lib->convert_to_html($file_input, $format);
             if($output)
             {
                 $this->output->set_status_header(200);

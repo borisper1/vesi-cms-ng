@@ -15,6 +15,23 @@
     </div>
 </div>
 
+<div class="modal fade" id="export-conversion-done-modal" tabindex="-1" role="dialog" aria-labelledby="export-conversion-done-modal-label" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="export-conversion-done-modal-label"><i class="fa fa-lg fa-check"></i> Documento pronto per il download</h4>
+            </div>
+            <div class="modal-body">
+                <p>Il documento è stato convertito correttamente. Premere sul pulsante seguente per scaricare il file</p>
+                <a id="export-conversion-download-file-but" class="btn btn-default" href="#" download><i class="fa fa-download"></i> Scarica file</a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="conversion-failed-modal" tabindex="-1" role="dialog" aria-labelledby="conversion-failed-modal-label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
