@@ -4,8 +4,8 @@ class File_conversion
 {
     protected $CI;
     public $format_table = array(
-        'winword' => array('extension' => '.docx', 'converter' => 'pandoc'),
-        'opendocumenttext' => array('extension' => '.odt', 'converter' => 'pandoc'),
+        'winword' => array('extension' => '.docx', 'converter' => 'pandoc', 'pandoc_format' => 'docx'),
+        'opendocumenttext' => array('extension' => '.odt', 'converter' => 'pandoc', 'pandoc_format' => 'odt'),
         'pdf' => array('extension' => '.pdf', 'converter' => 'tcpdf')
     );
 
@@ -62,20 +62,38 @@ class File_conversion
         {
             return false;
         }
-
-        if ($to == 'pdf' and in_array($from, array('html', 'html5')))
+        if ($from == 'html')
         {
-            $output_file = $this->execute_tcpdf($input);
-        }
-        else
-        {
-            if ($this->db_config->get('file_conversion', 'pandoc_execute_on_remote'))
+            $converter = $this->format_table[$to]['converter'];
+            if ($converter == 'tcpdf')
             {
-                $output_file = $this->execute_pandoc_remote($input, $from, $to);
+                $output_file = $this->execute_tcpdf($input);
             }
-            else
+            else if ($converter == 'pandoc')
             {
-                $output_file = $this->execute_pandoc($input, $from, $to);
+                if ($this->db_config->get('file_conversion', 'pandoc_execute_on_remote'))
+                {
+                    $output_file = $this->execute_pandoc_remote($input, 'html', $this->format_table[$to]['pandoc_format']);
+                }
+                else
+                {
+                    $output_file = $this->execute_pandoc($input, 'html', $this->format_table[$to]['pandoc_format']);
+                }
+            }
+        }
+        else if ($to == 'html')
+        {
+            $converter = $this->format_table[$from]['converter'];
+            if ($converter == 'pandoc')
+            {
+                if ($this->db_config->get('file_conversion', 'pandoc_execute_on_remote'))
+                {
+                    $output_file = $this->execute_pandoc_remote($input, $this->format_table[$to]['pandoc_format'], 'html5');
+                }
+                else
+                {
+                    $output_file = $this->execute_pandoc($input, $this->format_table[$to]['pandoc_format'], 'html5');
+                }
             }
         }
         if ($output_file === false)
@@ -84,10 +102,10 @@ class File_conversion
         }
         if ($out_name !== null)
         {
-            rename($output_file, FCPATH . 'files/converted_files/' . $out_name . $this->extension_array[$to]);
-            if (file_exists(FCPATH . 'files/converted_files/' . $out_name . $this->extension_array[$to]))
+            rename($output_file, FCPATH . 'files/converted_files/' . $out_name . $this->format_table[$to]['extension']);
+            if (file_exists(FCPATH . 'files/converted_files/' . $out_name . $this->format_table[$to]['extension']))
             {
-                return base_url('files/converted_files/' . $out_name . $this->extension_array[$to]);
+                return base_url('files/converted_files/' . $out_name . $this->format_table[$to]['extension']);
             }
             else
             {
@@ -98,7 +116,6 @@ class File_conversion
         {
             return $output_file;
         }
-
     }
 
     protected function execute_tcpdf($input)
