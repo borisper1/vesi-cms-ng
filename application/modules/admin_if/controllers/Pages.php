@@ -35,6 +35,7 @@ class Pages extends MX_Controller
             $data_array['main_content']='';
             $data_array['restrict_access'] = false;
             $data_array['is_new']=true;
+            $data_array['allowed_groups'] = [];
         }
         else
         {

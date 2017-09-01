@@ -1,12 +1,13 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class File_conversion
+class File_conversion_lib
 {
     protected $CI;
     public $format_table = array(
         'winword' => array('extension' => '.docx', 'converter' => 'pandoc', 'pandoc_format' => 'docx'),
         'opendocumenttext' => array('extension' => '.odt', 'converter' => 'pandoc', 'pandoc_format' => 'odt'),
-        'pdf' => array('extension' => '.pdf', 'converter' => 'tcpdf')
+        'pdf' => array('extension' => '.pdf', 'converter' => 'tcpdf'),
+        'html' => array('extension' => '.html', 'converter' => null, 'pandoc_format' => 'html5')
     );
 
     public function __construct()
@@ -39,87 +40,59 @@ class File_conversion
         return $capabilities;
     }
 
-    function convert_document($input_mode, $input, $out_name, $from, $to)
+    public function convert_from_html_text($input, $public_name, $to)
     {
-        if ($this->CI->db_config->get('file_conversion', 'enable_file_conversion') == 0)
-        {
-            return;
-        }
-        if ($input_mode === 'text')
-        {
-            $temp_input = APPPATH . 'tmp/' . uniqid() . $this->format_table[$from]['extension'];
-            file_put_contents($temp_input, $input);
-            $input = $temp_input;
-        }
-        else if ($input_mode === 'file')
-        {
-            if (!file_exists($input))
-            {
-                return false;
-            }
-        }
-        else
-        {
+        $temp_input = APPPATH . 'tmp/' . uniqid() . '.html';
+        file_put_contents($temp_input, $input);
+        $result = $this->convert_from_html_file($temp_input, $public_name, $to);
+        unlink($temp_input);
+        return $result;
+    }
+
+    public function convert_from_html_file($input, $public_name, $to)
+    {
+        if ($this->CI->db_config->get('file_conversion', 'enable_file_conversion') == 0 or  !file_exists($input))
             return false;
-        }
-        if ($from == 'html')
+        $format_prop = $this->format_table[$to];
+        if($format_prop['converter'] === 'tcpdf')
         {
-            $converter = $this->format_table[$to]['converter'];
-            if ($converter == 'tcpdf')
-            {
-                $output_file = $this->execute_tcpdf($input);
-            }
-            else if ($converter == 'pandoc')
-            {
-                if ($this->db_config->get('file_conversion', 'pandoc_execute_on_remote'))
-                {
-                    $output_file = $this->execute_pandoc_remote($input, 'html', $this->format_table[$to]['pandoc_format']);
-                }
-                else
-                {
-                    $output_file = $this->execute_pandoc($input, 'html', $this->format_table[$to]['pandoc_format']);
-                }
-            }
+            $output_temp = $this->execute_tcpdf($input);
         }
-        else if ($to == 'html')
+        else if($format_prop['converter'] === 'pandoc')
         {
-            $converter = $this->format_table[$from]['converter'];
-            if ($converter == 'pandoc')
-            {
-                if ($this->db_config->get('file_conversion', 'pandoc_execute_on_remote'))
-                {
-                    $output_file = $this->execute_pandoc_remote($input, $this->format_table[$to]['pandoc_format'], 'html5');
-                }
-                else
-                {
-                    $output_file = $this->execute_pandoc($input, $this->format_table[$to]['pandoc_format'], 'html5');
-                }
-            }
+            $output_temp = $this->execute_pandoc($input, 'html', $to);
         }
-        if ($output_file === false)
-        {
+        if($output_temp == false)
             return false;
-        }
-        if ($out_name !== null)
+        if ($public_name !== null)
         {
-            rename($output_file, FCPATH . 'files/converted_files/' . $out_name . $this->format_table[$to]['extension']);
-            if (file_exists(FCPATH . 'files/converted_files/' . $out_name . $this->format_table[$to]['extension']))
-            {
-                return base_url('files/converted_files/' . $out_name . $this->format_table[$to]['extension']);
-            }
+            rename($output_temp, FCPATH . 'files/converted_files/' . $public_name . $format_prop['extension']);
+            if (file_exists(FCPATH . 'files/converted_files/' . $public_name . $format_prop['extension']))
+                return base_url('files/converted_files/' . $public_name . $format_prop['extension']);
             else
-            {
                 return false;
-            }
         }
         else
         {
-            return $output_file;
+            return $output_temp;
         }
     }
 
-    protected function execute_tcpdf($input)
+    public function convert_to_html($input, $format)
     {
+        if ($this->CI->db_config->get('file_conversion', 'enable_file_conversion') == 0 or $this->CI->db_config->get('file_conversion', 'enable_pandoc') == 0 or !file_exists($input))
+            return false;
+        $format_prop = $this->format_table[$format];
+        if($format_prop['converter'] !== 'pandoc' or pathinfo($input,PATHINFO_EXTENSION) !== $format_prop['extension'])
+            return false;
+        $output_temp = $this->execute_pandoc($input, $format_prop['pandoc_format'], 'html');
+        return $output_temp;
+    }
+
+    private function execute_tcpdf($input)
+    {
+        if($this->CI->db_config->get('file_conversion', 'enable_tcpdf') == 0)
+            return false;
         require_once(APPPATH . 'third_party/TCPDF/tcpdf.php');
 
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -164,25 +137,28 @@ class File_conversion
         return $output;
     }
 
-    protected function execute_pandoc($input, $from, $to)
+    private function execute_pandoc($input, $from, $to)
     {
-        $output = APPPATH . 'tmp/' . uniqid() . '.' . $to;
-        $command = 'pandoc -f ' . escapeshellarg($from) . ' -t ' . escapeshellarg($to) . ' -o ' . escapeshellarg($output) . ' -i ' . escapeshellarg($input);
+        if ($this->CI->db_config->get('file_conversion', 'pandoc_execute_on_remote') == 1)
+        {
+            return $output_file = $this->execute_pandoc_remote($input, $from, $to);
+        }
+        $output = APPPATH . 'tmp/' . uniqid() . $this->format_table[$to]['extension'];
+        $command = 'pandoc -f ' . escapeshellarg($from) . ' -t ' . escapeshellarg($this->format_table[$to]['pandoc_format']) . ' -o ' . escapeshellarg($output) . ' -i ' . escapeshellarg($input);
         exec($command);
         if (!file_exists($output))
         {
             $output = false;
         }
-        unlink($input);
         return $output;
     }
 
-    protected function execute_pandoc_remote($input, $from, $to)
+    private function execute_pandoc_remote($input, $from, $to)
     {
         $transaction_id = base64_encode($this->security->get_random_bytes(32));
-        $url = $this->db_config->get('file_conversion', 'remote_server_url');
-        $token = $this->db_config->get('file_conversion', 'remote_server_token');
-        $hmac_key = base64_decode($this->db_config->get('file_conversion', 'hmac_key'));
+        $url = $this->CI->db_config->get('file_conversion', 'remote_server_url');
+        $token = $this->CI->db_config->get('file_conversion', 'remote_server_token');
+        $hmac_key = base64_decode($this->CI->db_config->get('file_conversion', 'hmac_key'));
         $digest = hash_hmac_file('sha256', $input, $hmac_key);
         $finfo = new finfo(FILEINFO_MIME);
         $cfile = new CURLFile($input, $finfo->file($input), 'to_convert');
@@ -207,7 +183,6 @@ class File_conversion
         {
             return false;
         }
-        unlink($input);
         if (!file_exists($output))
         {
             return false;
