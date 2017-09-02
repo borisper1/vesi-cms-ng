@@ -83,7 +83,7 @@
                 </tr>
                 <tr>
                     <td><a href="http://ckeditor.com/" target="_blank">CK Editor</a></td>
-                    <td>4.5.3</td>
+                    <td>4.7.2</td>
                 </tr>
                 <tr>
                     <td><a href="http://ace.c9.io/" target="_blank">Ace Editor</a></td>
@@ -91,7 +91,7 @@
                 </tr>
                 <tr>
                     <td><a href="http://www.bioinformatics.org/phplabware/internal_utilities/htmLawed/" target="_blank">htmLawed</a></td>
-                    <td>1.2.beta.9</td>
+                    <td>1.2.4</td>
                 </tr>
                 <tr>
                     <td><a href="http://blueimp.github.io/jQuery-File-Upload/" target="_blank">jQuery File Upload</a></td>

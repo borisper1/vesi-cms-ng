@@ -53,9 +53,9 @@
         <div class="form-group">
             <label for="i-bootstrap-cdnurl">URL per Bootstrap (JavaScript):</label>
             <input type="text" class="form-control cdn-reqssl-url" id="i-bootstrap-cdnurl" placeholder="Inserire l'URL per Bootstrap (JavaScript)" value="<?=$bootstrap_js_cdnurl ?>">
-                    <span class="form-control-feedback tooltipped" data-toggle="tooltip" title="">
-                        <i class="fa fa-lg"></i>
-                    </span>
+			<span class="form-control-feedback tooltipped" data-toggle="tooltip" title="">
+				<i class="fa fa-lg"></i>
+			</span>
         </div>
         <h4>Font Awesome</h4>
         <div class="form-group">
@@ -70,9 +70,9 @@
         <div class="form-group">
             <label for="i-fontawesome-cdnurl">URL per Font Awesome:</label>
             <input type="text" class="form-control cdn-reqssl-url" id="i-fontawesome-cdnurl" placeholder="Inserire l'URL per Font Awesome" value="<?=$fontawesome_cdnurl ?>">
-                    <span class="form-control-feedback tooltipped" data-toggle="tooltip" title="">
-                        <i class="fa fa-lg"></i>
-                    </span>
+			<span class="form-control-feedback tooltipped" data-toggle="tooltip" title="">
+				<i class="fa fa-lg"></i>
+			</span>
         </div>
     </div>
 </div>

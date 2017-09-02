@@ -30,6 +30,7 @@ class Administration extends MX_Controller
         $base_data['system_dom'] .= $this->load->view('file_conversion_service', null , TRUE);
         $base_data['title']='Amministrazione - Vesi-CMS';
         $base_data['urls']=$this->resources->get_administration_urls();
+		$base_data['enable_math_support'] = $this->db_config->get('general', 'enable_math_support');
         if (isset($if_data) and file_exists(FCPATH . $if_data['js_path'])) {
             $base_data['urls']['aux_js_loader'][] = base_url($if_data['js_path']);
         }
@@ -117,6 +118,7 @@ class Administration extends MX_Controller
         $login_data['csrf'] = array('name' => $this->security->get_csrf_token_name(), 'hash' => $this->security->get_csrf_hash());
         $base_data['menu']=null;
         $base_data['system_dom']=null;
+        $base_data['enable_math_support'] = false;
         $base_data['content']= $this->load->view('administration/login',$login_data , TRUE);
 
         $base_data['title']='Login - Vesi-CMS';

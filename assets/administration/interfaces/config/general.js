@@ -11,15 +11,11 @@ $(document).ready(function() {
         data.general ={};
         data.general.website_name = $('#i-website-name').val();
         data.general.logo_image_path = $('#i-logo-image-path').val();
-        data.general.enable_automatic_maintenance = $('#i-enable-auto-maint').prop('checked') ? 1 : 0;
+        data.general.enable_math_support = $('#i-enable-math-support').prop('checked') ? 1 : 0;
         data.resources = {};
-        data.resources.limit_temp_folder = $('#i-limit-temp-folder').prop('checked') ? 1 : 0;
-        data.resources.max_temp_folder_size = $('#i-temp-folder-max-size').val();
+        data.resources.mathjax_usecdn = $('#mathjax-source-cdn').prop('checked') ? 1 : 0;
+		data.resources.mathjax_cdnurl = $('#i-mathjax-cdnurl').val();
         return data;
     };
-
-    $('#i-temp-folder-max-size').change(function () {
-        $('#temp-current-max-size').text($(this).val());
-    })
 
 });

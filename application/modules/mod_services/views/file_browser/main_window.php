@@ -16,6 +16,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <h4>Scegli il file da collegare al documento</h4>
     <button class="btn btn-default path-indicator" id="file-picker-level-up" disabled><i class="fa fa-level-up"></i>
     </button>
+    <button class="btn btn-default path-indicator" id="file-picker-upload-file" disabled><i class="fa fa-cloud-upload"></i> Carica file
+    </button>
     <code id="file-picker-path-indicator"><?= $path ?></code>
     <br><br>
     <table class="table table-hover file-picker-list">

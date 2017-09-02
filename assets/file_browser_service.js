@@ -22,6 +22,7 @@ $(document).ready(function (e) {
         CurrentItem.target = path;
         $('#file-picker-path-indicator').text(path);
         $('#file-picker-level-up').prop('disabled', path === '/');
+        $('#file-picker-upload-file').prop('disabled', path === '/');
     }
 
     $('#file-picker-level-up').click(function () {

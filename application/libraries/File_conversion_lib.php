@@ -83,9 +83,43 @@ class File_conversion_lib
         if ($this->CI->db_config->get('file_conversion', 'enable_file_conversion') == 0 or $this->CI->db_config->get('file_conversion', 'enable_pandoc') == 0 or !file_exists($input))
             return false;
         $format_prop = $this->format_table[$format];
-        if($format_prop['converter'] !== 'pandoc' or pathinfo($input,PATHINFO_EXTENSION) !== $format_prop['extension'])
+        if($format_prop['converter'] !== 'pandoc' or '.'.pathinfo($input,PATHINFO_EXTENSION) !== $format_prop['extension'])
             return false;
-        $output_temp = $this->execute_pandoc($input, $format_prop['pandoc_format'], 'html');
+        //TODO: export_images = true causes pandoc import process to fail completely so for the moment image import is disabled (possible permission issue)
+        $output_temp = $this->execute_pandoc($input, $format_prop['pandoc_format'], 'html', false);
+        //Post conversion fixes: table classes
+		if(!file_exists($output_temp))
+			return false;
+		//HTML post-processor: fix table classes
+		$output_html = file_get_contents($output_temp);
+		$output_html = str_replace('<table>', '<table class="table">',$output_html);
+		//HTML post-processor: import image files
+		//OK: list all image files in application/tmp/media folder: then move them to img/autoimported and link them to
+		//the HTML document
+		if(file_exists(APPPATH.'tmp/media'))
+		{
+			$this->CI->load->library('file_handler');
+			$fs_array=array_diff(scandir(APPPATH.'tmp/media'),array('..', '.', '.DS_Store'));
+			foreach($fs_array as $fs)
+			{
+				if(is_file(APPPATH.'tmp/media/'.$fs))
+				{
+					$type = $this->CI->file_handler->preview_mode(APPPATH.'tmp/media/'.$fs);
+					if($type == 'image')
+					{
+						//OK move the image to the autoimported folder
+						if(!file_exists(FCPATH.'img/autoimported'))
+							mkdir(FCPATH.'img/autoimported');
+						$extension = '.'.pathinfo(APPPATH.'tmp/media/'.$fs,PATHINFO_EXTENSION);
+						$new_path = 'img/autoimported/'.uniqid().$extension;
+						copy(FCPATH.'application/tmp/media/'.$fs, FCPATH.$new_path);
+						$output_html = str_replace('src="'.APPPATH.'tmp/media/'.$fs.'"', 'src="'.base_url($new_path).'"', $output_html);
+					}
+				}
+			}
+		}
+
+		file_put_contents($output_temp, $output_html);
         return $output_temp;
     }
 
@@ -137,15 +171,22 @@ class File_conversion_lib
         return $output;
     }
 
-    private function execute_pandoc($input, $from, $to)
+    private function execute_pandoc($input, $from, $to, $export_images = false)
     {
         if ($this->CI->db_config->get('file_conversion', 'pandoc_execute_on_remote') == 1)
         {
             return $output_file = $this->execute_pandoc_remote($input, $from, $to);
         }
         $output = APPPATH . 'tmp/' . uniqid() . $this->format_table[$to]['extension'];
-        $command = 'pandoc -f ' . escapeshellarg($from) . ' -t ' . escapeshellarg($this->format_table[$to]['pandoc_format']) . ' -o ' . escapeshellarg($output) . ' -i ' . escapeshellarg($input);
-        exec($command);
+        $command = 'pandoc -f ' . escapeshellarg($from) . ' -t ' . escapeshellarg($this->format_table[$to]['pandoc_format']) . ' -o ' . escapeshellarg($output) . ' -i ' . escapeshellarg($input) . ' --mathjax';
+        if($export_images)
+		{
+			$this->CI->load->helper('file');
+			if(file_exists(APPPATH.'tmp/media'))
+				delete_files(APPPATH.'tmp/media', true);
+			$command .= ' --extract-media ' . escapeshellarg(APPPATH.'tmp');
+		}
+		exec($command);
         if (!file_exists($output))
         {
             $output = false;

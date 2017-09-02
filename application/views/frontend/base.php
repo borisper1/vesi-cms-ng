@@ -26,6 +26,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <script>window.location.href = "<?=base_url('assets/unsupported.html') ?>"</script>
             <![endif]-->
         <?php endif; ?>
+
+		<?php if($math_support): ?>
+			<script async src="<?=$urls['mathjax'] ?>?config=TeX-MML-AM_CHTML"></script>
+		<?php endif ?>
     </head>
     <body>
         <div id="page-wrapper">
@@ -46,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 window.vbcknd = {};
                 window.vbcknd.base_url = "<?=base_url() ?>";
             }();
-        </script>
+		</script>
         <script src="<?=base_url('assets/frontend-main.js')?>"></script>
         <?php foreach($urls['aux_js_loader'] as $aux_url): ?>
             <script src="<?=$aux_url?>"></script>

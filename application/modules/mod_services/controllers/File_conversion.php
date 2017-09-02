@@ -49,7 +49,7 @@ class File_conversion extends MX_Controller
             $this->output->set_output('Expected a file upload');
             return;
         }
-        $extension = pathinfo($_FILES['to_convert']['name'], PATHINFO_EXTENSION);
+        $extension = '.'.pathinfo($_FILES['to_convert']['name'], PATHINFO_EXTENSION);
         $format = $this->input->post('format');
         if(!isset($this->file_conversion_lib->format_table[$format]) or $this->file_conversion_lib->format_table[$format]['extension'] !== $extension)
         {
@@ -60,6 +60,7 @@ class File_conversion extends MX_Controller
         $file_input = APPPATH.'tmp/'.uniqid(). $extension;
         if (move_uploaded_file($_FILES['to_convert']['tmp_name'], $file_input)) {
             $output = $this->file_conversion_lib->convert_to_html($file_input, $format);
+			unlink($file_input);
             if($output)
             {
                 $this->output->set_status_header(200);

@@ -40,7 +40,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             !function () {
                 window.vbcknd = {};
                 window.vbcknd.base_url = "<?=base_url() ?>";
-
+				window.vbcknd.enable_mathjax = <?=$enable_math_support ? 'true' : 'false'?>;
+				window.vbcknd.mathjax_url = "<?=$urls['mathjax']?>?config=TeX-MML-AM_CHTML";
             }();
         </script>
         <script src="<?=base_url('assets/administration/main.js')?>"></script>

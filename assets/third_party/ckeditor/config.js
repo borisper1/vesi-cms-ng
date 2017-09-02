@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -18,16 +18,14 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'tools' },
 		{ name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
 		{ name: 'others' },
-		{ name: 'about' },
 		'/',
 		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
 		{ name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
 		{ name: 'styles' },
-		{name: 'colors'}
+		{ name: 'colors' },
+		{ name: 'about' }
 	];
 
-	// Remove some buttons provided by the standard plugins, which are
-	// not needed in the Standard(s) toolbar.
 	config.removeButtons = 'Anchor';
 
 	// Set the most common block elements.
@@ -40,11 +38,11 @@ CKEDITOR.editorConfig = function( config ) {
 	config.entities_latin = false; //required if entities enabled to pass internal HTML validation
 	config.justifyClasses = [ 'text-left', 'text-center', 'text-right', 'text-justify' ];
 	//config.allowedContent = true; //Disables all content filtering, not recommended only emergency fix
-	config.extraPlugins = 'fontawesome,confighelper';
+	config.extraPlugins = 'ckawesome,confighelper';
 	config.extraAllowedContent = 'span(fa,fa-*)';
 	//config.disallowedContent = 'img{width,height};';
 
-    config.removeDialogFields='table:info:txtBorder;table:info:txtCellSpace;table:info:txtCellPad;table:info:txtHeight;table:info:txtCaption;table:info:txtSummary;table:advanced:advLangDir;table:info:cmbAlign;'+
+     config.removeDialogFields='table:info:txtBorder;table:info:txtCellSpace;table:info:txtCellPad;table:info:txtHeight;table:info:txtCaption;table:info:txtSummary;table:advanced:advLangDir;table:info:cmbAlign;'+
         'tableProperties:info:txtBorder;tableProperties:info:txtCellSpace;tableProperties:info:txtCellPad;tableProperties:info:txtHeight;tableProperties:info:txtCaption;tableProperties:info:txtSummary;tableProperties:advanced:advLangDir;tableProperties:info:cmbAlign;'+
         'image:info:txtBorder;image:info:txtHSpace;image:info:txtVSpace;image:info:cmbAlign;'+
         'cellProperties:info:bgColor;cellProperties:info:borderColor;cellProperties:info:wordWrap;cellProperties:info:hAlign;cellProperties:info:vAlign;cellProperties:info:width;cellProperties:info:height;cellProperties:info:widthType;';
@@ -66,4 +64,9 @@ CKEDITOR.editorConfig = function( config ) {
 	config.filebrowserBrowseUrl = window.vbcknd.base_url + 'services/file_browser/index/';
 	config.filebrowserWindowWidth = '640';
 	config.filebrowserWindowHeight = '480';
+
+	//Temporarily disable MathJAX until frontend support is implemented
+    //config.removePlugins = 'mathjax';
+	config.mathJaxClass = 'math';
+	//config.mathJaxLib = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'; //Set to CDN or local library based on availability, this is set via php
 };

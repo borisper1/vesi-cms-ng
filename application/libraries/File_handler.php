@@ -15,7 +15,7 @@ class File_handler
         {
             return false;
         }
-        $extension = pathinfo($path,PATHINFO_EXTENSION);
+        $extension = '.'.pathinfo($path,PATHINFO_EXTENSION);
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $content_type=finfo_file($finfo, $path);
         switch($extension)

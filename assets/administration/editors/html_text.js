@@ -6,6 +6,9 @@ $(document).ready(function() {
         window.vbcknd.base_url+'assets/third_party/bootstrap/css/bootstrap-custom.min.css',
         window.vbcknd.base_url+'assets/third_party/fontawesome/css/font-awesome.min.css',
         window.vbcknd.base_url+'assets/third_party/ckeditor/contents.css'];
+    CKEDITOR.config.fontawesomePath = window.vbcknd.base_url +'assets/third_party/fontawesome/css/font-awesome.min.css';
+    if(window.vbcknd.enable_mathjax)
+    	CKEDITOR.config.mathJaxLib = window.vbcknd.mathjax_url;
     //Allow empty span tags for Font Awesome icons!
     CKEDITOR.dtd.$removeEmpty['span'] = false;
     CKEDITOR.replace('gui_editor', {
@@ -49,7 +52,7 @@ $(document).ready(function() {
     });
 
     $('.import-document').click(function(){
-        window.vbcknd.services.file_conversion.import_to_html($(this).data('format'), FileImportCallback);
+        window.vbcknd.services.file_conversion.import_to_html($(this).data('format'), $(this).data('extension'), FileImportCallback);
     });
 
     function FileImportCallback(html){

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var CallbackFunction, InFormat;
+    var CallbackFunction, InFormat, InExtension;
     window.vbcknd.services.file_conversion = {};
     window.vbcknd.services.file_conversion.export_from_html = function (text, out_format, out_name) {
         $('#export-conversion-modal').modal();
@@ -18,10 +18,11 @@ $(document).ready(function() {
         $('#export-conversion-done-modal').modal();
     }
 
-    window.vbcknd.services.file_conversion.import_to_html = function(in_format, callback_func){
+    window.vbcknd.services.file_conversion.import_to_html = function(in_format, in_extension, callback_func){
         CallbackFunction = callback_func;
-        $('#conversion-file-input').attr('accept', '.'+in_format);
+        $('#conversion-file-input').attr('accept', '.'+in_extension);
         InFormat = in_format;
+        InExtension = in_extension;
         $('#conversion-upload-file-modal').modal();
     };
 
@@ -34,7 +35,7 @@ $(document).ready(function() {
             return;
         }
         var ext = file_input.val().split('.').pop().toLowerCase();
-        if (ext !== InFormat){
+        if (ext !== InExtension){
             alert('Il file selezionato non è supportato per la conversione con l\'opzione '+InFormat.toUpperCase());
             return;
         }

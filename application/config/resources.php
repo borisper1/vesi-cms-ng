@@ -12,3 +12,6 @@ $config['bootstrap.js_path']='assets/third_party/bootstrap/js/bootstrap.min.js';
 
 //Fontawesome
 $config['fontawesome_path']='assets/third_party/fontawesome/css/font-awesome.min.css';
+
+//Local MathJax installation
+$config['mathjax_path']='assets/third_party/mathjax/MathJax.js';

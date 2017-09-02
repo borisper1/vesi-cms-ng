@@ -1,0 +1,2 @@
+In plugins/image/dialogs/image.js:
+d.lang.common.cssClass,"default":"" => d.lang.common.cssClass,"default":"img-responsive"
