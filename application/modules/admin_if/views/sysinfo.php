@@ -11,21 +11,25 @@
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="general">
-            <h3>Vesi CMS 1.2.0-beta2
+            <h3>Vesi CMS 1.2.0-devS
                 <small>(<a href="https://github.com/borisper1/vesi-cms-ng" target="_blank">vesi-cms-ng</a>) <span
-                        class="label label-warning">BETA VERSION, NOT FOR RELEASE</span> <span
-                        class="label label-info">patch level: 43dc23f</span></small>
+							class="label label-danger">DEVELOPMENT VERSION &dash; NOT FOR RELEASE</span></small>
             </h3>
             <p>Sviluppato da Boris Pertot - Copyright <span class='fa fa-copyright'></span> 2016-2017 Boris Pertot</p>
-            <p class="text-muted">This program is free software; you can redistribute it and/or modify
-                it under the terms of the GNU General Public License as published by
-                the Free Software Foundation; either version 2 of the License, or
-                (at your option) any later version.<br>
-
-                This program is distributed in the hope that it will be useful,
-                but WITHOUT ANY WARRANTY; without even the implied warranty of
-                MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-                GNU General Public License for more details.</p>
+			<p class="text-muted">Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
+				<ol class="text-muted">
+				<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
+				<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
+				<li>Neither the name of Vesi CMS nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.</li>
+			</ol>
+			<p class="text-muted">THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+			WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+			PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
+			DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+			PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+			OWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+			NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+			POSSIBILITY OF SUCH DAMAGE.</p>
 
             <h4>Informazioni sul server</h4>
             <?php $php_version_class = version_compare(phpversion(), '5.6.0', '<') ? 'text-danger' : (version_compare(phpversion(), '7.0.0', '>=') ? 'text-success' : 'text-warning') ?>
@@ -45,7 +49,7 @@
                 </tr></thead>
                 <tr>
                     <td><a href="https://codeigniter.com/" target="_blank">CodeIgniter</a></td>
-                    <td>3.1.3</td>
+                    <td>3.1.6</td>
                 </tr>
                 <tr>
                     <td><a href="https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc" target="_blank">Modular
@@ -67,10 +71,6 @@
                 <tr>
                     <td><a href="http://fortawesome.github.io/Font-Awesome/" target="_blank">Font Awesome</a></td>
                     <td>4.5.0</td>
-                </tr>
-                <tr>
-                    <td><a href="https://github.com/CWSpear/bootstrap-hover-dropdown/" target="_blank">Bootstrap Hover Dropdown Plugin</a></td>
-                    <td>2.2.1</td>
                 </tr>
                 <tr>
                     <td><a href="https://silviomoreto.github.io/bootstrap-select/" target="_blank">bootstrap-select</a>
@@ -95,7 +95,7 @@
                 </tr>
                 <tr>
                     <td><a href="http://blueimp.github.io/jQuery-File-Upload/" target="_blank">jQuery File Upload</a></td>
-                    <td>9.11.2</td>
+                    <td>9.19.1</td>
                 </tr>
                 <tr>
                     <td><a href="https://github.com/afarkas/html5shiv" target="_blank">html5shiv</a></td>

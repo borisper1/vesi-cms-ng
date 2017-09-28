@@ -85,8 +85,10 @@ class File_conversion_lib
         $format_prop = $this->format_table[$format];
         if($format_prop['converter'] !== 'pandoc' or '.'.pathinfo($input,PATHINFO_EXTENSION) !== $format_prop['extension'])
             return false;
-        //TODO: export_images = true causes pandoc import process to fail completely so for the moment image import is disabled (possible permission issue)
-        $output_temp = $this->execute_pandoc($input, $format_prop['pandoc_format'], 'html', false);
+        //export_images = true causes pandoc import process to fail completely so for the moment image import is disabled (possible permission issue)
+		//For now it is a hidden config option
+		$enable_experimental_image_export = (bool)$this->CI->db_config->get('file_conversion', 'pandoc_use_exp_image_extraction');
+        $output_temp = $this->execute_pandoc($input, $format_prop['pandoc_format'], 'html', $enable_experimental_image_export);
         //Post conversion fixes: table classes
 		if(!file_exists($output_temp))
 			return false;
