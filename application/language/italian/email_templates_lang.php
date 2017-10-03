@@ -20,7 +20,7 @@ $lang['email_templates_new_user_set_password'] = "
     </head>
         <body>
             <h3>Registrazione al sito [[website]]</h3>
-            <p>Per completare la registrazione dell'account [[user]] è necessario scegliere una password prem,endo sul link seguente. 
+            <p>Per completare la registrazione dell'account [[user]] è necessario scegliere una password premendo sul link seguente. 
             Questa richiesta scadrà tra 24 ore</p>
             <p><b>Se non si ha richiesto la registrazione al sito informare immediatamente l'amministratore del sistema</b></p>
             <p><a href=\"[[url]]\" target=\"_blank\">[[url]]</a></p>

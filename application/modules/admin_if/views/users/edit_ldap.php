@@ -114,6 +114,10 @@
                         data-content="<span class='label label-warning'>nessun gruppo</span> Questo utente non ha accesso pubblico">
                     none
                 </option>
+				<option value="super-users"
+						data-content="<span class='label label-danger'>super-users</span> Gruppo per gli utenti con accesso completo al sistema">
+					super-users
+				</option>
                 <?php foreach ($frontend_groups as $group_i): ?>
                     <option
                         data-content="<span class='label label-info'><?= $group_i['name'] ?></span> <?= $group_i['description'] ?>"><?= $group_i['name'] ?></option>
