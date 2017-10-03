@@ -53,6 +53,10 @@ class Contents extends MX_Controller
         }
         $data['is_new']=true;
         $data['preview']='';
+		$data['enable_permission_control'] = $this->db_config->get('authentication', 'enable_content_permissions');
+		$data['restricted_access'] = false;
+		$data['restriction_mode'] = 'standard';
+		$data_array['frontend_groups'] = $this->group_handler->get_frontend_group_list();
 
         $this->load->view('content/editor_wrapper',$data);
         echo Modules::run('components/load_new_editor',$data['type']);
