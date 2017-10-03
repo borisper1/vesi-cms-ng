@@ -180,7 +180,7 @@ class Page_render extends MX_Controller
         $this->load->model('authentication_handler');
         if($this->authentication_handler->check_frontend_session())
         {
-            return in_array($this->session->frontend_group, $allowed_groups);
+			return (in_array($this->session->frontend_group, $allowed_groups) or $this->session->frontend_group == 'super-users');
         }
         return false;
     }

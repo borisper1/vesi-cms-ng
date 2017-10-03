@@ -76,6 +76,8 @@ class Content_handler extends CI_Model
                 {
                     $content['preview']=substr(htmlspecialchars($row->content), 0, 50).'...';
                 }
+				$dec_settings = $row->settings != '' ? json_decode($row->settings, true): [];
+                $content['restricted'] = ((boolean)$this->db_config->get('authentication', 'enable_content_permissions') and isset($dec_settings['allowed_groups']));
                 array_push($contents, $content);
             }
             return $contents;
@@ -158,9 +160,13 @@ class Content_handler extends CI_Model
             $content['type'] = $row->type;
             $content['preview'] = $row->displayname!='' ? $row->displayname : substr(trim(strip_tags($row->content)), 0, 25).'&hellip;';
             $content['preview'] = trim($content['preview'])=='&hellip;' ? substr(htmlspecialchars($row->content), 0, 25).'&hellip;' : $content['preview'];
+			$dec_settings = $row->settings != '' ? json_decode($row->settings, true): [];
+			$content['restricted_access'] = ((boolean)$this->db_config->get('authentication', 'enable_content_permissions') and isset($dec_settings['allowed_groups']));
+			$content['allowed_groups'] = $content['restricted_access'] ? $dec_settings['allowed_groups'] : [];
+			$content['restriction_mode'] = isset($dec_settings['restriction_mode']) ? $dec_settings['restriction_mode'] : 'standard';
             return $content;
         }
-        else;
+        else
         {
             return false;
         }
@@ -196,14 +202,16 @@ class Content_handler extends CI_Model
             'type' => strip_tags($type),
             'content'=> $content
         );
-        if($component_info->has_options)
+        if($component_info->has_options or (boolean)$this->db_config->get('authentication', 'enable_content_permissions')) //Setting are always used for permission controls
         {
-            if(! $this->validation->check_json($settings)) {
-                echo '500-2 - Settings input is invalid';
-                return 3;
-            }
-            $data['settings'] = $settings;
-
+        	if($settings != '')
+			{
+				if(! $this->validation->check_json($settings)) {
+					echo '500-2 - Settings input is invalid';
+					return 3;
+				}
+			}
+			$data['settings'] = $settings;
         }
         if($component_info->has_displayname)
         {

@@ -38,9 +38,19 @@ $(document).ready(function() {
         data.id = $('#f-id').text();
         data.type = $('#f-type').text();
         data.data = content;
-        if(settings != null) {
-            data.settings = settings;
-        }
+		if($('#permissions-restrict').prop('checked')) {
+			if(settings != null) {
+				t_settings = JSON.parse(settings);
+			} else {
+				t_settings = {};
+			}
+			t_settings.restriction_mode = $('#permissions-nowarn').prop('checked') ? 'silent' : 'standard';
+			var value = $('#i-allowed-groups').val();
+			t_settings.allowed_groups = (value == null) ? [] : value;
+			data.settings = JSON.stringify(t_settings);
+		}else if(settings != null){
+			data.settings = settings;
+		}
         if(displayname != null) {
             data.displayname = displayname;
         }
@@ -108,5 +118,23 @@ $(document).ready(function() {
         var type = $('#i-content-type').val();
         window.location.assign(window.vbcknd.base_url + 'admin/contents/new_content/'+type);
     });
+
+	$('#edit-permissions').click(function(){
+		$('#edit-permissions-modal').modal();
+	});
+
+	$('#permissions-no-restrict').change(function () {
+		$('#i-allowed-groups').prop('disabled', true).selectpicker('refresh');
+		$('#permissions-standardwarn').prop('disabled', true);
+		$('#permissions-nowarn').prop('disabled', true);
+		$('#restricted-access-icon').addClass('hidden');
+	});
+
+	$('#permissions-restrict').change(function () {
+		$('#i-allowed-groups').prop('disabled', false).selectpicker('refresh');
+		$('#permissions-standardwarn').prop('disabled', false);
+		$('#permissions-nowarn').prop('disabled', false);
+		$('#restricted-access-icon').removeClass('hidden');
+	});
 
 });

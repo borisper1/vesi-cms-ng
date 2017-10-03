@@ -44,6 +44,9 @@
             <td>
                 <span class="label label-default f-type"><?=$content['type'] ?></span>
                 <a href="<?=base_url('admin/contents/edit/'.$content['id']) ?>"><?=$content['preview'] ?></a>
+				<?php if($content['restricted']): ?>
+					<i class="fa fa-lock tooltipped" data-toggle="tooltip" title="Contenuto con restrizioni di accesso"></i>
+				<?php endif; ?>
                 <a class="delete-content lmbnc pull-right tooltipped" data-toggle="tooltip" title="Elimina"><i
                         class="fa fa-trash"></i></a>
             </td>

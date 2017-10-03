@@ -18,8 +18,15 @@ class Contents extends MX_Controller
     function edit($id)
     {
         $this->load->model('content_handler');
+		$this->load->model('group_handler');
         $data = $this->content_handler->get_content_data($id);
         $data['is_new']=false;
+        $data['enable_permission_control'] = $this->db_config->get('authentication', 'enable_content_permissions');
+        if(!$data['enable_permission_control'])
+		{
+			$data['restricted_access'] = false;
+		}
+		$data_array['frontend_groups'] = $this->group_handler->get_frontend_group_list();
         $lock_state = $this->content_handler->check_lock($id);
         if ($lock_state['result']) {
             $data['editing_user'] = $lock_state['user'];

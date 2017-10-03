@@ -6,24 +6,34 @@ class Components extends MX_Controller
 
     function render_component($id)
     {
-        $type = $this->get_content_type($id);
-        if ($type === false) {
+        $type_perm = $this->get_content_type_and_permissions($id);
+        if ($type_perm === false) {
             $this->load->model('error_logger');
             $this->error_logger->log_no_content_error($id);
             return $this->load->view('frontend/errors/content_not_found', array('id' => $id), true);
         }
-        if(in_array($type,$this->modules_handler->installed_components))
+        if(in_array($type_perm['type'],$this->modules_handler->installed_components))
         {
-            $model_cname=str_replace('-','_',$type).'_model';
+        	if($type_perm['restricted_access'])
+			{
+				if(!$this->check_frontend_permissions($type_perm['allowed_groups']))
+				{
+					if ($type_perm['restriction_mode'] === 'silent')
+						return "";
+					else
+						return $this->load->view('frontend/errors/content_not_authorized', null, true);
+				}
+			}
+            $model_cname=str_replace('-','_',$type_perm['type']).'_model';
             $this->load->model($model_cname);
             $data = $this->$model_cname->get_render_data($id);
-            return $this->load->view(str_replace('-','_',$type), $data, true);
+            return $this->load->view(str_replace('-','_',$type_perm['type']), $data, true);
         }
         else
         {
             $this->load->model('error_logger');
-            $this->error_logger->log_no_component_error($id, $type);
-            return $this->load->view('frontend/errors/component_not_found', array('id' => $id, 'component' => $type), true);
+            $this->error_logger->log_no_component_error($id, $type_perm['type']);
+            return $this->load->view('frontend/errors/component_not_found', array('id' => $id, 'component' => $type_perm['type']), true);
         }
     }
 
@@ -45,14 +55,42 @@ class Components extends MX_Controller
         return $this->load->view(str_replace('-', '_', $name), array('structure_data' => $data, 'class' => $class), true);
     }
 
-    protected function get_content_type($id)
+	protected function get_content_type($id)
+	{
+		$this->db->select('type');
+		$this->db->where('id', $id);
+		$query = $this->db->get('contents');
+		if ($query->num_rows() > 0) {
+			$row = $query->row();
+			return $row->type;
+		} else {
+			return false;
+		}
+	}
+
+	protected function check_frontend_permissions($allowed_groups)
+	{
+		$this->load->model('authentication_handler');
+		if($this->authentication_handler->check_frontend_session())
+		{
+			return (in_array($this->session->frontend_group, $allowed_groups) or $this->session->frontend_group == 'super-users');
+		}
+		return false;
+	}
+
+    protected function get_content_type_and_permissions($id)
     {
-        $this->db->select('type');
+        $this->db->select('type, settings');
         $this->db->where('id', $id);
         $query = $this->db->get('contents');
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            return $row->type;
+            $dec_settings = $row->settings != '' ? json_decode($row->settings, true): [];
+            $return['restricted_access'] = ((boolean)$this->db_config->get('authentication', 'enable_content_permissions') and isset($dec_settings['allowed_groups']));
+            $return['allowed_groups'] = $return['restricted_access'] ? $dec_settings['allowed_groups'] : [];
+            $return['restriction_mode'] = isset($dec_settings['restriction_mode']) ? $dec_settings['restriction_mode'] : 'standard';
+            $return['type'] = $row->type;
+            return $return;
         } else {
             return false;
         }
