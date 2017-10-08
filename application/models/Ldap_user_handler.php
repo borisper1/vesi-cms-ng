@@ -7,6 +7,7 @@ class Ldap_user_handler extends CI_Model
 
     function __construct()
     {
+        $this->load->library('encryption');
         $this->ldap_settings = array(
             'ssl' => intval($this->db_config->get('authentication', 'ldap_ssl')),
             'port' => intval($this->db_config->get('authentication', 'ldap_port')),
