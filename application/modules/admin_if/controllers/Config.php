@@ -30,12 +30,31 @@ class Config extends MX_Controller
             $keys = array_keys($decoded[$section]);
             foreach($keys as $key)
             {
-                $this->db_config->set($section, $key, (string)$decoded[$section][$key]);
+            	if($this->encrypt_data($section,  $key))
+				{
+					$this->load->library('encryption');
+					$encrypted = $this->encryption->encrypt((string)$decoded[$section][$key]);
+					$this->db_config->set($section, $key, $encrypted);
+				}
+				else
+				{
+					$this->db_config->set($section, $key, (string)$decoded[$section][$key]);
+				}
+
             }
         }
         $this->db_config->save();
         echo "success";
     }
+
+    private function encrypt_data($section, $key)
+	{
+    	$encrypted_keys = [
+    		'email::smtp_password',
+			'authentication::ldap_password'
+    		];
+    	return in_array($section.'::'.$key, $encrypted_keys);
+	}
 
     function is_writable()
     {

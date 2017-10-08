@@ -112,12 +112,15 @@
             <tr>
                 <td><input type="checkbox" class="vcms-select-group" value="<?= $group['name'] ?>" data-type="frontend">
                     <a href="<?= base_url('admin/groups/edit_frontend/' . $group['name']) ?>"><?= $group['name'] ?></a>
+					<?php if ($psk_enabled && $group['enable_psk_authentication'] && $group['psk_key_set']): ?>
+						<i class="fa fa-key tooltipped" title="Accesso con chiave precondivisa abilitato"></i>
+					<?php endif; ?>
                 </td>
                 <td><?=$group['description'] ?></td>
                 <td><?= $group['active'] ? "<i class=\"fa fa-check\"></i> Attivo" : "<i class=\"fa fa-ban\"></i> Revocato" ?></td>
                 <td>
                     <?php foreach ($group['permissions'] as $perm): ?>
-                        <span class="label label-info"><?= $perm ?></span>
+                       <span class="label label-info"><?= $perm ?></span>
                     <?php endforeach; ?>
                 </td>
                 <td class="group-members">

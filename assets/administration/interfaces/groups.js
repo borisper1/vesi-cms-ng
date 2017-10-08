@@ -3,6 +3,8 @@ $(document).ready(function() {
 
     var mode = $('#page-mode').text();
     var is_ldap_enabled = $('#ldapgrp-editor-gui').length;
+    var is_psk_enabled = $('#psk-edit-gui').length;
+	$('.auto-bswitch').bootstrapSwitch();
 
     $('.close').click(function () {
         $(this).closest('.alert-dismissible').addClass('hidden');
@@ -62,7 +64,7 @@ $(document).ready(function() {
         });
 
         $('#disable-groups').click(function () {
-            var groups = [];
+            var groups = {};
             groups.admin_groups = [];
             groups.frontend_groups = [];
             $('.vcms-select-group:checked').each(function () {
@@ -270,7 +272,7 @@ $(document).ready(function() {
         //END CONTENT FILTER CONTROL CODE ------------------------------------------------------------------------------
     }
 
-    if (mode.indexOf('edit') >= 0) {
+    if (mode == 'edit_admin' || mode == 'edit_frontend') {
         var is_new_unsaved = $('#is-new').text() === 'true';
         var allowed_permissions = $('#onload_allowed_permissions').text().split(",");
         allowed_permissions.forEach(function (entry) {
@@ -326,6 +328,16 @@ $(document).ready(function() {
                     json.allowed_permissions.push($(this).val());
                 });
                 data.type = 'frontend';
+                if(is_psk_enabled)
+				{
+					json.psk_auth = $('#i-enable-psk-authentication').prop('checked');
+					var new_key = $('#i-psk-new-key').val();
+					if(new_key != "")
+					{
+						json.psk_key = new_key; //This requires json post processing in PHP (current key preservation)
+						$('#i-psk-new-key').val('');
+					}
+				}
             }
             data.name = $('#group-name').text();
             data.description = encodeURIComponent($('#group-description').text());
@@ -335,13 +347,13 @@ $(document).ready(function() {
             } else {
                 data.ldap_groups = encodeURIComponent('{}');
             }
-            $('.alert').addClass('hidden');
+            $('.alert-save').addClass('hidden');
             $('#spinner').removeClass('hidden');
             $.post(window.vbcknd.base_url + 'ajax/admin/groups/save', data, SaveEditDone);
         }
 
         function SaveEditDone(data) {
-            $('.alert').addClass('hidden');
+            $('.alert-save').addClass('hidden');
             if (data == "success") {
                 if (is_new_unsaved) {
                     var name = $('#group-name').text();
@@ -355,7 +367,27 @@ $(document).ready(function() {
                 $('#error-alert').removeClass('hidden');
             }
         }
-
     }
+
+	//PSK AUTHENTICATION FILTER CODE
+	if (is_psk_enabled) {
+        $('#set-psk-key').click(function(){
+			window.vbcknd.validation.clear_all_errors();
+        	$('#change-psk-key-modal').modal();
+		});
+
+		$('#change-psk-key-modal-confirm').click(function(){
+			var key = $('#i-psk-new-key');
+			window.vbcknd.validation.clear_all_errors();
+			if ((window.vbcknd.validation.check_is_empty(key)) > 0) {
+				return;
+			}
+			$('#change-psk-key-modal').modal('hide');
+			$('#psk-key-unset').addClass('hidden');
+			$('#psk-key-set').removeClass('hidden');
+			DoSave();
+		});
+
+	}
 
 });

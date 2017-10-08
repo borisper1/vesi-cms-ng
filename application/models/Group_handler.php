@@ -49,6 +49,9 @@ class Group_handler extends CI_Model
             $group['users'] = $this->get_frontend_group_users($row->name);
             $ldap_array = json_decode($row->ldap_groups);
             $group['ldap_groups'] = $ldap_array->ldap_groups;
+			$group['enable_psk_authentication'] = isset($code->psk_auth) ? $code->psk_auth : false;
+			$group['psk_key_set'] = isset($code->psk_key) ? ($code->psk_key != "") : false;
+			$group['psk_key_hash']= $group['psk_key_set'] ? $code->psk_key : '';
             $grouplist[] = $group;
         }
         return $grouplist;
@@ -93,6 +96,9 @@ class Group_handler extends CI_Model
             $processed_code = json_decode($row->code);
             $data['allowed_permissions_csv'] = implode(',', $processed_code->allowed_permissions);
             $data['ldap_linked_groups'] = json_decode($row->ldap_groups, true)['ldap_groups'];
+            $data['enable_psk_authentication'] = isset($processed_code->psk_auth) ? $processed_code->psk_auth : false;
+            $data['psk_key_set'] = isset($processed_code->psk_key) ? $processed_code->psk_key != "" : false;
+			$data['psk_key_hash']= $data['psk_key_set'] ? $processed_code->psk_key : '';
         }
         return $data;
     }
@@ -107,6 +113,23 @@ class Group_handler extends CI_Model
         if (!$this->validation->check_json($ldap_groups)) {
             return false;
         }
+        //Implement json code fixes for psk authentication
+		if($type === 'frontend' and (boolean)$this->db_config->get('authentication', 'enable_psk'))
+		{
+			$before_data = $this->get_frontend_group_data($name);
+			$code_array = json_decode($code, true);
+			if($before_data['psk_key_hash'] !== '' && !isset($code_array['psk_key']))
+			{
+				$code_array['psk_key'] = $before_data['psk_key_hash'];
+				$code = json_encode($code_array);
+			}
+			elseif(isset($code_array['psk_key']))
+			{
+				$code_array['psk_key'] = password_hash($code_array['psk_key'], PASSWORD_DEFAULT);
+				$code = json_encode($code_array);
+			}
+		}
+
         $data = array(
             'full_name' => strip_tags($description),
             'code' => $code,
@@ -216,5 +239,17 @@ class Group_handler extends CI_Model
         }
         return false;
     }
+
+    function get_frontend_group_active($group)
+	{
+		$query = $this->db->get_where('frontend_groups', array('name' => $group));
+		if ($query->num_rows() > 0) {
+			$row = $query->row();
+			if ($row->active == 1) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

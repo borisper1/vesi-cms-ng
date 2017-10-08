@@ -13,13 +13,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <button type="button" class="btn btn-default" id="close-edit"><i class="fa fa-remove"></i> Chiudi</button>
 </div>
 <div class="clearfix"></div>
-<div class="alert alert-danger hidden" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile
+<div class="alert alert-danger hidden alert-save" id="error-alert"><i class="fa fa-exclamation-circle"></i> <b>Impossibile
         modificare il gruppo:</b><br><span id="error-msg"></span></div>
-<div class="alert alert-success alert-dismissible hidden" id="success-alert">
+<div class="alert alert-success alert-dismissible hidden alert-save" id="success-alert">
     <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
     <i class="fa fa-check"></i> Gruppo modificato con successo
 </div>
-<div class="alert alert-info hidden" id="spinner"><i class="fa fa-refresh fa-spin"></i> Modifica del gruppo...</div>
+<div class="alert alert-info hidden alert-save" id="spinner"><i class="fa fa-refresh fa-spin"></i> Modifica del gruppo...</div>
 
 <span id="is-new" class="hidden"><?= $is_new ? 'true' : 'false' ?></span>
 
@@ -107,39 +107,91 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 </div>
 
-<div class="modal fade" id="new-ldap-group-modal" tabindex="-1" role="dialog"
-     aria-labelledby="new-ldap-group-modal-label" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="new-ldap-group-modal-label"><i class="fa fa-plus"></i> Associa gruppo LDAP
-                </h4>
-            </div>
+<?php if ($psk_enabled): ?>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Autenticazione con chiave precondivisa (PSK)</h3>
+		</div>
+		<div class="panel-body" id="psk-edit-gui">
+			<p>Questo permette agli utenti di accedere semplicemente con una chiave condivisa, senza bisogno di avere un account sul sito</p>
+			<div class="form-group">
+				<div class="checkbox toggle">
+					<label>
+						<input type="checkbox" id="i-enable-psk-authentication" class="auto-bswitch" <?= $enable_psk_authentication ? 'checked' : '' ?>>
+							&nbsp;Attiva autenticazione con chiave precondivisa (PSK)
+					</label>
+				</div>
+				<p class="text-success <?=$psk_key_set ? '' : 'hidden' ?>" id="psk-key-set"><i class="fa fa-check-circle"></i> Una chiave di autenticazione è stata impostata: è possibile accedere con chiave precondivisa</p>
+				<p class="text-warning <?=$psk_key_set ? 'hidden' : '' ?>" id="psk-key-unset"><i class="fa fa-warning"></i> Non è stata impostata una chiave di autenticazione: impostare una chiave per abilitare l'accesso con chiave precondivisa</p>
+				<button type="button" class="btn btn-default" id="set-psk-key"><i class="fa fa-key"></i> Imposta/cambia chiave precondivisa</button>
+			</div>
+		</div>
+	</div>
 
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="i-ldap-group">Scegli il gruppo LDAP da associare (DN completo)</label>
-                    <select class="form-control selectpicker" id="i-ldap-group">
-                        <?php foreach ($ldap_groups as $group_i): ?>
-                            <option
-                                data-content="<?= $group_i['cn'] ?> <span class='label label-default'><?= $group_i['dn'] ?></span> "><?= $group_i['dn'] ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                <label><input type="checkbox" id="hide-builtin-ldap-groups"> Nascondi gruppi predefiniti di Active
-                    Directory <code>CN=Builtin</code></label>
-            </div>
+	<div class="modal fade" id="change-psk-key-modal" tabindex="-1" role="dialog"
+		 aria-labelledby="change-psk-key-modal-label" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="change-psk-key-modal-label"><i class="fa fa-key"></i> Imposta/cambia chiave precondivisa
+					</h4>
+				</div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
-                </button>
-                <button type="button" class="btn btn-success" id="new-ldap-group-modal-confirm" data-dismiss="modal"><i
-                        class="fa fa-plus"></i> Associa gruppo LDAP
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+				<div class="modal-body">
+					<p class="text-info"><i class="fa fa-info-circle"></i> Le modifiche al gruppo verranno salvate se si cambia la chiave precondivisa.</p>
+					<div class="form-group">
+						<label for="i-psk-new-key">Inserire la nuova chiave precondivisa</label>
+						<input type="text" class="form-control" id="i-psk-new-key" placeholder="Chiave precondivisa">
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
+					</button>
+					<button type="button" class="btn btn-success" id="change-psk-key-modal-confirm"><i
+								class="fa fa-check"></i> Imposta/cambia chiave precondivisa
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php endif; ?>
+
+<?php if ($ldap_enabled): ?>
+	<div class="modal fade" id="new-ldap-group-modal" tabindex="-1" role="dialog"
+		 aria-labelledby="new-ldap-group-modal-label" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="new-ldap-group-modal-label"><i class="fa fa-plus"></i> Associa gruppo LDAP
+					</h4>
+				</div>
+
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="i-ldap-group">Scegli il gruppo LDAP da associare (DN completo)</label>
+						<select class="form-control selectpicker" id="i-ldap-group">
+							<?php foreach ($ldap_groups as $group_i): ?>
+								<option
+									data-content="<?= $group_i['cn'] ?> <span class='label label-default'><?= $group_i['dn'] ?></span> "><?= $group_i['dn'] ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+					<label><input type="checkbox" id="hide-builtin-ldap-groups"> Nascondi gruppi predefiniti di Active
+						Directory <code>CN=Builtin</code></label>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-remove"></i> Annulla
+					</button>
+					<button type="button" class="btn btn-success" id="new-ldap-group-modal-confirm" data-dismiss="modal"><i
+							class="fa fa-plus"></i> Associa gruppo LDAP
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php endif; ?>
 
 <div class="modal fade" id="new-group-modal" tabindex="-1" role="dialog" aria-labelledby="new-group-modal-label"
      aria-hidden="true" data-backdrop="static">

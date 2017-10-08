@@ -7,6 +7,7 @@ class Email_wrapper
     function __construct()
     {
         $this->CI = &get_instance();
+        $this->CI->load->library('encryption');
         $this->email_config = array(
             'protocol'=> 'smtp',
             'mailtype' => 'html',
@@ -17,7 +18,7 @@ class Email_wrapper
             'smtp_port' => intval($this->CI->db_config->get('email', 'smtp_port')),
             'smtp_user' => $this->CI->db_config->get('email', 'smtp_user'),
             'smtp_host' => $this->CI->db_config->get('email', 'smtp_hostname'),
-            'smtp_pass' => $this->CI->db_config->get('email', 'smtp_password'),
+            'smtp_pass' => $this->CI->encryption->decrypt($this->CI->db_config->get('email', 'smtp_password')),
         );
     }
 

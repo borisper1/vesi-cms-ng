@@ -25,7 +25,7 @@ class Frontend_ajax extends MX_Controller
     public function ajax_login()
     {
         $this->load->model('authentication_handler');
-        if(!$this->db_config->get('users', 'enable_frontend_authentication'))
+        if(!$this->db_config->get('authentication', 'enable_frontend'))
         {
             $this->lang->load('admin_login_lang');
             $json['result'] = false;
@@ -42,9 +42,13 @@ class Frontend_ajax extends MX_Controller
         $result = $this->authentication_handler->authenticate($this->input->post('username'), $this->input->post('password'));
         if($result['result'])
         {
-            $this->session->type='frontend';
+            $this->session->type = 'frontend';
             $this->session->username = $result['user'];
             $this->session->frontend_group = $result['frontend_group'];
+			if(!$this->authentication_handler->check_frontend_group_active($this->session->frontend_group))
+			{
+				$this->session->frontend_group = '';
+			}
             $this->output->set_status_header(200);
             $json['result'] = true;
             $this->output->set_output(json_encode($json));
@@ -58,6 +62,47 @@ class Frontend_ajax extends MX_Controller
             $this->output->set_output(json_encode($json));
         }
     }
+
+    public function ajax_psk_login()
+	{
+		$this->load->model('authentication_handler');
+		if(!$this->db_config->get('authentication', 'enable_frontend') or !$this->db_config->get('authentication', 'enable_psk'))
+		{
+			$this->lang->load('admin_login_lang');
+			$json['result'] = false;
+			$json['error_message']=$this->lang->line('admin_login_frontend_disabled');
+			$this->output->set_status_header(200);
+			$this->output->set_output(json_encode($json));
+		}
+		if ($this->authentication_handler->check_frontend_session())
+		{
+			$this->output->set_status_header(200);
+			$json['result'] = true;
+			$this->output->set_output(json_encode($json));
+		}
+		$result = $this->authentication_handler->authenticate_psk($this->input->post('key'));
+		if($result['result'])
+		{
+			$this->session->type = 'frontend';
+			$this->session->username = $result['user'];
+			$this->session->frontend_group = $result['frontend_group'];
+			if(!$this->authentication_handler->check_frontend_group_active($this->session->frontend_group))
+			{
+				$this->session->frontend_group = '';
+			}
+			$this->output->set_status_header(200);
+			$json['result'] = true;
+			$this->output->set_output(json_encode($json));
+		}
+		else
+		{
+			$this->lang->load('admin_login_lang');
+			$json['result'] = false;
+			$json['error_message']=$this->lang->line('admin_login_'.$result['status']);
+			$this->output->set_status_header(200);
+			$this->output->set_output(json_encode($json));
+		}
+	}
 
     function request_pwd_reset()
     {
@@ -112,14 +157,15 @@ class Frontend_ajax extends MX_Controller
         else
         {
             $email = $this->input->post('email');
-            if($email!='' and $this->local_user_handler->save_edit($this->session->username, array('email' => $email)))
+            if($email !='' and $this->local_user_handler->save_edit($this->session->username, array('email' => $email)))
             {
+
                 $this->output->set_status_header(200);
                 $this->output->set_output('success');
                 return;
             }
             $fullname = $this->input->post('fullname');
-            if($fullname!='' and $this->local_user_handler->save_edit($this->session->username, array('full_name' => $fullname)))
+            if($fullname !='' and $this->local_user_handler->save_edit($this->session->username, array('full_name' => $fullname)))
             {
                 $this->output->set_status_header(200);
                 $this->output->set_output('success');

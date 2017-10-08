@@ -10,6 +10,7 @@ class Groups extends MX_Controller
         $data['frontend_super_users'] = $this->group_handler->get_frontend_group_users('super-users');
         $data['frontend_groups'] = $this->group_handler->get_frontend_group_list();
         $data['ldap_enabled'] = (boolean)$this->db_config->get('authentication', 'enable_ldap');
+		$data['psk_enabled'] = (boolean)$this->db_config->get('authentication', 'enable_psk');
         $this->load->view('groups/list', $data);
     }
 
@@ -54,7 +55,7 @@ class Groups extends MX_Controller
             $data['group_name'] = '';
             $data['description'] = '';
             $data['allowed_permissions_csv'] = '';
-            $data['ldap_linked_groups'] = [];
+			$data['ldap_linked_groups'] = [];
             $data['is_new'] = true;
         } else {
             $this->load->model('group_handler');
@@ -69,11 +70,12 @@ class Groups extends MX_Controller
                 $data['ldap_groups'] = $this->ldap_user_handler->get_all_groups();
             }
         }
+        $data['psk_enabled'] = (boolean)$this->db_config->get('authentication', 'enable_psk');
         $data['permissions'] = $this->modules_handler->get_frontend_permissions_array();
         $this->load->view('groups/edit_frontend', $data);
     }
 
-    function get_pages()
+    function get_pages() //For CFILTER SYSTEM
     {
         $this->load->model('page_handler');
         $pages = $this->page_handler->get_pages_in_container($this->input->post('container'));

@@ -26,7 +26,7 @@ class Contents extends MX_Controller
 		{
 			$data['restricted_access'] = false;
 		}
-		$data_array['frontend_groups'] = $this->group_handler->get_frontend_group_list();
+		$data['frontend_groups'] = $this->group_handler->get_frontend_group_list();
         $lock_state = $this->content_handler->check_lock($id);
         if ($lock_state['result']) {
             $data['editing_user'] = $lock_state['user'];
@@ -57,7 +57,6 @@ class Contents extends MX_Controller
 		$data['restricted_access'] = false;
 		$data['restriction_mode'] = 'standard';
 		$data_array['frontend_groups'] = $this->group_handler->get_frontend_group_list();
-
         $this->load->view('content/editor_wrapper',$data);
         echo Modules::run('components/load_new_editor',$data['type']);
     }

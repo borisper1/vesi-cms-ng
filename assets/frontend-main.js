@@ -52,18 +52,40 @@ $(document).ready(function(e) {
     });
 
     $('#authenticator-container').on('click', '#authenticator-login', function() {
-        var data = {
-            username: $('#i-authenticator-username').val(),
-            password: $('#i-authenticator-password').val()
-        };
-        $('#authenticator-alert').addClass('hidden');
-        $.ajax({
-            type: "POST",
-            url: window.vbcknd.base_url + 'ajax/frontend/ajax_login',
-            data: data,
-            success: AJAXLoginOK
-        });
-    });
+    	if(!$('#authenticator-usernamepwd').hasClass('hidden'))
+		{
+			var data = {
+				username: $('#i-authenticator-username').val(),
+				password: $('#i-authenticator-password').val()
+			};
+			$('#authenticator-alert').addClass('hidden');
+			$.ajax({
+				type: "POST",
+				url: window.vbcknd.base_url + 'ajax/frontend/ajax_login',
+				data: data,
+				success: AJAXLoginOK
+			});
+		}
+		else if(!$('#authenticator-psk').hasClass('hidden'))
+		{
+			var data = {
+				key: $('#i-authenticator-psk').val()
+			};
+			$('#authenticator-alert').addClass('hidden');
+			$.ajax({
+				type: "POST",
+				url: window.vbcknd.base_url + 'ajax/frontend/ajax_psk_login',
+				data: data,
+				success: AJAXLoginOK
+			});
+		}
+    }).on('click', '#authenticator-psk-login', function() {
+		$('#authenticator-usernamepwd').addClass('hidden');
+		$('#authenticator-psk').removeClass('hidden');
+	}).on('click', '#authenticator-usernamepwd-login', function() {
+		$('#authenticator-usernamepwd').removeClass('hidden');
+		$('#authenticator-psk').addClass('hidden');
+	});
 
     function AJAXLoginOK(data){
         var json = JSON.parse(data);

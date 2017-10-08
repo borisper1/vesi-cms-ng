@@ -1,6 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 $form="<div class='alert alert-danger hidden' role='alert' id='authenticator-alert'>Impossibile eseguire l'accesso</div>
-<div class='form-group'>
+<div id='authenticator-usernamepwd'>" .
+	($enable_psk_auth ? "<a href='#' id='authenticator-psk-login'>Accedi con chiave d'accesso</a><br>" : "")
+	. "<div class='form-group'>
             <div class='input-group'>
                 <span class='input-group-addon'><span class='fa fa-user'></span></span>
                 <input type='text' class='form-control' placeholder='Nome utente' id='i-authenticator-username'>
@@ -13,14 +15,28 @@ $form="<div class='alert alert-danger hidden' role='alert' id='authenticator-ale
              </div>
              <a href='" . base_url("system/pwd_forgot") . "'>Password dimenticata?</a>
          </div>
-         <button class='btn btn-default' id='authenticator-login'>Accedi</button>";
+</div>
+<div id='authenticator-psk' class='hidden'>
+	<a href='#' id='authenticator-usernamepwd-login'>Accedi con nome utente e password</a><br>
+         <div class='form-group'>
+             <div class='input-group'>
+                <span class='input-group-addon'><span class='fa fa-key'></span></span>
+                <input type='password' class='form-control' placeholder='Chiave' id='i-authenticator-psk'>
+             </div>
+         </div>
+</div>
+<button class='btn btn-default' id='authenticator-login'>Accedi</button>";
 ?><ul class="nav navbar-nav navbar-right" id="authenticator-container">
     <?php if($frontend_logged_in): ?>
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-fw fa-user"></i><?=$user_initials ?> <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-fw <?=$mode === 'user'? 'fa-user' : 'fa-key'?>"></i><?=$user_initials ?> <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li class="dropdown-header"><?=$user_fullname ?></li>
-                <li><a href="<?=base_url('system/profile') ?>"><i class="fa fa-fw fa-wrench"></i> Modifica utente</a></li>
+				<?php if($mode === 'user'): ?>
+					<li class="dropdown-header"><?=$user_fullname ?></li>
+					<li><a href="<?=base_url('system/profile') ?>"><i class="fa fa-fw fa-wrench"></i> Modifica utente</a></li>
+				<?php elseif($mode === 'psk'): ?>
+					<li class="dropdown-header">Accesso con chiave precondivisa</li>
+				<?php endif; ?>
                 <li role="separator" class="divider"></li>
                 <li><a href="#" id="authenticator-logout"><i class="fa fa-fw fa-sign-out"></i> Esci</a></li>
             </ul>

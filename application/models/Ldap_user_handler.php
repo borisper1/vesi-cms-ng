@@ -13,7 +13,7 @@ class Ldap_user_handler extends CI_Model
             'user' => $this->db_config->get('authentication', 'ldap_user'),
             'base_dn' => $this->db_config->get('authentication', 'ldap_base_dn'),
             'hostname' => $this->db_config->get('authentication', 'ldap_hostname'),
-            'password' => $this->db_config->get('authentication', 'ldap_password'),
+            'password' => $this->encryption->decrypt($this->db_config->get('authentication', 'ldap_password')),
         );
         parent::__construct();
     }

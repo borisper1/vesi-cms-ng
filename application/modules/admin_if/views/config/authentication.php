@@ -10,6 +10,18 @@
 </div>
 
 <div class="form-group">
+	<div class="checkbox toggle">
+		<label>
+			<input type="checkbox" class="checkbox-sw" id="i-enable-psk-auth" <?= $enable_psk ? 'checked' : '' ?>>
+			&nbsp;Abilita autenticazione tramite chiave precondivisa (PSK) per gli utenti del pubblico
+		</label>
+	</div>
+	<span class="help-block">Permette di far accedere al sito (alla parte pubblica) anche utenti che non dispongono di un account tramite una chiave di accesso.
+		Se si disattiva questa opzione tutte le chiavi precondivise impostate verrano eliminate</i></span>
+</div>
+
+
+<div class="form-group">
     <div class="checkbox toggle">
         <label>
             <input type="checkbox" class="checkbox-sw" id="i-enable-ldap-auth" <?= $enable_ldap ? 'checked' : '' ?>>

@@ -444,10 +444,21 @@ class Authentication_handler extends CI_Model
             return false;
         }
         $this->load->model('local_user_handler');
-        if ($this->local_user_handler->load_user($this->session->username)) {
+        if($this->session->username = 'reserved::psk-auth')
+		{
+			if($this->check_frontend_group_active($this->session->frontend_group) && (boolean)$this->db_config->get('authentication', 'enable_psk') && $this->session->type === 'frontend')
+			{
+				$this->session->admin_group = null;
+				return true;
+			}
+		} else if ($this->local_user_handler->load_user($this->session->username)) {
             if ($this->local_user_handler->is_active() === 0) {
                 $this->session->admin_group = $this->local_user_handler->get_admin_group();
                 $this->session->frontend_group = $this->local_user_handler->get_frontend_group();
+				if(!$this->check_frontend_group_active($this->session->frontend_group))
+				{
+					$this->session->frontend_group = '';
+				}
                 return true;
             }
         }
@@ -465,4 +476,37 @@ class Authentication_handler extends CI_Model
         }
         return false;
     }
+
+    function check_frontend_group_active($group)
+	{
+		$this->load->model('group_handler');
+		return $this->group_handler->get_frontend_group_active($group);
+	}
+
+	function authenticate_psk($psk)
+	{
+		if(!((boolean)$this->db_config->get('authentication', 'enable_psk')))
+		{
+			return array('result' => false, 'status' => 'invalid_key');
+		}
+		$this->load->model('group_handler');
+		$groups = $this->group_handler->get_frontend_group_list();
+		foreach($groups as $group)
+		{
+			if($group['enable_psk_authentication'] && $group['psk_key_set'])
+			{
+				$result = password_verify($psk, $group['psk_key_hash']);
+				if($result)
+				{
+					return array(
+						'result' =>true,
+						'user' => 'reserved::psk-auth',
+						'admin_group' => null,
+						'frontend_group' => $group['name'],
+					);
+				}
+			}
+		}
+		return array('result' => false, 'status' => 'invalid_key');
+	}
 }

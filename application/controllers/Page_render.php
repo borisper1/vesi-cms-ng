@@ -58,11 +58,22 @@ class Page_render extends MX_Controller
         if($menu_data['enable_frontend_auth'])
         {
             $authenticator_data['frontend_logged_in'] = $this->authentication_handler->check_frontend_session();
+			$authenticator_data['enable_psk_auth'] = (boolean)$this->db_config->get('authentication', 'enable_psk');
             if($authenticator_data['frontend_logged_in'])
             {
-                $authenticator_data['user_fullname'] = $this->authentication_handler->get_full_name($this->session->username);
-                preg_match_all('/(?<=\s|^)[a-z]/i', $authenticator_data['user_fullname'], $matches);
-                $authenticator_data['user_initials'] = implode('', $matches[0]);
+            	if($this->session->username === 'reserved::psk-auth')
+				{
+					$authenticator_data['mode'] = 'psk';
+					$authenticator_data['user_initials'] = 'PSK';
+				}
+				else
+				{
+					$authenticator_data['mode'] = 'user';
+					$authenticator_data['user_fullname'] = $this->authentication_handler->get_full_name($this->session->username);
+					preg_match_all('/(?<=\s|^)[a-z]/i', $authenticator_data['user_fullname'], $matches);
+					$authenticator_data['user_initials'] = implode('', $matches[0]);
+				}
+
             }
             $menu_data['frontend_authenticator_rendered'] = $this->load->view('frontend/authenticator', $authenticator_data, true);
         }
