@@ -17,7 +17,7 @@ class Group_handler extends CI_Model
             $group['permissions'] = $code->allowed_interfaces;
             $group['users'] = $this->get_admin_group_users($row->name);
             $ldap_array = json_decode($row->ldap_groups);
-            $group['ldap_groups'] = $ldap_array->ldap_groups;
+            $group['ldap_groups'] = isset($ldap_array->ldap_groups) ? $ldap_array->ldap_groups : [];
             $grouplist[]=$group;
         }
         return $grouplist;
@@ -48,7 +48,7 @@ class Group_handler extends CI_Model
             $group['permissions'] = $code->allowed_permissions;
             $group['users'] = $this->get_frontend_group_users($row->name);
             $ldap_array = json_decode($row->ldap_groups);
-            $group['ldap_groups'] = $ldap_array->ldap_groups;
+            $group['ldap_groups'] = isset($ldap_array->ldap_groups) ? $ldap_array->ldap_groups : [];
 			$group['enable_psk_authentication'] = isset($code->psk_auth) ? $code->psk_auth : false;
 			$group['psk_key_set'] = isset($code->psk_key) ? ($code->psk_key != "") : false;
 			$group['psk_key_hash']= $group['psk_key_set'] ? $code->psk_key : '';
