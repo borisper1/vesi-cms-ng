@@ -95,7 +95,7 @@ class Group_handler extends CI_Model
             $data['description'] = $row->full_name;
             $processed_code = json_decode($row->code);
             $data['allowed_permissions_csv'] = implode(',', $processed_code->allowed_permissions);
-            $data['ldap_linked_groups'] = json_decode($row->ldap_groups, true)['ldap_groups'];
+            $data['ldap_linked_groups'] = json_decode($row->ldap_groups, true)['ldap_groups'] ?: [];
             $data['enable_psk_authentication'] = isset($processed_code->psk_auth) ? $processed_code->psk_auth : false;
             $data['psk_key_set'] = isset($processed_code->psk_key) ? $processed_code->psk_key != "" : false;
 			$data['psk_key_hash']= $data['psk_key_set'] ? $processed_code->psk_key : '';
