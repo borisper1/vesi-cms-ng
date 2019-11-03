@@ -444,7 +444,7 @@ class Authentication_handler extends CI_Model
             return false;
         }
         $this->load->model('local_user_handler');
-        if($this->session->username = 'reserved::psk-auth')
+        if($this->session->username == 'reserved::psk-auth')
 		{
 			if($this->check_frontend_group_active($this->session->frontend_group) && (boolean)$this->db_config->get('authentication', 'enable_psk') && $this->session->type === 'frontend')
 			{

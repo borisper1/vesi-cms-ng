@@ -129,7 +129,7 @@ class File_conversion_lib
     {
         if($this->CI->db_config->get('file_conversion', 'enable_tcpdf') == 0)
             return false;
-        require_once(APPPATH . 'third_party/TCPDF/tcpdf.php');
+        @require_once(APPPATH . 'third_party/TCPDF/tcpdf.php');
 
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -166,7 +166,7 @@ class File_conversion_lib
         $pdf->SetFont('helvetica', '', 11);
 
         $pdf->AddPage();
-        $pdf->writeHTML(file_get_contents($input), true, false, true, false, '');
+        @$pdf->writeHTML(file_get_contents($input), true, false, true, false, '');
         $pdf->lastPage();
 
         $pdf->Output($output, 'F');
