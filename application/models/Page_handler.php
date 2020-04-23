@@ -283,8 +283,10 @@ class Page_handler extends CI_Model
         if ($query->num_rows() > 0) {
             $row = $query->row();
             $lock_struct = json_decode($row->lock, true);
-            if (time() < ($lock_struct['time'] + 95) and $lock_struct['user'] !== $this->session->username) {
-                return array('result' => true, 'user' => $lock_struct['user']);
+            if($lock_struct != null) {
+                if (time() < ($lock_struct['time'] + 95) and $lock_struct['user'] !== $this->session->username) {
+                    return array('result' => true, 'user' => $lock_struct['user']);
+                }
             }
         }
         return array('result' => false, 'user' => '');
